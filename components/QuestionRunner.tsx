@@ -42,13 +42,10 @@ export default function QuestionRunner({bundle,onDone,onExit}:Props){
  }
  async function exitSession(){
    if(busy)return
-   if(!window.confirm('Keluar dari sesi? Jawaban yang sudah dikirim tetap tersimpan. Soal yang belum dijawab tidak dihitung.'))return
-   setBusy(true)
-   try{
-     await api('/api/session/close',{method:'POST',body:JSON.stringify({session_id:sid,abandoned:true})})
-     localStorage.removeItem('upkp_runner_'+sid)
-     onExit?.()
-   }catch(e:any){window.alert(e.message)}finally{setBusy(false)}
+   if(!window.confirm('Pause sesi dan kembali ke Beranda? Jawaban yang sudah dikirim tetap tersimpan, dan sesi ini bisa dilanjutkan nanti.'))return
+   // Do not close the server session and do not clear runner state.
+   // Home exposes it as an active resumable session.
+   onExit?.()
  }
  function advance(){
    if(i+1<indices.length){resetForNext();setI(i+1);return}
@@ -70,7 +67,7 @@ export default function QuestionRunner({bundle,onDone,onExit}:Props){
  function pick(x:number){if(feedback||busy)return;if(selected!==null&&selected!==x)setChanges((c:number)=>c+1);setSelected(x);if(first===null)setFirst(Math.round(performance.now()-started.current))}
  if(!current)return <div className="panel">Menyiapkan sesi…</div>
  return <div className="sessionShell">
-   <div className="sessionBar"><button className="sessionExit" onClick={exitSession} disabled={busy}>← Keluar sesi</button><span>Sesi tersimpan per jawaban</span></div>
+   <div className="sessionBar"><button className="sessionExit" onClick={exitSession} disabled={busy}>← Pause & keluar</button><span>Progress tersimpan per jawaban</span></div>
    <div className="runnerGrid">
     <section className="panel questionPanel">
     <div className="questionTop"><div className="tags"><span>{current.bab}</span><span>{current.difficulty_label||('L'+current.lv)}</span>{isExam&&<span>Pass {pass}</span>}</div><b className="timer">{Math.floor(elapsed/60000).toString().padStart(2,'0')}:{Math.floor((elapsed%60000)/1000).toString().padStart(2,'0')}</b></div>
