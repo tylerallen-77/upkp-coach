@@ -1,0 +1,4 @@
+fastapi==0.128.2
+pydantic>=2.10,<3
+argon2-cffi==25.1.0
+psycopg[binary]>=3.2,<4

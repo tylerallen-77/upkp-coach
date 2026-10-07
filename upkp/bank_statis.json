@@ -1,0 +1,2250 @@
+{
+ "sinonim": [
+  {
+   "q": "Sinonim dari **eksplisit**:",
+   "a": "Terang-terangan",
+   "d": [
+    "Tersirat",
+    "Rumit",
+    "Rahasia",
+    "Ragu-ragu"
+   ],
+   "exp": "Eksplisit berarti dinyatakan secara jelas dan langsung.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **hipotesis**:",
+   "a": "Dugaan sementara",
+   "d": [
+    "Kesimpulan akhir",
+    "Bukti nyata",
+    "Teori mapan",
+    "Pertanyaan retoris"
+   ],
+   "exp": "Hipotesis adalah jawaban sementara yang masih perlu diuji.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **efisien**:",
+   "a": "Berdaya guna",
+   "d": [
+    "Boros",
+    "Lambat",
+    "Rumit",
+    "Mahal"
+   ],
+   "exp": "Efisien: tepat guna, tidak membuang waktu, tenaga, atau biaya.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **konsisten**:",
+   "a": "Ajek",
+   "d": [
+    "Berubah-ubah",
+    "Ragu",
+    "Keras kepala",
+    "Lemah"
+   ],
+   "exp": "Konsisten berarti tetap dan tidak berubah-ubah. Padanannya: ajek.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **valid**:",
+   "a": "Sahih",
+   "d": [
+    "Palsu",
+    "Baru",
+    "Rumit",
+    "Lemah"
+   ],
+   "exp": "Valid = sah, dapat dipertanggungjawabkan.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **preferensi**:",
+   "a": "Hal yang lebih disukai",
+   "d": [
+    "Penolakan",
+    "Kewajiban",
+    "Larangan",
+    "Kebiasaan buruk"
+   ],
+   "exp": "Preferensi adalah pilihan atau kecenderungan memilih.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **implementasi**:",
+   "a": "Pelaksanaan",
+   "d": [
+    "Perencanaan",
+    "Penilaian",
+    "Pembatalan",
+    "Perumusan"
+   ],
+   "exp": "Implementasi = penerapan atau pelaksanaan rencana.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **transparan**:",
+   "a": "Terbuka",
+   "d": [
+    "Tertutup",
+    "Rumit",
+    "Rahasia",
+    "Buram"
+   ],
+   "exp": "Transparan: jelas, dapat dilihat dan diketahui semua pihak.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **akurat**:",
+   "a": "Tepat dan teliti",
+   "d": [
+    "Cepat selesai",
+    "Kira-kira",
+    "Bervariasi",
+    "Mendadak"
+   ],
+   "exp": "Akurat = cermat dan sesuai dengan yang sebenarnya.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **netral**:",
+   "a": "Tidak berpihak",
+   "d": [
+    "Memihak",
+    "Bersemangat",
+    "Ragu",
+    "Keras"
+   ],
+   "exp": "Netral berarti tidak memihak kepada salah satu pihak.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **kredibel**:",
+   "a": "Dapat dipercaya",
+   "d": [
+    "Meragukan",
+    "Terkenal",
+    "Berkuasa",
+    "Tersembunyi"
+   ],
+   "exp": "Kredibel: layak dipercaya.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **inovasi**:",
+   "a": "Pembaruan",
+   "d": [
+    "Pengulangan",
+    "Penghentian",
+    "Peniruan",
+    "Pelestarian"
+   ],
+   "exp": "Inovasi adalah penemuan atau pembaruan.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **fleksibel**:",
+   "a": "Luwes",
+   "d": [
+    "Kaku",
+    "Keras",
+    "Tetap",
+    "Berat"
+   ],
+   "exp": "Fleksibel = mudah menyesuaikan diri, luwes.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **kendala**:",
+   "a": "Hambatan",
+   "d": [
+    "Dukungan",
+    "Peluang",
+    "Hasil",
+    "Tujuan"
+   ],
+   "exp": "Kendala = rintangan atau hambatan.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **sporadis**:",
+   "a": "Kadang-kadang",
+   "d": [
+    "Terus-menerus",
+    "Serentak",
+    "Teratur",
+    "Selalu"
+   ],
+   "exp": "Sporadis: terjadi sesekali dan tidak merata.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **prioritas**:",
+   "a": "Hal yang diutamakan",
+   "d": [
+    "Hal yang ditunda",
+    "Hal sepele",
+    "Hal tambahan",
+    "Hal rutin"
+   ],
+   "exp": "Prioritas adalah yang didahulukan.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **antisipasi**:",
+   "a": "Persiapan menghadapi",
+   "d": [
+    "Penyesalan",
+    "Penundaan",
+    "Pembiaran",
+    "Penolakan"
+   ],
+   "exp": "Antisipasi: bersiap menghadapi sesuatu yang diperkirakan terjadi.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **akuntabel**:",
+   "a": "Dapat dipertanggungjawabkan",
+   "d": [
+    "Dapat diabaikan",
+    "Bersifat rahasia",
+    "Tidak terbatas",
+    "Bebas aturan"
+   ],
+   "exp": "Akuntabel: dapat dipertanggungjawabkan.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **kolaborasi**:",
+   "a": "Kerja sama",
+   "d": [
+    "Persaingan",
+    "Perselisihan",
+    "Pembagian",
+    "Pemisahan"
+   ],
+   "exp": "Kolaborasi = bekerja sama untuk tujuan bersama.",
+   "trick": "Singkirkan dulu opsi yang jelas berlawanan arti. Dari sisanya, pilih yang paling pas menggantikan kata itu dalam kalimat.",
+   "lv": 1
+  },
+  {
+   "q": "Sinonim dari **ambigu**:",
+   "a": "Bermakna ganda",
+   "d": [
+    "Jelas",
+    "Tegas",
+    "Sederhana",
+    "Mutlak"
+   ],
+   "exp": "Ambigu: dapat ditafsirkan lebih dari satu makna.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 2
+  },
+  {
+   "q": "Sinonim dari **redundan**:",
+   "a": "Berlebihan",
+   "d": [
+    "Penting",
+    "Kurang",
+    "Bermanfaat",
+    "Pokok"
+   ],
+   "exp": "Redundan: berlebih-lebihan dan tidak perlu.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 2
+  },
+  {
+   "q": "Sinonim dari **relevan**:",
+   "a": "Bersangkut paut",
+   "d": [
+    "Berlawanan",
+    "Berlebihan",
+    "Sementara",
+    "Terpisah"
+   ],
+   "exp": "Relevan: ada hubungan atau kaitan dengan hal yang dibicarakan.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 2
+  },
+  {
+   "q": "Sinonim dari **akomodatif**:",
+   "a": "Bersedia menyesuaikan diri",
+   "d": [
+    "Menolak",
+    "Menunda",
+    "Menguasai",
+    "Menyendiri"
+   ],
+   "exp": "Akomodatif: bersifat mau menyesuaikan dan menampung kepentingan lain.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 2
+  },
+  {
+   "q": "Sinonim dari **diskriminatif**:",
+   "a": "Membeda-bedakan",
+   "d": [
+    "Menyamaratakan",
+    "Melindungi",
+    "Mengabaikan",
+    "Menghargai"
+   ],
+   "exp": "Diskriminatif: bersifat membeda-bedakan perlakuan.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 2
+  },
+  {
+   "q": "Sinonim dari **retrospektif**:",
+   "a": "Melihat ke belakang",
+   "d": [
+    "Melihat ke depan",
+    "Memandang sekilas",
+    "Menghindari",
+    "Menggambarkan"
+   ],
+   "exp": "Retro- berarti belakang. Retrospektif: bersifat melihat ke masa lampau.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 2
+  },
+  {
+   "q": "Sinonim dari **kompromi**:",
+   "a": "Kesepakatan dengan saling mengalah",
+   "d": [
+    "Perselisihan",
+    "Pemaksaan",
+    "Penolakan",
+    "Kemenangan sepihak"
+   ],
+   "exp": "Kompromi: jalan tengah yang disepakati dengan saling melepas sebagian tuntutan.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 2
+  },
+  {
+   "q": "Sinonim dari **adaptif**:",
+   "a": "Mudah menyesuaikan diri",
+   "d": [
+    "Kaku",
+    "Menolak perubahan",
+    "Mudah marah",
+    "Tertutup"
+   ],
+   "exp": "Adaptif berasal dari adaptasi: penyesuaian diri.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 2
+  },
+  {
+   "q": "Sinonim dari **resiprokal**:",
+   "a": "Timbal balik",
+   "d": [
+    "Sepihak",
+    "Searah",
+    "Berlawanan",
+    "Berurutan"
+   ],
+   "exp": "Resiprokal: saling berbalasan, timbal balik.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 2
+  },
+  {
+   "q": "Sinonim dari **anomali**:",
+   "a": "Penyimpangan",
+   "d": [
+    "Keteraturan",
+    "Kebiasaan",
+    "Kesamaan",
+    "Kepastian"
+   ],
+   "exp": "Anomali: sesuatu yang menyimpang dari yang biasa.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 2
+  },
+  {
+   "q": "Sinonim dari **kontradiktif**:",
+   "a": "Bertentangan",
+   "d": [
+    "Sejalan",
+    "Mendukung",
+    "Seragam",
+    "Berurutan"
+   ],
+   "exp": "Kontra- berarti melawan. Kontradiktif: saling bertentangan.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 2
+  },
+  {
+   "q": "Sinonim dari **stagnan**:",
+   "a": "Tidak berkembang",
+   "d": [
+    "Berkembang pesat",
+    "Berubah-ubah",
+    "Bergejolak",
+    "Meluas"
+   ],
+   "exp": "Stagnan: mandek, tidak ada kemajuan.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 2
+  },
+  {
+   "q": "Sinonim dari **verifikasi**:",
+   "a": "Pemeriksaan kebenaran",
+   "d": [
+    "Penolakan",
+    "Pengumuman",
+    "Penyusunan",
+    "Pengurangan"
+   ],
+   "exp": "Verifikasi berakar dari veri- (benar): memeriksa kebenaran.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 2
+  },
+  {
+   "q": "Sinonim dari **mitigasi**:",
+   "a": "Pengurangan risiko",
+   "d": [
+    "Peningkatan risiko",
+    "Pengabaian",
+    "Pencarian sebab",
+    "Pelaporan"
+   ],
+   "exp": "Mitigasi: upaya mengurangi dampak atau risiko.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 2
+  },
+  {
+   "q": "Sinonim dari **eskalasi**:",
+   "a": "Peningkatan",
+   "d": [
+    "Penurunan",
+    "Penyelesaian",
+    "Penghentian",
+    "Pengulangan"
+   ],
+   "exp": "Eskalasi: peningkatan atau perluasan secara bertahap.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 2
+  },
+  {
+   "q": "Sinonim dari **ekstrapolasi**:",
+   "a": "Perkiraan di luar data yang diketahui",
+   "d": [
+    "Ringkasan data",
+    "Pengumpulan data",
+    "Penghapusan data",
+    "Perincian data"
+   ],
+   "exp": "Ekstrapolasi: memperluas kesimpulan melampaui rentang data yang ada.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 3
+  },
+  {
+   "q": "Sinonim dari **prerogatif**:",
+   "a": "Hak istimewa",
+   "d": [
+    "Kewajiban",
+    "Larangan",
+    "Kesalahan",
+    "Hukuman"
+   ],
+   "exp": "Prerogatif: hak khusus yang melekat pada jabatan atau kedudukan.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 3
+  },
+  {
+   "q": "Sinonim dari **heterogen**:",
+   "a": "Beraneka ragam",
+   "d": [
+    "Seragam",
+    "Sejenis",
+    "Tunggal",
+    "Serupa"
+   ],
+   "exp": "Hetero- berarti lain/berbeda. Heterogen: terdiri atas unsur yang berbeda-beda.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 3
+  },
+  {
+   "q": "Sinonim dari **plausibel**:",
+   "a": "Masuk akal",
+   "d": [
+    "Mustahil",
+    "Tidak berdasar",
+    "Pasti salah",
+    "Sangat jarang"
+   ],
+   "exp": "Plausibel: dapat diterima akal, tampak benar.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 3
+  },
+  {
+   "q": "Sinonim dari **eufemisme**:",
+   "a": "Penghalusan bahasa",
+   "d": [
+    "Kata kasar",
+    "Kata asing",
+    "Singkatan",
+    "Peribahasa"
+   ],
+   "exp": "Eufemisme: ungkapan yang lebih halus pengganti ungkapan yang dianggap kasar.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 3
+  },
+  {
+   "q": "Sinonim dari **disparitas**:",
+   "a": "Kesenjangan",
+   "d": [
+    "Kesamaan",
+    "Keseimbangan",
+    "Kemajuan",
+    "Persatuan"
+   ],
+   "exp": "Disparitas: perbedaan atau jurang antara dua hal.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 3
+  },
+  {
+   "q": "Sinonim dari **insentif**:",
+   "a": "Dorongan berupa imbalan",
+   "d": [
+    "Hukuman",
+    "Hambatan",
+    "Pajak",
+    "Larangan"
+   ],
+   "exp": "Insentif: tambahan imbalan yang diberikan untuk mendorong tindakan tertentu.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 3
+  },
+  {
+   "q": "Sinonim dari **rasionalisasi**:",
+   "a": "Pemberian alasan yang tampak masuk akal",
+   "d": [
+    "Penolakan alasan",
+    "Pengurangan jumlah",
+    "Penjelasan resmi",
+    "Penghapusan alasan"
+   ],
+   "exp": "Rasionalisasi: mencari alasan yang tampak logis untuk membenarkan suatu tindakan.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 3
+  },
+  {
+   "q": "Sinonim dari **akumulasi**:",
+   "a": "Penumpukan",
+   "d": [
+    "Pengurangan",
+    "Pembagian",
+    "Penghapusan",
+    "Penyebaran"
+   ],
+   "exp": "Akumulasi: pengumpulan atau penimbunan secara bertahap.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 3
+  },
+  {
+   "q": "Sinonim dari **imparsial**:",
+   "a": "Tidak memihak",
+   "d": [
+    "Berat sebelah",
+    "Bersemangat",
+    "Tertutup",
+    "Sewenang-wenang"
+   ],
+   "exp": "Im- (tidak) + parsial (memihak/sebagian): tidak memihak.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 3
+  },
+  {
+   "q": "Sinonim dari **sarkastis**:",
+   "a": "Menyindir tajam",
+   "d": [
+    "Memuji tulus",
+    "Menghibur",
+    "Mendukung",
+    "Menjelaskan"
+   ],
+   "exp": "Sarkastis: bersifat sindiran pedas.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 3
+  },
+  {
+   "q": "Sinonim dari **defisiensi**:",
+   "a": "Kekurangan",
+   "d": [
+    "Kelebihan",
+    "Kecukupan",
+    "Keseimbangan",
+    "Keunggulan"
+   ],
+   "exp": "Defisiensi: kekurangan, kelemahan.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 3
+  },
+  {
+   "q": "Sinonim dari **hegemoni**:",
+   "a": "Dominasi pengaruh atas pihak lain",
+   "d": [
+    "Kerja sama setara",
+    "Kemandirian",
+    "Keterbukaan",
+    "Perlawanan"
+   ],
+   "exp": "Hegemoni: pengaruh kepemimpinan atau dominasi suatu pihak atas pihak lain.",
+   "trick": "Pecah kata serapan menjadi awalan dan akar (re- kembali, ek- keluar, in- dalam, dis- terpisah, trans- melintasi). Lalu singkirkan opsi yang jelas berlawanan.",
+   "lv": 3
+  }
+ ],
+ "antonim": [
+  {
+   "q": "Antonim dari **progresif**:",
+   "a": "Konservatif",
+   "d": [
+    "Dinamis",
+    "Modern",
+    "Aktif",
+    "Maju"
+   ],
+   "exp": "Progresif = maju; lawannya konservatif (mempertahankan yang lama).",
+   "trick": "Sebut dulu lawan kata itu di kepala (misalnya eksplisit ↔ implisit), baru cari yang cocok. Awas opsi yang justru sinonim: itu jebakan.",
+   "lv": 1
+  },
+  {
+   "q": "Antonim dari **abstrak**:",
+   "a": "Konkret",
+   "d": [
+    "Samar",
+    "Teoretis",
+    "Rumit",
+    "Ringkas"
+   ],
+   "exp": "Abstrak (tidak berwujud) ↔ konkret (nyata, berwujud).",
+   "trick": "Sebut dulu lawan kata itu di kepala (misalnya eksplisit ↔ implisit), baru cari yang cocok. Awas opsi yang justru sinonim: itu jebakan.",
+   "lv": 1
+  },
+  {
+   "q": "Antonim dari **eksklusif**:",
+   "a": "Inklusif",
+   "d": [
+    "Mewah",
+    "Khusus",
+    "Terbatas",
+    "Tertutup"
+   ],
+   "exp": "Eksklusif (terbatas, khusus) ↔ inklusif (terbuka, mencakup semua).",
+   "trick": "Sebut dulu lawan kata itu di kepala (misalnya eksplisit ↔ implisit), baru cari yang cocok. Awas opsi yang justru sinonim: itu jebakan.",
+   "lv": 1
+  },
+  {
+   "q": "Antonim dari **primer**:",
+   "a": "Sekunder",
+   "d": [
+    "Utama",
+    "Pokok",
+    "Awal",
+    "Mutlak"
+   ],
+   "exp": "Primer = utama; sekunder = kedua/pelengkap.",
+   "trick": "Sebut dulu lawan kata itu di kepala (misalnya eksplisit ↔ implisit), baru cari yang cocok. Awas opsi yang justru sinonim: itu jebakan.",
+   "lv": 1
+  },
+  {
+   "q": "Antonim dari **objektif**:",
+   "a": "Subjektif",
+   "d": [
+    "Netral",
+    "Faktual",
+    "Adil",
+    "Rasional"
+   ],
+   "exp": "Objektif (apa adanya) ↔ subjektif (menurut pandangan pribadi).",
+   "trick": "Sebut dulu lawan kata itu di kepala (misalnya eksplisit ↔ implisit), baru cari yang cocok. Awas opsi yang justru sinonim: itu jebakan.",
+   "lv": 1
+  },
+  {
+   "q": "Antonim dari **defisit**:",
+   "a": "Surplus",
+   "d": [
+    "Rugi",
+    "Impas",
+    "Utang",
+    "Cadangan"
+   ],
+   "exp": "Defisit = kekurangan; surplus = kelebihan.",
+   "trick": "Sebut dulu lawan kata itu di kepala (misalnya eksplisit ↔ implisit), baru cari yang cocok. Awas opsi yang justru sinonim: itu jebakan.",
+   "lv": 1
+  },
+  {
+   "q": "Antonim dari **kolektif**:",
+   "a": "Individual",
+   "d": [
+    "Bersama",
+    "Umum",
+    "Sosial",
+    "Massal"
+   ],
+   "exp": "Kolektif = bersama-sama; individual = perseorangan.",
+   "trick": "Sebut dulu lawan kata itu di kepala (misalnya eksplisit ↔ implisit), baru cari yang cocok. Awas opsi yang justru sinonim: itu jebakan.",
+   "lv": 1
+  },
+  {
+   "q": "Antonim dari **nisbi**:",
+   "a": "Mutlak",
+   "d": [
+    "Relatif",
+    "Berubah",
+    "Sementara",
+    "Sebagian"
+   ],
+   "exp": "Nisbi = relatif; lawannya mutlak.",
+   "trick": "Sebut dulu lawan kata itu di kepala (misalnya eksplisit ↔ implisit), baru cari yang cocok. Awas opsi yang justru sinonim: itu jebakan.",
+   "lv": 1
+  },
+  {
+   "q": "Antonim dari **fana**:",
+   "a": "Abadi",
+   "d": [
+    "Sementara",
+    "Rapuh",
+    "Cepat",
+    "Langka"
+   ],
+   "exp": "Fana = tidak kekal; lawannya abadi.",
+   "trick": "Sebut dulu lawan kata itu di kepala (misalnya eksplisit ↔ implisit), baru cari yang cocok. Awas opsi yang justru sinonim: itu jebakan.",
+   "lv": 1
+  },
+  {
+   "q": "Antonim dari **inferior**:",
+   "a": "Superior",
+   "d": [
+    "Rendah",
+    "Lemah",
+    "Biasa",
+    "Sederajat"
+   ],
+   "exp": "Inferior = lebih rendah; superior = lebih unggul.",
+   "trick": "Sebut dulu lawan kata itu di kepala (misalnya eksplisit ↔ implisit), baru cari yang cocok. Awas opsi yang justru sinonim: itu jebakan.",
+   "lv": 1
+  },
+  {
+   "q": "Antonim dari **mayoritas**:",
+   "a": "Minoritas",
+   "d": [
+    "Dominan",
+    "Banyak",
+    "Seluruh",
+    "Sebagian besar"
+   ],
+   "exp": "Mayoritas = bagian terbesar; minoritas = bagian kecil.",
+   "trick": "Sebut dulu lawan kata itu di kepala (misalnya eksplisit ↔ implisit), baru cari yang cocok. Awas opsi yang justru sinonim: itu jebakan.",
+   "lv": 1
+  },
+  {
+   "q": "Antonim dari **hemat**:",
+   "a": "Boros",
+   "d": [
+    "Kikir",
+    "Murah",
+    "Sederhana",
+    "Cermat"
+   ],
+   "exp": "Hemat ↔ boros. Kikir bukan lawan, itu hemat yang berlebihan.",
+   "trick": "Sebut dulu lawan kata itu di kepala (misalnya eksplisit ↔ implisit), baru cari yang cocok. Awas opsi yang justru sinonim: itu jebakan.",
+   "lv": 1
+  },
+  {
+   "q": "Antonim dari **tersurat**:",
+   "a": "Tersirat",
+   "d": [
+    "Tertulis",
+    "Jelas",
+    "Terbuka",
+    "Eksplisit"
+   ],
+   "exp": "Tersurat = dinyatakan jelas; tersirat = hanya terkandung di balik kata.",
+   "trick": "Sebut dulu lawan kata itu di kepala (misalnya eksplisit ↔ implisit), baru cari yang cocok. Awas opsi yang justru sinonim: itu jebakan.",
+   "lv": 1
+  },
+  {
+   "q": "Antonim dari **spesifik**:",
+   "a": "Umum",
+   "d": [
+    "Khusus",
+    "Tepat",
+    "Rinci",
+    "Sempit"
+   ],
+   "exp": "Spesifik = khusus; lawannya umum.",
+   "trick": "Sebut dulu lawan kata itu di kepala (misalnya eksplisit ↔ implisit), baru cari yang cocok. Awas opsi yang justru sinonim: itu jebakan.",
+   "lv": 1
+  },
+  {
+   "q": "Antonim dari **fiktif**:",
+   "a": "Faktual",
+   "d": [
+    "Khayalan",
+    "Rekaan",
+    "Imajiner",
+    "Palsu"
+   ],
+   "exp": "Fiktif = rekaan; faktual = berdasarkan fakta.",
+   "trick": "Sebut dulu lawan kata itu di kepala (misalnya eksplisit ↔ implisit), baru cari yang cocok. Awas opsi yang justru sinonim: itu jebakan.",
+   "lv": 1
+  },
+  {
+   "q": "Antonim dari **maksimal**:",
+   "a": "Minimal",
+   "d": [
+    "Optimal",
+    "Tertinggi",
+    "Penuh",
+    "Terbaik"
+   ],
+   "exp": "Maksimal = paling tinggi; minimal = paling rendah.",
+   "trick": "Sebut dulu lawan kata itu di kepala (misalnya eksplisit ↔ implisit), baru cari yang cocok. Awas opsi yang justru sinonim: itu jebakan.",
+   "lv": 1
+  },
+  {
+   "q": "Antonim dari **ekspor**:",
+   "a": "Impor",
+   "d": [
+    "Kirim",
+    "Dagang",
+    "Jual",
+    "Produksi"
+   ],
+   "exp": "Ekspor = menjual ke luar negeri; impor = memasukkan dari luar negeri.",
+   "trick": "Sebut dulu lawan kata itu di kepala (misalnya eksplisit ↔ implisit), baru cari yang cocok. Awas opsi yang justru sinonim: itu jebakan.",
+   "lv": 1
+  },
+  {
+   "q": "Antonim dari **ambigu**:",
+   "a": "Jelas",
+   "d": [
+    "Rancu",
+    "Samar",
+    "Berganda",
+    "Tersirat"
+   ],
+   "exp": "Ambigu = bermakna ganda; lawannya jelas dan tegas.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 2
+  },
+  {
+   "q": "Antonim dari **heterogen**:",
+   "a": "Homogen",
+   "d": [
+    "Beragam",
+    "Campuran",
+    "Kompleks",
+    "Majemuk"
+   ],
+   "exp": "Hetero- (berbeda) ↔ homo- (sama).",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 2
+  },
+  {
+   "q": "Antonim dari **retroaktif**:",
+   "a": "Prospektif",
+   "d": [
+    "Berlaku surut",
+    "Lampau",
+    "Tertunda",
+    "Sementara"
+   ],
+   "exp": "Retroaktif berlaku ke belakang; prospektif berlaku ke depan.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 2
+  },
+  {
+   "q": "Antonim dari **altruis**:",
+   "a": "Egois",
+   "d": [
+    "Dermawan",
+    "Rendah hati",
+    "Sosial",
+    "Tulus"
+   ],
+   "exp": "Altruis mementingkan orang lain; egois mementingkan diri sendiri.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 2
+  },
+  {
+   "q": "Antonim dari **apatis**:",
+   "a": "Peduli",
+   "d": [
+    "Masa bodoh",
+    "Acuh",
+    "Dingin",
+    "Pasif"
+   ],
+   "exp": "Apatis = acuh tak acuh; lawannya peduli dan antusias.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 2
+  },
+  {
+   "q": "Antonim dari **ortodoks**:",
+   "a": "Liberal",
+   "d": [
+    "Taat",
+    "Kuno",
+    "Tradisional",
+    "Kaku"
+   ],
+   "exp": "Ortodoks berpegang kuat pada ajaran lama; liberal bebas dan terbuka pada pembaruan.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 2
+  },
+  {
+   "q": "Antonim dari **kontinu**:",
+   "a": "Terputus-putus",
+   "d": [
+    "Berkelanjutan",
+    "Tetap",
+    "Ajek",
+    "Panjang"
+   ],
+   "exp": "Kontinu = bersambung terus; lawannya diskontinu atau terputus-putus.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 2
+  },
+  {
+   "q": "Antonim dari **sentralisasi**:",
+   "a": "Desentralisasi",
+   "d": [
+    "Konsolidasi",
+    "Integrasi",
+    "Koordinasi",
+    "Standarisasi"
+   ],
+   "exp": "Sentralisasi memusatkan; desentralisasi menyebarkan wewenang.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 2
+  },
+  {
+   "q": "Antonim dari **hulu**:",
+   "a": "Hilir",
+   "d": [
+    "Muara",
+    "Puncak",
+    "Sumber",
+    "Tepi"
+   ],
+   "exp": "Hulu = bagian awal sungai; hilir = bagian akhir. Muara adalah sinonim hilir, jadi jebakan.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 2
+  },
+  {
+   "q": "Antonim dari **akselerasi**:",
+   "a": "Deselerasi",
+   "d": [
+    "Percepatan",
+    "Kecepatan",
+    "Dorongan",
+    "Peningkatan"
+   ],
+   "exp": "Akselerasi = percepatan; deselerasi = perlambatan.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 2
+  },
+  {
+   "q": "Antonim dari **kuantitatif**:",
+   "a": "Kualitatif",
+   "d": [
+    "Numerik",
+    "Statistik",
+    "Terukur",
+    "Objektif"
+   ],
+   "exp": "Kuantitatif berkaitan dengan jumlah; kualitatif berkaitan dengan mutu atau sifat.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 2
+  },
+  {
+   "q": "Antonim dari **efemeral**:",
+   "a": "Abadi",
+   "d": [
+    "Sesaat",
+    "Rapuh",
+    "Lekas",
+    "Samar"
+   ],
+   "exp": "Efemeral = berlangsung sangat singkat; lawannya abadi.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 3
+  },
+  {
+   "q": "Antonim dari **intrinsik**:",
+   "a": "Ekstrinsik",
+   "d": [
+    "Esensial",
+    "Hakiki",
+    "Bawaan",
+    "Inheren"
+   ],
+   "exp": "Intrinsik berasal dari dalam; ekstrinsik berasal dari luar.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 3
+  },
+  {
+   "q": "Antonim dari **diakronis**:",
+   "a": "Sinkronis",
+   "d": [
+    "Historis",
+    "Kronologis",
+    "Berurutan",
+    "Evolutif"
+   ],
+   "exp": "Diakronis menelusuri perkembangan lintas waktu; sinkronis melihat satu titik waktu.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 3
+  },
+  {
+   "q": "Antonim dari **kondusif**:",
+   "a": "Menghambat",
+   "d": [
+    "Mendukung",
+    "Aman",
+    "Tenang",
+    "Nyaman"
+   ],
+   "exp": "Kondusif = mendukung terciptanya sesuatu; lawannya menghambat.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 3
+  },
+  {
+   "q": "Antonim dari **deduktif**:",
+   "a": "Induktif",
+   "d": [
+    "Logis",
+    "Analitis",
+    "Sintesis",
+    "Hipotetik"
+   ],
+   "exp": "Deduktif dari umum ke khusus; induktif dari khusus ke umum.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 3
+  },
+  {
+   "q": "Antonim dari **spontan**:",
+   "a": "Terencana",
+   "d": [
+    "Mendadak",
+    "Alami",
+    "Sukarela",
+    "Refleks"
+   ],
+   "exp": "Spontan = tanpa direncanakan.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 3
+  },
+  {
+   "q": "Antonim dari **obsolet**:",
+   "a": "Mutakhir",
+   "d": [
+    "Usang",
+    "Kuno",
+    "Lawas",
+    "Tradisional"
+   ],
+   "exp": "Obsolet = sudah usang; mutakhir = paling baru.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 3
+  },
+  {
+   "q": "Antonim dari **pragmatis**:",
+   "a": "Idealis",
+   "d": [
+    "Praktis",
+    "Realistis",
+    "Hemat",
+    "Efisien"
+   ],
+   "exp": "Pragmatis mengutamakan kegunaan praktis; idealis mengutamakan cita-cita.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 3
+  },
+  {
+   "q": "Antonim dari **ekspansi**:",
+   "a": "Kontraksi",
+   "d": [
+    "Perluasan",
+    "Pertumbuhan",
+    "Pemekaran",
+    "Penyebaran"
+   ],
+   "exp": "Ekspansi = pelebaran; kontraksi = penyusutan.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 3
+  },
+  {
+   "q": "Antonim dari **konvergen**:",
+   "a": "Divergen",
+   "d": [
+    "Menyatu",
+    "Bertemu",
+    "Sejajar",
+    "Mengerucut"
+   ],
+   "exp": "Konvergen = menuju satu titik; divergen = menyebar menjauh.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 3
+  },
+  {
+   "q": "Antonim dari **fluktuatif**:",
+   "a": "Stabil",
+   "d": [
+    "Berubah-ubah",
+    "Naik turun",
+    "Dinamis",
+    "Tidak tentu"
+   ],
+   "exp": "Fluktuatif = naik turun; lawannya stabil.",
+   "trick": "Cari pasangan kutubnya lewat awalan serapan (homo-/hetero-, intrinsik/ekstrinsik, pro-/retro-). Waspadai opsi yang sebenarnya sinonim: itu jebakan.",
+   "lv": 3
+  }
+ ],
+ "analogi": [
+  {
+   "q": "**Dokter : Rumah sakit = Guru : …**",
+   "a": "Sekolah",
+   "d": [
+    "Buku",
+    "Murid",
+    "Pelajaran",
+    "Ujian"
+   ],
+   "exp": "Profesi dan tempat bekerja.",
+   "trick": "Ubah pasangan pertama jadi satu kalimat hubungan, lalu ujikan ke tiap opsi. Hubungan umum: profesi–tempat, alat–fungsi, sebab–akibat, bagian–keseluruhan, tingkatan.",
+   "lv": 1
+  },
+  {
+   "q": "**Pisau : Memotong = Pena : …**",
+   "a": "Menulis",
+   "d": [
+    "Tinta",
+    "Kertas",
+    "Buku",
+    "Penulis"
+   ],
+   "exp": "Alat dan fungsinya.",
+   "trick": "Ubah pasangan pertama jadi satu kalimat hubungan, lalu ujikan ke tiap opsi. Hubungan umum: profesi–tempat, alat–fungsi, sebab–akibat, bagian–keseluruhan, tingkatan.",
+   "lv": 1
+  },
+  {
+   "q": "**Hujan : Banjir = Kemarau : …**",
+   "a": "Kekeringan",
+   "d": [
+    "Panas",
+    "Musim",
+    "Debu",
+    "Kebakaran"
+   ],
+   "exp": "Sebab dan akibat.",
+   "trick": "Ubah pasangan pertama jadi satu kalimat hubungan, lalu ujikan ke tiap opsi. Hubungan umum: profesi–tempat, alat–fungsi, sebab–akibat, bagian–keseluruhan, tingkatan.",
+   "lv": 1
+  },
+  {
+   "q": "**Jari : Tangan = Daun : …**",
+   "a": "Pohon",
+   "d": [
+    "Hijau",
+    "Ranting",
+    "Akar",
+    "Taman"
+   ],
+   "exp": "Bagian dan keseluruhan.",
+   "trick": "Ubah pasangan pertama jadi satu kalimat hubungan, lalu ujikan ke tiap opsi. Hubungan umum: profesi–tempat, alat–fungsi, sebab–akibat, bagian–keseluruhan, tingkatan.",
+   "lv": 1
+  },
+  {
+   "q": "**Padi : Beras = Gandum : …**",
+   "a": "Tepung",
+   "d": [
+    "Roti",
+    "Sawah",
+    "Petani",
+    "Mie"
+   ],
+   "exp": "Bahan baku dan olahan langsungnya. Roti adalah olahan lanjutan, bukan pasangan sejajar.",
+   "trick": "Ubah pasangan pertama jadi satu kalimat hubungan, lalu ujikan ke tiap opsi. Hubungan umum: profesi–tempat, alat–fungsi, sebab–akibat, bagian–keseluruhan, tingkatan.",
+   "lv": 1
+  },
+  {
+   "q": "**Pelukis : Kanvas = Penulis : …**",
+   "a": "Kertas",
+   "d": [
+    "Pena",
+    "Buku",
+    "Pembaca",
+    "Cerita"
+   ],
+   "exp": "Pelaku dan medium tempat karyanya dibuat.",
+   "trick": "Ubah pasangan pertama jadi satu kalimat hubungan, lalu ujikan ke tiap opsi. Hubungan umum: profesi–tempat, alat–fungsi, sebab–akibat, bagian–keseluruhan, tingkatan.",
+   "lv": 1
+  },
+  {
+   "q": "**Kopral : Sersan = Letnan : …**",
+   "a": "Kapten",
+   "d": [
+    "Mayor",
+    "Jenderal",
+    "Prajurit",
+    "Kolonel"
+   ],
+   "exp": "Tingkatan pangkat yang berurutan naik satu tingkat.",
+   "trick": "Ubah pasangan pertama jadi satu kalimat hubungan, lalu ujikan ke tiap opsi. Hubungan umum: profesi–tempat, alat–fungsi, sebab–akibat, bagian–keseluruhan, tingkatan.",
+   "lv": 1
+  },
+  {
+   "q": "**Mata : Melihat = Telinga : …**",
+   "a": "Mendengar",
+   "d": [
+    "Suara",
+    "Kepala",
+    "Musik",
+    "Bicara"
+   ],
+   "exp": "Organ dan fungsinya.",
+   "trick": "Ubah pasangan pertama jadi satu kalimat hubungan, lalu ujikan ke tiap opsi. Hubungan umum: profesi–tempat, alat–fungsi, sebab–akibat, bagian–keseluruhan, tingkatan.",
+   "lv": 1
+  },
+  {
+   "q": "**Petani : Sawah = Nelayan : …**",
+   "a": "Laut",
+   "d": [
+    "Ikan",
+    "Perahu",
+    "Jaring",
+    "Pantai"
+   ],
+   "exp": "Profesi dan tempat bekerja.",
+   "trick": "Ubah pasangan pertama jadi satu kalimat hubungan, lalu ujikan ke tiap opsi. Hubungan umum: profesi–tempat, alat–fungsi, sebab–akibat, bagian–keseluruhan, tingkatan.",
+   "lv": 1
+  },
+  {
+   "q": "**Kapal : Pelabuhan = Pesawat : …**",
+   "a": "Bandara",
+   "d": [
+    "Terbang",
+    "Pilot",
+    "Langit",
+    "Penumpang"
+   ],
+   "exp": "Alat angkut dan tempat bersandar atau mendarat.",
+   "trick": "Ubah pasangan pertama jadi satu kalimat hubungan, lalu ujikan ke tiap opsi. Hubungan umum: profesi–tempat, alat–fungsi, sebab–akibat, bagian–keseluruhan, tingkatan.",
+   "lv": 1
+  },
+  {
+   "q": "**Dingin : Beku = Panas : …**",
+   "a": "Mendidih",
+   "d": [
+    "Hangat",
+    "Api",
+    "Matahari",
+    "Kering"
+   ],
+   "exp": "Tingkatan intensitas: dingin sampai beku, panas sampai mendidih.",
+   "trick": "Ubah pasangan pertama jadi satu kalimat hubungan, lalu ujikan ke tiap opsi. Hubungan umum: profesi–tempat, alat–fungsi, sebab–akibat, bagian–keseluruhan, tingkatan.",
+   "lv": 1
+  },
+  {
+   "q": "**Kamus : Kata = Atlas : …**",
+   "a": "Peta",
+   "d": [
+    "Buku",
+    "Negara",
+    "Dunia",
+    "Gambar"
+   ],
+   "exp": "Kumpulan dan isinya.",
+   "trick": "Ubah pasangan pertama jadi satu kalimat hubungan, lalu ujikan ke tiap opsi. Hubungan umum: profesi–tempat, alat–fungsi, sebab–akibat, bagian–keseluruhan, tingkatan.",
+   "lv": 1
+  },
+  {
+   "q": "**Lapar : Makan = Haus : …**",
+   "a": "Minum",
+   "d": [
+    "Air",
+    "Dahaga",
+    "Gelas",
+    "Segar"
+   ],
+   "exp": "Kebutuhan dan tindakan memenuhinya.",
+   "trick": "Ubah pasangan pertama jadi satu kalimat hubungan, lalu ujikan ke tiap opsi. Hubungan umum: profesi–tempat, alat–fungsi, sebab–akibat, bagian–keseluruhan, tingkatan.",
+   "lv": 1
+  },
+  {
+   "q": "**Sutradara : Film = Arsitek : …**",
+   "a": "Bangunan",
+   "d": [
+    "Gambar",
+    "Kontraktor",
+    "Rumah",
+    "Semen"
+   ],
+   "exp": "Perancang dan karyanya.",
+   "trick": "Ubah pasangan pertama jadi satu kalimat hubungan, lalu ujikan ke tiap opsi. Hubungan umum: profesi–tempat, alat–fungsi, sebab–akibat, bagian–keseluruhan, tingkatan.",
+   "lv": 1
+  },
+  {
+   "q": "**Termometer : Suhu = Barometer : …**",
+   "a": "Tekanan udara",
+   "d": [
+    "Cuaca",
+    "Angin",
+    "Hujan",
+    "Panas"
+   ],
+   "exp": "Alat ukur dan besaran yang diukur.",
+   "trick": "Ubah pasangan pertama jadi satu kalimat hubungan, lalu ujikan ke tiap opsi. Hubungan umum: profesi–tempat, alat–fungsi, sebab–akibat, bagian–keseluruhan, tingkatan.",
+   "lv": 1
+  },
+  {
+   "q": "**Vaksin : Penyakit = Tanggul : …**",
+   "a": "Banjir",
+   "d": [
+    "Air",
+    "Sungai",
+    "Hujan",
+    "Lumpur"
+   ],
+   "exp": "Pencegah dan ancaman yang dicegahnya.",
+   "trick": "Tentukan jenis hubungannya (pengendali–yang dikendalikan, bukti–peristiwa, tahap awal–tahap akhir, bahan–hasil, alat–besaran). Pastikan arah pasangan kedua sama dengan arah pasangan pertama.",
+   "lv": 2
+  },
+  {
+   "q": "**Termostat : Suhu = Kemudi : …**",
+   "a": "Arah",
+   "d": [
+    "Mobil",
+    "Roda",
+    "Jalan",
+    "Pengemudi"
+   ],
+   "exp": "Pengendali dan besaran yang dikendalikan.",
+   "trick": "Tentukan jenis hubungannya (pengendali–yang dikendalikan, bukti–peristiwa, tahap awal–tahap akhir, bahan–hasil, alat–besaran). Pastikan arah pasangan kedua sama dengan arah pasangan pertama.",
+   "lv": 2
+  },
+  {
+   "q": "**Kuitansi : Pembayaran = Ijazah : …**",
+   "a": "Kelulusan",
+   "d": [
+    "Sekolah",
+    "Ujian",
+    "Nilai",
+    "Guru"
+   ],
+   "exp": "Bukti tertulis dan peristiwa yang dibuktikannya.",
+   "trick": "Tentukan jenis hubungannya (pengendali–yang dikendalikan, bukti–peristiwa, tahap awal–tahap akhir, bahan–hasil, alat–besaran). Pastikan arah pasangan kedua sama dengan arah pasangan pertama.",
+   "lv": 2
+  },
+  {
+   "q": "**Pintu : Kunci = Akun : …**",
+   "a": "Kata sandi",
+   "d": [
+    "Surel",
+    "Layar",
+    "Pengguna",
+    "Jaringan"
+   ],
+   "exp": "Yang diakses dan pembuka aksesnya.",
+   "trick": "Tentukan jenis hubungannya (pengendali–yang dikendalikan, bukti–peristiwa, tahap awal–tahap akhir, bahan–hasil, alat–besaran). Pastikan arah pasangan kedua sama dengan arah pasangan pertama.",
+   "lv": 2
+  },
+  {
+   "q": "**Siang : Malam = Pasang : …**",
+   "a": "Surut",
+   "d": [
+    "Ombak",
+    "Pantai",
+    "Laut",
+    "Bulan"
+   ],
+   "exp": "Pasangan yang saling berlawanan dan bergantian.",
+   "trick": "Tentukan jenis hubungannya (pengendali–yang dikendalikan, bukti–peristiwa, tahap awal–tahap akhir, bahan–hasil, alat–besaran). Pastikan arah pasangan kedua sama dengan arah pasangan pertama.",
+   "lv": 2
+  },
+  {
+   "q": "**Pilot : Pesawat = Masinis : …**",
+   "a": "Kereta",
+   "d": [
+    "Stasiun",
+    "Rel",
+    "Tiket",
+    "Gerbong"
+   ],
+   "exp": "Pengemudi dan kendaraan yang dikemudikannya.",
+   "trick": "Tentukan jenis hubungannya (pengendali–yang dikendalikan, bukti–peristiwa, tahap awal–tahap akhir, bahan–hasil, alat–besaran). Pastikan arah pasangan kedua sama dengan arah pasangan pertama.",
+   "lv": 2
+  },
+  {
+   "q": "**Larva : Kupu-kupu = Kecebong : …**",
+   "a": "Katak",
+   "d": [
+    "Air",
+    "Kolam",
+    "Ikan",
+    "Serangga"
+   ],
+   "exp": "Tahap awal dan bentuk dewasa.",
+   "trick": "Tentukan jenis hubungannya (pengendali–yang dikendalikan, bukti–peristiwa, tahap awal–tahap akhir, bahan–hasil, alat–besaran). Pastikan arah pasangan kedua sama dengan arah pasangan pertama.",
+   "lv": 2
+  },
+  {
+   "q": "**Sentimeter : Meter = Menit : …**",
+   "a": "Jam",
+   "d": [
+    "Detik",
+    "Hari",
+    "Waktu",
+    "Jarum"
+   ],
+   "exp": "Satuan lebih kecil dan satuan lebih besar pada besaran yang sama.",
+   "trick": "Tentukan jenis hubungannya (pengendali–yang dikendalikan, bukti–peristiwa, tahap awal–tahap akhir, bahan–hasil, alat–besaran). Pastikan arah pasangan kedua sama dengan arah pasangan pertama.",
+   "lv": 2
+  },
+  {
+   "q": "**Kapas : Benang = Benang : …**",
+   "a": "Kain",
+   "d": [
+    "Jarum",
+    "Baju",
+    "Mesin",
+    "Tali"
+   ],
+   "exp": "Rantai proses: bahan menjadi produk antara, lalu produk antara menjadi produk berikutnya.",
+   "trick": "Tentukan jenis hubungannya (pengendali–yang dikendalikan, bukti–peristiwa, tahap awal–tahap akhir, bahan–hasil, alat–besaran). Pastikan arah pasangan kedua sama dengan arah pasangan pertama.",
+   "lv": 2
+  },
+  {
+   "q": "**Anggaran : Realisasi = Rencana : …**",
+   "a": "Pelaksanaan",
+   "d": [
+    "Laporan",
+    "Target",
+    "Evaluasi",
+    "Revisi"
+   ],
+   "exp": "Yang dirancang dan wujud nyatanya.",
+   "trick": "Tentukan jenis hubungannya (pengendali–yang dikendalikan, bukti–peristiwa, tahap awal–tahap akhir, bahan–hasil, alat–besaran). Pastikan arah pasangan kedua sama dengan arah pasangan pertama.",
+   "lv": 2
+  },
+  {
+   "q": "Hubungan kata **Palu : Paku** paling mirip dengan:",
+   "a": "Gunting : Kertas",
+   "d": [
+    "Dokter : Pasien",
+    "Sawah : Padi",
+    "Hujan : Basah",
+    "Beras : Nasi"
+   ],
+   "exp": "Alat dan benda yang dikenai kerja alat itu.",
+   "trick": "Nyatakan hubungan pasangan soal dalam satu kalimat, lalu ujikan kalimat itu pada setiap pasangan opsi, lengkap dengan arahnya.",
+   "lv": 3
+  },
+  {
+   "q": "Hubungan kata **Tunas : Pohon** paling mirip dengan:",
+   "a": "Anak ayam : Ayam",
+   "d": [
+    "Daun : Ranting",
+    "Akar : Tanah",
+    "Biji : Buah",
+    "Pohon : Hutan"
+   ],
+   "exp": "Tahap awal dan bentuk dewasa.",
+   "trick": "Nyatakan hubungan pasangan soal dalam satu kalimat, lalu ujikan kalimat itu pada setiap pasangan opsi, lengkap dengan arahnya.",
+   "lv": 3
+  },
+  {
+   "q": "Hubungan kata **Audit : Laporan** paling mirip dengan:",
+   "a": "Survei : Data",
+   "d": [
+    "Responden : Kuesioner",
+    "Kantor : Pegawai",
+    "Sidang : Hakim",
+    "Neraca : Akuntan"
+   ],
+   "exp": "Kegiatan dan keluaran yang dihasilkannya.",
+   "trick": "Nyatakan hubungan pasangan soal dalam satu kalimat, lalu ujikan kalimat itu pada setiap pasangan opsi, lengkap dengan arahnya.",
+   "lv": 3
+  },
+  {
+   "q": "Hubungan kata **Hakim : Putusan** paling mirip dengan:",
+   "a": "Penulis : Naskah",
+   "d": [
+    "Penjahit : Jarum",
+    "Guru : Sekolah",
+    "Petani : Sawah",
+    "Dokter : Pasien"
+   ],
+   "exp": "Pelaku dan produk yang dihasilkannya.",
+   "trick": "Nyatakan hubungan pasangan soal dalam satu kalimat, lalu ujikan kalimat itu pada setiap pasangan opsi, lengkap dengan arahnya.",
+   "lv": 3
+  },
+  {
+   "q": "Hubungan kata **Sabun : Bersih** paling mirip dengan:",
+   "a": "Pupuk : Subur",
+   "d": [
+    "Dapur : Masak",
+    "Bensin : Mesin",
+    "Sepatu : Kaki",
+    "Buku : Rak"
+   ],
+   "exp": "Bahan dan keadaan yang ditimbulkannya.",
+   "trick": "Nyatakan hubungan pasangan soal dalam satu kalimat, lalu ujikan kalimat itu pada setiap pasangan opsi, lengkap dengan arahnya.",
+   "lv": 3
+  },
+  {
+   "q": "Hubungan kata **Gelap : Terang** paling mirip dengan:",
+   "a": "Hening : Bising",
+   "d": [
+    "Panas : Hangat",
+    "Tinggi : Menjulang",
+    "Cepat : Kilat",
+    "Besar : Raksasa"
+   ],
+   "exp": "Pasangan antonim. Opsi lain adalah pasangan tingkatan, bukan lawan.",
+   "trick": "Nyatakan hubungan pasangan soal dalam satu kalimat, lalu ujikan kalimat itu pada setiap pasangan opsi, lengkap dengan arahnya.",
+   "lv": 3
+  }
+ ],
+ "silogisme": [
+  {
+   "q": "Semua pegawai Kemenkeu adalah PNS. Budi adalah pegawai Kemenkeu. Kesimpulan yang pasti benar:",
+   "a": "Budi adalah PNS",
+   "d": [
+    "Budi bukan PNS",
+    "Sebagian PNS bukan pegawai Kemenkeu",
+    "Semua PNS adalah pegawai Kemenkeu",
+    "Tidak dapat ditarik kesimpulan"
+   ],
+   "exp": "Pegawai Kemenkeu berada di dalam lingkaran PNS. Budi di dalam lingkaran kecil, jadi pasti di dalam lingkaran besar.",
+   "trick": "Gambar lingkaran dalam lingkaran. Titik di dalam lingkaran kecil pasti ada di lingkaran besar.",
+   "lv": 1
+  },
+  {
+   "q": "Semua kucing adalah hewan. Sebagian hewan adalah buas. Kesimpulan:",
+   "a": "Tidak dapat ditarik kesimpulan tentang kucing yang buas",
+   "d": [
+    "Sebagian kucing buas",
+    "Semua kucing buas",
+    "Tidak ada kucing yang buas",
+    "Semua hewan adalah kucing"
+   ],
+   "exp": "“Sebagian hewan buas” tidak memberi tahu apakah kucing termasuk yang buas atau bukan.",
+   "trick": "Kata “sebagian” di premis memutus rantai. Tanpa kaitan langsung ke subjek, jawabannya “tidak dapat disimpulkan”.",
+   "lv": 1
+  },
+  {
+   "q": "Tidak ada koruptor yang jujur. Andi jujur. Maka:",
+   "a": "Andi bukan koruptor",
+   "d": [
+    "Andi koruptor",
+    "Andi mungkin koruptor",
+    "Semua orang jujur bukan Andi",
+    "Tidak dapat disimpulkan"
+   ],
+   "exp": "Lingkaran koruptor dan lingkaran jujur terpisah. Andi di lingkaran jujur, jadi tidak mungkin di lingkaran koruptor.",
+   "trick": "“Tidak ada A yang B” = dua lingkaran terpisah. Anggota satu lingkaran pasti bukan anggota lingkaran lainnya.",
+   "lv": 1
+  },
+  {
+   "q": "Jika hujan maka jalan basah. Jalan tidak basah. Maka:",
+   "a": "Tidak hujan",
+   "d": [
+    "Hujan",
+    "Mungkin hujan",
+    "Jalan basah karena embun",
+    "Tidak dapat disimpulkan"
+   ],
+   "exp": "Modus tollens: p → q dan ¬q, maka ¬p.",
+   "trick": "Kontraposisi: kalau akibatnya tidak terjadi, sebabnya pasti tidak terjadi.",
+   "lv": 1
+  },
+  {
+   "q": "Jika rajin belajar maka lulus. Dina lulus. Maka:",
+   "a": "Tidak dapat disimpulkan apakah Dina rajin belajar",
+   "d": [
+    "Dina rajin belajar",
+    "Dina tidak rajin belajar",
+    "Dina pasti tidak lulus",
+    "Semua yang lulus rajin belajar"
+   ],
+   "exp": "Ini jebakan afirmasi konsekuen. Lulus bisa terjadi karena sebab lain.",
+   "trick": "p → q dan q BUKAN berarti p. Yang valid hanya p → q dengan p, atau p → q dengan ¬q.",
+   "lv": 1
+  },
+  {
+   "q": "Sebagian mahasiswa adalah atlet. Semua atlet disiplin. Maka:",
+   "a": "Sebagian mahasiswa disiplin",
+   "d": [
+    "Semua mahasiswa disiplin",
+    "Semua atlet adalah mahasiswa",
+    "Tidak ada mahasiswa yang disiplin",
+    "Sebagian atlet bukan mahasiswa"
+   ],
+   "exp": "Mahasiswa yang menjadi atlet berada di dalam lingkaran disiplin, jadi sebagian mahasiswa disiplin.",
+   "trick": "Premis dengan “sebagian” menghasilkan kesimpulan “sebagian”, bukan “semua”.",
+   "lv": 1
+  },
+  {
+   "q": "Tidak ada ikan yang bernapas dengan paru-paru. Semua lumba-lumba bernapas dengan paru-paru. Maka:",
+   "a": "Tidak ada lumba-lumba yang merupakan ikan",
+   "d": [
+    "Semua lumba-lumba adalah ikan",
+    "Sebagian lumba-lumba adalah ikan",
+    "Semua ikan adalah lumba-lumba",
+    "Tidak dapat disimpulkan"
+   ],
+   "exp": "Lumba-lumba berada di lingkaran “bernapas paru-paru”, yang terpisah dari lingkaran ikan.",
+   "trick": "Cari lingkaran perantara (di sini: bernapas dengan paru-paru) lalu lihat posisinya terhadap kedua kelompok.",
+   "lv": 1
+  },
+  {
+   "q": "Jika A maka B. Jika B maka C. A benar. Maka:",
+   "a": "C benar",
+   "d": [
+    "C salah",
+    "B salah",
+    "A salah",
+    "Tidak dapat disimpulkan"
+   ],
+   "exp": "A → B → C. Karena A benar, B benar, lalu C benar.",
+   "trick": "Rantai jika–maka: ikuti anak panah dari yang benar.",
+   "lv": 1
+  },
+  {
+   "q": "Semua A adalah B. Tidak ada B yang C. Maka:",
+   "a": "Tidak ada A yang C",
+   "d": [
+    "Sebagian A adalah C",
+    "Semua C adalah A",
+    "Semua A adalah C",
+    "Sebagian B adalah A dan C"
+   ],
+   "exp": "A di dalam B, B terpisah dari C, jadi A juga terpisah dari C.",
+   "trick": "Lingkaran terkecil di dalam lingkaran yang terpisah dari C ikut terpisah dari C.",
+   "lv": 1
+  },
+  {
+   "q": "Beberapa pejabat adalah dosen. Tidak ada dosen yang malas. Maka:",
+   "a": "Sebagian pejabat tidak malas",
+   "d": [
+    "Semua pejabat tidak malas",
+    "Semua pejabat adalah dosen",
+    "Sebagian pejabat malas",
+    "Tidak ada pejabat yang dosen"
+   ],
+   "exp": "Pejabat yang dosen pasti tidak malas, jadi sebagian pejabat tidak malas.",
+   "trick": "Hati-hati: kesimpulan hanya berlaku untuk bagian yang beririsan, bukan seluruh kelompok.",
+   "lv": 1
+  },
+  {
+   "q": "Semua pegawai yang lulus diklat mendapat sertifikat. Tidak ada pegawai bersertifikat yang ditempatkan di bagian arsip. Rina lulus diklat. Maka:",
+   "a": "Rina tidak ditempatkan di bagian arsip",
+   "d": [
+    "Rina ditempatkan di bagian arsip",
+    "Rina mungkin di bagian arsip",
+    "Rina tidak lulus diklat",
+    "Tidak dapat disimpulkan"
+   ],
+   "exp": "Rantai: lulus diklat → bersertifikat → bukan di arsip. Rina lulus, jadi pasti tidak di arsip.",
+   "trick": "Sambungkan premis jadi satu rantai anak panah, lalu ikuti dari fakta yang diketahui.",
+   "lv": 2
+  },
+  {
+   "q": "Semua A adalah B. Sebagian B adalah C. Semua C adalah D. Kesimpulan yang pasti benar:",
+   "a": "Sebagian B adalah D",
+   "d": [
+    "Semua A adalah D",
+    "Sebagian A adalah D",
+    "Semua B adalah D",
+    "Tidak ada A yang D"
+   ],
+   "exp": "Sebagian B adalah C, dan semua C adalah D, jadi bagian B itu juga D. Hubungan A dengan C tidak diketahui.",
+   "trick": "Cari irisan yang pasti ada (B ∩ C), lalu perluas lewat premis “semua” berikutnya. Jangan melompat ke A.",
+   "lv": 2
+  },
+  {
+   "q": "Tidak ada penyelam yang takut air. Sebagian perenang takut air. Maka:",
+   "a": "Sebagian perenang bukan penyelam",
+   "d": [
+    "Semua perenang adalah penyelam",
+    "Sebagian penyelam adalah perenang",
+    "Tidak ada perenang yang penyelam",
+    "Semua perenang takut air"
+   ],
+   "exp": "Perenang yang takut air berada di luar lingkaran penyelam, jadi sebagian perenang bukan penyelam.",
+   "trick": "Satu premis “tidak ada” ditambah satu “sebagian” menghasilkan “sebagian … bukan …”.",
+   "lv": 2
+  },
+  {
+   "q": "Semua analis teliti. Tidak ada orang teliti yang ceroboh. Sebagian pegawai adalah analis. Maka:",
+   "a": "Sebagian pegawai tidak ceroboh",
+   "d": [
+    "Semua pegawai tidak ceroboh",
+    "Sebagian pegawai ceroboh",
+    "Semua analis adalah pegawai",
+    "Tidak ada pegawai yang teliti"
+   ],
+   "exp": "Pegawai yang analis pasti teliti, dan yang teliti pasti tidak ceroboh. Jadi sebagian pegawai tidak ceroboh.",
+   "trick": "Gabungkan: analis → teliti → tidak ceroboh. Kesimpulan hanya berlaku untuk bagian pegawai yang analis.",
+   "lv": 2
+  },
+  {
+   "q": "Sebagian dokter adalah peneliti. Sebagian peneliti adalah dosen. Maka:",
+   "a": "Tidak dapat ditarik kesimpulan yang pasti",
+   "d": [
+    "Sebagian dokter adalah dosen",
+    "Semua dokter adalah dosen",
+    "Tidak ada dokter yang dosen",
+    "Sebagian dosen bukan peneliti"
+   ],
+   "exp": "Dua premis “sebagian” tidak menjamin irisannya sama. Bagian peneliti yang dokter bisa berbeda dari bagian peneliti yang dosen.",
+   "trick": "Dua premis “sebagian” berturut-turut hampir selalu berakhir “tidak dapat disimpulkan”.",
+   "lv": 2
+  },
+  {
+   "q": "Jika harga bahan baku naik, maka produksi turun. Jika produksi turun, maka lembur berkurang. Lembur tidak berkurang. Maka:",
+   "a": "Harga bahan baku tidak naik",
+   "d": [
+    "Harga bahan baku naik",
+    "Produksi turun",
+    "Produksi tetap tetapi harga naik",
+    "Tidak dapat disimpulkan"
+   ],
+   "exp": "Rantai: harga naik → produksi turun → lembur berkurang. Lembur tidak berkurang, jadi mundur: produksi tidak turun, harga tidak naik.",
+   "trick": "Kontraposisi bekerja mundur sepanjang rantai: tolak ujungnya, maka semua anak panah sebelumnya ikut ditolak.",
+   "lv": 2
+  },
+  {
+   "q": "Semua X adalah Y. Tidak ada Y yang Z. Sebagian W adalah Z. Maka:",
+   "a": "Sebagian W bukan X",
+   "d": [
+    "Semua W adalah X",
+    "Sebagian W adalah X",
+    "Tidak ada W yang Y",
+    "Semua Z adalah W"
+   ],
+   "exp": "X di dalam Y, Y terpisah dari Z, jadi X terpisah dari Z. Sebagian W adalah Z, maka bagian itu bukan X.",
+   "trick": "Gambar tiga lingkaran. Lingkaran X di dalam Y, Z di luar Y. Bagian W yang masuk Z otomatis di luar X.",
+   "lv": 3
+  },
+  {
+   "q": "Jika A maka B atau C. Tidak B. A benar. Maka:",
+   "a": "C benar",
+   "d": [
+    "B benar",
+    "C salah",
+    "A salah",
+    "Tidak dapat disimpulkan"
+   ],
+   "exp": "A benar, jadi B atau C benar. B tidak benar, sisa C.",
+   "trick": "Silogisme disjungtif: “B atau C” ditambah “bukan B” memberi C.",
+   "lv": 3
+  },
+  {
+   "q": "Semua P adalah Q atau R. Tidak ada P yang R. Maka:",
+   "a": "Semua P adalah Q",
+   "d": [
+    "Semua P adalah R",
+    "Sebagian P bukan Q",
+    "Tidak ada P yang Q",
+    "Semua Q adalah P"
+   ],
+   "exp": "Setiap P pasti Q atau R. Karena tidak ada P yang R, semuanya Q.",
+   "trick": "“Atau” ditambah penolakan salah satu sisi memaksa sisi lainnya.",
+   "lv": 3
+  },
+  {
+   "q": "Sebagian A adalah B. Semua B adalah C. Tidak ada C yang D. Maka:",
+   "a": "Sebagian A bukan D",
+   "d": [
+    "Semua A bukan D",
+    "Sebagian A adalah D",
+    "Semua A adalah D",
+    "Tidak dapat disimpulkan"
+   ],
+   "exp": "A yang B pasti C, dan C terpisah dari D. Jadi bagian A itu bukan D. Untuk A selebihnya tidak diketahui.",
+   "trick": "Kesimpulan hanya untuk irisan A ∩ B. Jangan menggeneralisasi ke semua A.",
+   "lv": 3
+  },
+  {
+   "q": "Tidak semua pejabat jujur. Semua orang jujur dipercaya. Maka:",
+   "a": "Tidak dapat ditarik kesimpulan tentang pejabat yang tidak dipercaya",
+   "d": [
+    "Sebagian pejabat tidak dipercaya",
+    "Semua pejabat tidak dipercaya",
+    "Sebagian pejabat dipercaya",
+    "Semua yang dipercaya adalah pejabat"
+   ],
+   "exp": "Pejabat yang tidak jujur tetap mungkin dipercaya, karena aturan hanya menyebut orang jujur pasti dipercaya, bukan sebaliknya.",
+   "trick": "Awas arah anak panah: jujur → dipercaya. Tidak jujur tidak otomatis tidak dipercaya.",
+   "lv": 3
+  }
+ ],
+ "urutan": [
+  {
+   "q": "A lebih berat dari B. C lebih ringan dari B. D lebih berat dari A. Siapa yang paling ringan?",
+   "a": "C",
+   "d": [
+    "A",
+    "B",
+    "D",
+    "Tidak dapat ditentukan"
+   ],
+   "exp": "Rantai: D > A > B > C. Yang paling kanan adalah yang paling ringan.",
+   "trick": "Tulis rantai dengan tanda “>”. Ujung kiri = terbesar, ujung kanan = terkecil.",
+   "lv": 1
+  },
+  {
+   "q": "Lima orang antre. Ani di depan Budi, Budi di depan Citra, Dedi di belakang Citra, Eka di depan Ani. Siapa di urutan ketiga dari depan?",
+   "a": "Budi",
+   "d": [
+    "Ani",
+    "Citra",
+    "Dedi",
+    "Eka"
+   ],
+   "exp": "Urutan: Eka, Ani, Budi, Citra, Dedi. Ketiga dari depan adalah Budi.",
+   "trick": "Gabungkan semua kalimat jadi satu garis urutan, lalu hitung posisinya.",
+   "lv": 1
+  },
+  {
+   "q": "P lebih tinggi dari Q. R lebih tinggi dari P. S lebih pendek dari Q. Urutan dari tertinggi ke terpendek:",
+   "a": "R, P, Q, S",
+   "d": [
+    "P, R, Q, S",
+    "R, P, S, Q",
+    "R, Q, P, S",
+    "S, Q, P, R"
+   ],
+   "exp": "R > P > Q > S.",
+   "trick": "Sambung mata rantai: R > P, P > Q, Q > S.",
+   "lv": 1
+  },
+  {
+   "q": "Rapat diadakan setelah hari Selasa dan sebelum hari Kamis. Rapat diadakan pada hari…",
+   "a": "Rabu",
+   "d": [
+    "Senin",
+    "Selasa",
+    "Kamis",
+    "Jumat"
+   ],
+   "exp": "Di antara Selasa dan Kamis hanya ada Rabu.",
+   "trick": "Untuk “setelah X sebelum Y”, cari yang ada di antara keduanya.",
+   "lv": 1
+  },
+  {
+   "q": "Nilai Rina lebih tinggi dari Sari. Nilai Sari sama dengan Tono. Nilai Dedi lebih tinggi dari Rina. Pernyataan yang pasti benar:",
+   "a": "Nilai Dedi lebih tinggi dari Tono",
+   "d": [
+    "Nilai Tono lebih tinggi dari Rina",
+    "Nilai Rina sama dengan Tono",
+    "Nilai Sari lebih tinggi dari Dedi",
+    "Nilai Tono lebih tinggi dari Sari"
+   ],
+   "exp": "Dedi > Rina > Sari = Tono, jadi Dedi > Tono.",
+   "trick": "Tanda “=” boleh digabung ke satu posisi dalam rantai.",
+   "lv": 1
+  },
+  {
+   "q": "Kota A berada 10 km di utara kota B. Kota C berada 5 km di selatan kota B. Jarak kota A ke kota C adalah:",
+   "a": "15 km",
+   "d": [
+    "5 km",
+    "10 km",
+    "20 km",
+    "Tidak dapat ditentukan"
+   ],
+   "exp": "A dan C berada di dua sisi B pada satu garis: 10 + 5 = 15 km.",
+   "trick": "Gambar garis lurus dan tandai titiknya. Dua arah berlawanan dijumlah.",
+   "lv": 1
+  },
+  {
+   "q": "Joko finis sebelum Kiki. Lani finis setelah Kiki. Mira finis sebelum Joko. Siapa finis terakhir?",
+   "a": "Lani",
+   "d": [
+    "Mira",
+    "Joko",
+    "Kiki",
+    "Tidak dapat ditentukan"
+   ],
+   "exp": "Urutan finis: Mira, Joko, Kiki, Lani.",
+   "trick": "Satu garis urutan cukup. Jangan menebak dari ingatan.",
+   "lv": 1
+  },
+  {
+   "q": "Rumah Ali di sebelah kiri rumah Beni. Rumah Candra di sebelah kanan rumah Beni. Rumah Dodi di sebelah kiri rumah Ali. Urutan rumah dari kiri:",
+   "a": "Dodi, Ali, Beni, Candra",
+   "d": [
+    "Ali, Dodi, Beni, Candra",
+    "Dodi, Beni, Ali, Candra",
+    "Candra, Beni, Ali, Dodi",
+    "Dodi, Ali, Candra, Beni"
+   ],
+   "exp": "Dodi < Ali < Beni < Candra (dari kiri ke kanan).",
+   "trick": "Mulai dari tokoh yang dirujuk paling banyak, lalu pasang sisanya di kiri dan kanan.",
+   "lv": 1
+  },
+  {
+   "q": "Ana, Bima, dan Cakra menjabat Kepala, Sekretaris, dan Bendahara (masing-masing satu jabatan). Ana bukan Kepala. Bima bukan Bendahara. Cakra bukan Sekretaris dan bukan Kepala. Ana menjabat sebagai:",
+   "a": "Sekretaris",
+   "d": [
+    "Kepala",
+    "Bendahara",
+    "Kepala atau Bendahara",
+    "Tidak dapat ditentukan"
+   ],
+   "exp": "Cakra bukan Sekretaris dan bukan Kepala, jadi Bendahara. Ana bukan Kepala dan Bendahara sudah terisi, jadi Sekretaris. Bima Kepala.",
+   "trick": "Mulai dari orang dengan syarat paling banyak, isi tabel, lalu coret kemungkinan yang sudah terpakai.",
+   "lv": 2
+  },
+  {
+   "q": "Tujuh orang P, Q, R, S, T, U, V berdiri sebaris. P di ujung kiri, Q tepat di sebelah kanan P, U di ujung kanan, dan V tepat di sebelah kiri U. R berdiri tepat di antara S dan T. Siapa yang berdiri di urutan keempat dari kiri?",
+   "a": "R",
+   "d": [
+    "Q",
+    "S",
+    "T",
+    "V"
+   ],
+   "exp": "Posisi: P, Q, _, _, _, V, U. Tiga tempat tengah diisi R, S, T dengan R di antara S dan T, jadi R di posisi keempat.",
+   "trick": "Pasang dulu yang pasti di ujung, sisakan tempat kosong, baru isi kelompok yang masih bebas.",
+   "lv": 2
+  },
+  {
+   "q": "Lima rapat A, B, C, D, E diadakan Senin sampai Jumat, satu rapat per hari. Rapat C hari Rabu. Rapat A sebelum rapat B dan tidak pada hari berurutan. Rapat B bukan hari Jumat. Rapat A bukan hari Senin. Rapat A diadakan hari:",
+   "a": "Selasa",
+   "d": [
+    "Senin",
+    "Rabu",
+    "Kamis",
+    "Jumat"
+   ],
+   "exp": "C di Rabu. B bukan Jumat dan setelah A, jadi B Selasa atau Kamis. A bukan Senin dan sebelum B, jadi A Selasa dan B Kamis (tidak berurutan).",
+   "trick": "Tulis tabel hari, coret yang tidak mungkin, lalu bandingkan sisa kemungkinan.",
+   "lv": 2
+  },
+  {
+   "q": "Rina menghadap utara, lalu berbelok 90° ke kanan, berbalik 180°, dan berbelok 90° ke kiri. Sekarang Rina menghadap:",
+   "a": "Selatan",
+   "d": [
+    "Utara",
+    "Timur",
+    "Barat",
+    "Tenggara"
+   ],
+   "exp": "Utara → kanan: timur → balik: barat → kiri dari barat: selatan.",
+   "trick": "Tulis arah tiap langkah. Dari barat, kiri adalah selatan.",
+   "lv": 2
+  },
+  {
+   "q": "Lima rumah berjajar. Rumah kuning di ujung kanan. Rumah biru tepat di sebelah kiri rumah kuning. Rumah putih tepat di sebelah kiri rumah biru. Rumah hijau tepat di sebelah kiri rumah putih. Rumah merah di ujung kiri. Rumah di tengah (urutan ke-3) berwarna:",
+   "a": "Putih",
+   "d": [
+    "Merah",
+    "Hijau",
+    "Biru",
+    "Kuning"
+   ],
+   "exp": "Urutan dari kiri: merah, hijau, putih, biru, kuning. Urutan ke-3 adalah putih.",
+   "trick": "Susun dari satu ujung dan ikuti rantai “tepat di sebelah kiri”.",
+   "lv": 2
+  },
+  {
+   "q": "Doni berjalan 8 km ke timur, lalu 6 km ke utara. Jarak terdekat Doni dari titik awal adalah:",
+   "a": "10 km",
+   "d": [
+    "14 km",
+    "2 km",
+    "12 km",
+    "7 km"
+   ],
+   "exp": "Segitiga siku-siku 6, 8, 10: sisi miring adalah 10 km.",
+   "trick": "Hafal tripel Pythagoras: 3-4-5, 6-8-10, 5-12-13, 8-15-17.",
+   "lv": 2
+  },
+  {
+   "q": "Tanggal 1 suatu bulan jatuh pada hari Selasa. Tanggal 30 bulan yang sama jatuh pada hari:",
+   "a": "Rabu",
+   "d": [
+    "Selasa",
+    "Kamis",
+    "Jumat",
+    "Senin"
+   ],
+   "exp": "Selisih 29 hari. 29 mod 7 = 1, jadi maju satu hari dari Selasa: Rabu.",
+   "trick": "Selisih hari dibagi 7, ambil sisanya. Maju sebanyak sisa itu.",
+   "lv": 2
+  },
+  {
+   "q": "Enam orang A, B, C, D, E, F duduk sebaris. A tepat di sebelah kanan C. B duduk dua kursi di kanan A (ada satu orang di antara mereka). F duduk di antara A dan B. D di ujung kanan, E tepat di sebelah kiri D. Siapa yang duduk di antara A dan E?",
+   "a": "F dan B",
+   "d": [
+    "F saja",
+    "B saja",
+    "C dan F",
+    "D dan B"
+   ],
+   "exp": "Urutan dari kiri: C, A, F, B, E, D. Di antara A dan E ada F dan B.",
+   "trick": "Mulai dari kelompok yang berantai (C-A-F-B), tempatkan di sebelah ujung yang pasti (E-D).",
+   "lv": 3
+  },
+  {
+   "q": "Jika tiga hari setelah lusa adalah hari Minggu, maka kemarin adalah hari:",
+   "a": "Selasa",
+   "d": [
+    "Senin",
+    "Rabu",
+    "Kamis",
+    "Jumat"
+   ],
+   "exp": "Tiga hari setelah lusa = hari ini + 5. Hari ini + 5 = Minggu, jadi hari ini Rabu dan kemarin Selasa.",
+   "trick": "Hitung total geseran (2 + 3 = 5), lalu mundur dari hari yang diketahui.",
+   "lv": 3
+  },
+  {
+   "q": "Empat peserta P, Q, R, S berlomba tanpa hasil seri. P bukan juara 1 dan bukan juara 4. Q finis lebih baik daripada R dan Q bukan juara 1. S bukan juara 2. R bukan juara 3. Juara 1 adalah:",
+   "a": "S",
+   "d": [
+    "P",
+    "Q",
+    "R",
+    "Tidak dapat ditentukan"
+   ],
+   "exp": "P juara 2 atau 3; Q tidak juara 1; R tidak juara 1 (Q harus lebih baik); jadi juara 1 hanya bisa S. Semua kasus yang lolos memberi S juara 1.",
+   "trick": "Cari siapa yang boleh juara 1 dengan mencoret yang tidak boleh. Sisa satu nama berarti selesai.",
+   "lv": 3
+  }
+ ],
+ "bersyarat": [
+  {
+   "q": "Pernyataan “Semua peserta yang lulus mendapat sertifikat.” Ingkaran (negasi) yang benar adalah:",
+   "a": "Ada peserta yang lulus tetapi tidak mendapat sertifikat",
+   "d": [
+    "Semua peserta yang lulus tidak mendapat sertifikat",
+    "Ada peserta yang tidak lulus tetapi mendapat sertifikat",
+    "Tidak ada peserta yang lulus",
+    "Semua peserta yang tidak lulus tidak mendapat sertifikat"
+   ],
+   "exp": "Negasi “semua” adalah “ada yang tidak”. Cukup satu contoh yang melanggar.",
+   "trick": "Negasi: semua ↔ ada yang tidak. Jangan membalik semuanya menjadi “semua tidak”.",
+   "lv": 1
+  },
+  {
+   "q": "Negasi dari “Jika harga naik maka permintaan turun” adalah:",
+   "a": "Harga naik dan permintaan tidak turun",
+   "d": [
+    "Jika harga tidak naik maka permintaan tidak turun",
+    "Harga tidak naik dan permintaan turun",
+    "Jika permintaan turun maka harga naik",
+    "Harga naik atau permintaan tidak turun"
+   ],
+   "exp": "Negasi p → q adalah p ∧ ¬q: syaratnya terjadi tetapi akibatnya tidak.",
+   "trick": "Negasi “jika p maka q” = “p dan bukan q”.",
+   "lv": 1
+  },
+  {
+   "q": "Pernyataan yang ekuivalen dengan “Jika hujan maka banjir” adalah:",
+   "a": "Jika tidak banjir maka tidak hujan",
+   "d": [
+    "Jika banjir maka hujan",
+    "Jika tidak hujan maka tidak banjir",
+    "Hujan dan banjir",
+    "Hujan atau tidak banjir"
+   ],
+   "exp": "Ekuivalen dengan kontraposisinya: ¬q → ¬p.",
+   "trick": "Kontraposisi = balik DAN negasikan keduanya. Hanya itu yang selalu ekuivalen.",
+   "lv": 1
+  },
+  {
+   "q": "Ani: “Budi berbohong.” Budi: “Citra berbohong.” Citra: “Ani dan Budi berbohong.” Jika hanya satu orang yang jujur, siapa dia?",
+   "a": "Budi",
+   "d": [
+    "Ani",
+    "Citra",
+    "Ani dan Citra",
+    "Tidak ada"
+   ],
+   "exp": "Coba satu per satu. Jika Ani jujur, Budi berbohong, sehingga ucapan Budi salah dan Citra jujur: dua orang jujur (gugur). Jika Citra jujur, Ani dan Budi berbohong, tetapi ucapan Ani (“Budi berbohong”) lalu salah sehingga Budi jujur (gugur). Jika Budi jujur, Citra dan Ani berbohong, dan semuanya konsisten.",
+   "trick": "Untuk soal jujur–bohong, uji tiap tokoh sebagai satu-satunya yang jujur lalu cari kontradiksi.",
+   "lv": 1
+  },
+  {
+   "q": "Jika Ayu hadir maka Budi hadir. Jika Budi hadir maka Cici tidak hadir. Cici hadir. Maka:",
+   "a": "Ayu dan Budi tidak hadir",
+   "d": [
+    "Ayu hadir",
+    "Budi hadir",
+    "Hanya Ayu hadir",
+    "Tidak dapat disimpulkan"
+   ],
+   "exp": "Cici hadir, jadi Budi tidak hadir (kontraposisi). Karena Ayu hadir akan membuat Budi hadir, maka Ayu juga tidak hadir.",
+   "trick": "Mulai dari fakta pasti (Cici hadir), lalu mundur lewat kontraposisi.",
+   "lv": 1
+  },
+  {
+   "q": "Pernyataan “Hanya pegawai tetap yang boleh ikut ujian” berarti:",
+   "a": "Jika boleh ikut ujian maka pegawai tetap",
+   "d": [
+    "Jika pegawai tetap maka boleh ikut ujian",
+    "Semua pegawai tetap ikut ujian",
+    "Pegawai tidak tetap boleh ikut ujian",
+    "Jika bukan pegawai tetap maka boleh ikut"
+   ],
+   "exp": "“Hanya X yang Y” berarti Y → X: syarat perlunya adalah X.",
+   "trick": "“Hanya” membalik arah: yang disebut setelah “hanya” adalah syarat (akibatnya).",
+   "lv": 1
+  },
+  {
+   "q": "Jika semua laporan lengkap, maka anggaran dicairkan. Anggaran tidak dicairkan. Maka:",
+   "a": "Ada laporan yang tidak lengkap",
+   "d": [
+    "Semua laporan tidak lengkap",
+    "Semua laporan lengkap",
+    "Tidak ada laporan",
+    "Tidak dapat disimpulkan"
+   ],
+   "exp": "Modus tollens: anggaran tidak dicairkan, jadi “semua laporan lengkap” salah. Negasi “semua” adalah “ada yang tidak”.",
+   "trick": "Tollens menolak syaratnya. Menolak “semua” berarti cukup satu yang melanggar.",
+   "lv": 2
+  },
+  {
+   "q": "Negasi dari “Ada pegawai yang terlambat dan tidak mengisi presensi” adalah:",
+   "a": "Semua pegawai tidak terlambat atau mengisi presensi",
+   "d": [
+    "Semua pegawai tidak terlambat dan mengisi presensi",
+    "Tidak ada pegawai yang terlambat",
+    "Ada pegawai yang tidak terlambat dan mengisi presensi",
+    "Semua pegawai terlambat atau tidak mengisi presensi"
+   ],
+   "exp": "Negasi “ada” menjadi “semua”, dan De Morgan membalik “dan” menjadi “atau” serta menegasikan tiap bagian.",
+   "trick": "De Morgan: ¬(p ∧ q) = ¬p ∨ ¬q. Kuantor ikut dibalik: ada ↔ semua.",
+   "lv": 2
+  },
+  {
+   "q": "“Tidak benar bahwa jika lulus ujian maka naik pangkat” ekuivalen dengan:",
+   "a": "Lulus ujian tetapi tidak naik pangkat",
+   "d": [
+    "Tidak lulus ujian dan naik pangkat",
+    "Tidak lulus ujian dan tidak naik pangkat",
+    "Jika tidak lulus maka tidak naik pangkat",
+    "Lulus ujian atau naik pangkat"
+   ],
+   "exp": "Satu-satunya cara “jika p maka q” salah adalah p benar dan q salah.",
+   "trick": "Negasi p → q adalah p ∧ ¬q.",
+   "lv": 2
+  },
+  {
+   "q": "A berkata: “B dan C sama-sama berbohong.” B berkata: “A jujur.” C berkata: “B berbohong.” Jika tepat satu orang jujur, siapa yang berbohong?",
+   "a": "A dan B",
+   "d": [
+    "B dan C",
+    "A dan C",
+    "Hanya A",
+    "Hanya C"
+   ],
+   "exp": "Jika A jujur maka B berbohong, tetapi ucapan B (“A jujur”) lalu benar: kontradiksi. Jika B jujur maka A jujur: dua orang jujur. Maka hanya C jujur, A dan B berbohong.",
+   "trick": "Uji tiap tokoh sebagai satu-satunya yang jujur dan buang yang menimbulkan kontradiksi.",
+   "lv": 2
+  },
+  {
+   "q": "Semua pernyataan berikut ekuivalen dengan “Jika hujan maka upacara dibatalkan” KECUALI:",
+   "a": "Jika upacara dibatalkan maka hujan",
+   "d": [
+    "Jika upacara tidak dibatalkan maka tidak hujan",
+    "Hujan tidak terjadi atau upacara dibatalkan",
+    "Tidak benar bahwa hujan terjadi dan upacara tidak dibatalkan",
+    "Upacara tidak dibatalkan hanya jika tidak hujan"
+   ],
+   "exp": "Jika upacara dibatalkan maka hujan adalah konvers, yang tidak ekuivalen. Ketiga lainnya adalah kontraposisi atau bentuk ¬p ∨ q.",
+   "trick": "Ekuivalen hanya: kontraposisi, ¬p ∨ q, dan negasi dari p ∧ ¬q. Konvers dan invers bukan.",
+   "lv": 2
+  },
+  {
+   "q": "Jika A atau B maka C. Jika C maka D. D salah. Maka:",
+   "a": "A salah dan B salah",
+   "d": [
+    "A salah atau B benar",
+    "A benar",
+    "B benar",
+    "Tidak dapat disimpulkan"
+   ],
+   "exp": "D salah, jadi C salah, jadi “A atau B” salah, artinya A dan B sama-sama salah.",
+   "trick": "Mundur lewat rantai. Menolak “atau” berarti menolak kedua sisinya.",
+   "lv": 3
+  },
+  {
+   "q": "Semua pegawai yang rajin atau berprestasi mendapat bonus. Tono tidak mendapat bonus. Maka:",
+   "a": "Tono tidak rajin dan tidak berprestasi",
+   "d": [
+    "Tono tidak rajin atau tidak berprestasi",
+    "Tono rajin tetapi tidak berprestasi",
+    "Tono berprestasi tetapi tidak rajin",
+    "Tidak dapat disimpulkan"
+   ],
+   "exp": "Jika rajin atau berprestasi maka bonus. Tidak bonus berarti tidak (rajin atau berprestasi) = tidak rajin dan tidak berprestasi.",
+   "trick": "De Morgan pada hasil kontraposisi: ¬(p ∨ q) = ¬p ∧ ¬q.",
+   "lv": 3
+  },
+  {
+   "q": "“Anggaran disetujui jika dan hanya jika proposal lengkap.” Anggaran tidak disetujui. Maka:",
+   "a": "Proposal tidak lengkap",
+   "d": [
+    "Proposal lengkap",
+    "Proposal mungkin lengkap",
+    "Proposal ditolak karena waktu",
+    "Tidak dapat disimpulkan"
+   ],
+   "exp": "Bikondisional berarti kedua arah berlaku: disetujui ↔ lengkap. Tidak disetujui berarti tidak lengkap.",
+   "trick": "“Jika dan hanya jika” berlaku dua arah, jadi semua jebakan afirmasi konsekuen hilang.",
+   "lv": 3
+  },
+  {
+   "q": "Diketahui: (1) p atau q. (2) Jika p maka r. (3) Jika q maka r. Maka:",
+   "a": "r benar",
+   "d": [
+    "r salah",
+    "p benar",
+    "q benar",
+    "Tidak dapat disimpulkan"
+   ],
+   "exp": "Salah satu dari p atau q pasti benar, dan keduanya mengarah ke r. Jadi r benar.",
+   "trick": "Pembuktian per kasus: jika semua kasus menuju hasil yang sama, hasil itu pasti.",
+   "lv": 3
+  },
+  {
+   "q": "“Hanya jika rajin, seseorang lulus.” Dewi tidak rajin. Maka:",
+   "a": "Dewi tidak lulus",
+   "d": [
+    "Dewi lulus",
+    "Dewi mungkin lulus",
+    "Dewi rajin",
+    "Tidak dapat disimpulkan"
+   ],
+   "exp": "“Hanya jika rajin, lulus” berarti lulus → rajin. Dewi tidak rajin, jadi tidak lulus (tollens).",
+   "trick": "“Hanya jika X, Y” berarti Y → X. Lalu pakai tollens.",
+   "lv": 3
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+name: public-release-ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.13'}
+      - run: pip install -r requirements.txt pytest httpx
+      - run: COOKIE_SECURE=0 pytest -q tests
+      - run: python -m compileall -q api upkp scripts
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm install --no-audit --no-fund
+      - run: npm run typecheck
+      - run: npm run build

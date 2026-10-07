@@ -1,0 +1,6 @@
+.pytest_cache
+**/__pycache__
+data
+*.sqlite3
+*.zip
+*.sha256
