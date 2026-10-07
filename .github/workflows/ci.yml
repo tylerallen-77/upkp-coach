@@ -8,7 +8,7 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: '3.13'}
       - run: pip install -r requirements.txt pytest httpx
-      - run: COOKIE_SECURE=0 pytest -q tests
+      - run: PYTHONPATH=. COOKIE_SECURE=0 pytest -q tests
       - run: python -m compileall -q api upkp scripts
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
