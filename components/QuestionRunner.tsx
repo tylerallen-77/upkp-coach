@@ -67,7 +67,7 @@ export default function QuestionRunner({bundle,onDone,onExit}:Props){
    finally{setBusy(false)}
  }
  async function report(){if(!current.item_signature||reported)return;const reason=window.prompt('Laporkan soal: ambiguous / wrong_key / broken_figure / typo / too_easy / too_hard / other','ambiguous');if(!reason)return;try{await api('/api/report-question',{method:'POST',body:JSON.stringify({item_signature:current.item_signature,question_id:current.id,reason,detail:''})});setReported(true)}catch(e:any){window.alert(e.message)}}
- function pick(x:number){if(feedback||busy)return;if(selected!==null&&selected!==x)setChanges(c=>c+1);setSelected(x);if(first===null)setFirst(Math.round(performance.now()-started.current))}
+ function pick(x:number){if(feedback||busy)return;if(selected!==null&&selected!==x)setChanges((c:number)=>c+1);setSelected(x);if(first===null)setFirst(Math.round(performance.now()-started.current))}
  if(!current)return <div className="panel">Menyiapkan sesi…</div>
  return <div className="sessionShell">
    <div className="sessionBar"><button className="sessionExit" onClick={exitSession} disabled={busy}>← Keluar sesi</button><span>Sesi tersimpan per jawaban</span></div>
