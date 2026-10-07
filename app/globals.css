@@ -18,3 +18,18 @@
 .mobileActions{display:flex;align-items:center;gap:8px}.mobileLogout{border:1px solid rgba(255,255,255,.28);background:transparent;color:white;border-radius:9px;padding:7px 10px;font-weight:700}
 .sessionShell{width:100%}.sessionBar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;padding:8px 2px}.sessionBar span{font-size:12px;color:var(--muted)}.sessionExit{border:0;background:transparent;color:#334f7d;font-weight:800;cursor:pointer;padding:8px 0}.sessionExit:disabled{opacity:.5;cursor:not-allowed}
 @media(max-width:850px){.sessionBar{position:sticky;top:0;z-index:25;background:rgba(247,249,252,.96);backdrop-filter:blur(8px);padding:9px 3px}.mobileHeader{gap:8px}.mobileActions select{max-width:120px}.mobileLogout{display:inline-flex}}
+
+.menuButton{display:none;border:1px solid var(--line);background:white;color:var(--ink);border-radius:11px;padding:8px 11px;font-size:21px;line-height:1}
+.drawerBackdrop{display:none}.mobileDrawer{display:none}
+.activeSessions{margin-top:18px}.activeSessions h3{margin:8px 0 0}.compact{padding:8px 12px;white-space:nowrap}
+@media(max-width:950px){
+  .mobileHeader{position:sticky;top:0;z-index:35;background:rgba(245,247,251,.96);backdrop-filter:blur(10px);padding:8px 0}
+  .menuButton{display:inline-grid;place-items:center}
+  .mobileActions{display:none}
+  .drawerBackdrop{display:block;position:fixed;inset:0;z-index:70;border:0;background:rgba(10,18,32,.38)}
+  .mobileDrawer{display:flex;position:fixed;z-index:80;top:0;right:0;height:100dvh;width:min(86vw,340px);background:var(--nav);color:white;padding:18px;flex-direction:column;box-shadow:-18px 0 50px rgba(0,0,0,.22)}
+  .drawerTop{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #294873;padding-bottom:14px}
+  .drawerTop .brand{padding:0}.drawerTop>button{border:0;background:transparent;color:white;font-size:28px}
+  .drawerNav{display:grid;gap:6px;padding:18px 0}.drawerNav button{border:0;background:transparent;color:#c7d2e4;text-align:left;padding:13px 14px;border-radius:11px;font-weight:800}.drawerNav button.active{background:var(--nav2);color:white}
+  .drawerAccount{margin-top:auto;padding-top:16px;border-top:1px solid #294873;display:grid;gap:9px}.drawerAccount small{color:#aab9d1}.drawerAccount a{color:#dbe4f3;text-decoration:none;font-size:13px}.drawerLogout{margin-top:7px;border:1px solid #48658f;background:#172d55;color:white;border-radius:10px;padding:11px;text-align:left;font-weight:800}
+}
