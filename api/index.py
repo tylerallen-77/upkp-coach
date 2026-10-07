@@ -16,7 +16,7 @@ from upkp import mastery
 from upkp import tpa_enrichment
 from upkp.exam_engine import structural_signature
 
-app=FastAPI(title='UPKP Coach Final API',version='1.3.0',docs_url=None if os.getenv('VERCEL')=='1' else '/docs',redoc_url=None)
+app=FastAPI(title='UPKP Coach Final API',version='1.3.2',docs_url=None if os.getenv('VERCEL')=='1' else '/docs',redoc_url=None)
 app.add_middleware(CORSMiddleware,allow_origins=[],allow_credentials=True,allow_methods=['*'],allow_headers=['*'])
 
 class SameOriginMiddleware(BaseHTTPMiddleware):
@@ -81,7 +81,7 @@ def set_cookie(resp:Response,token:str):
 @app.get('/api/health')
 def health():
     ok=store.db_health()
-    return JSONResponse({'ok':ok,'version':'1.3.0','database':'postgres' if store.DATABASE_URL else 'sqlite-local'},status_code=200 if ok else 503)
+    return JSONResponse({'ok':ok,'version':'1.3.2','database':'postgres' if store.DATABASE_URL else 'sqlite-local'},status_code=200 if ok else 503)
 
 @app.post('/api/auth/register')
 def register(body:AuthIn,response:Response,request:Request):
@@ -125,12 +125,15 @@ def public_q(q):
     item['item_signature']=structural_signature(q)
     return item
 def prep_questions(uid,sid,qs):
+    # Batch quarantine lookup + token insert: one read and one write transaction for the whole session.
+    pairs=[(q,structural_signature(q)) for q in qs]
+    blocked=store.quarantined_signatures([sig for _,sig in pairs])
+    allowed=[q for q,sig in pairs if sig not in blocked]
+    if not allowed: raise HTTPException(503,'Konten sesi sedang ditinjau. Coba sesi lain.')
+    tokens=store.stash_questions(uid,sid,allowed)
     out=[]
-    for q in qs:
-        sig=structural_signature(q)
-        if store.is_quarantined(sig):continue
-        token=store.stash_question(uid,sid,q); item=public_q(q);item['token']=token;out.append(item)
-    if not out: raise HTTPException(503,'Konten sesi sedang ditinjau. Coba sesi lain.')
+    for q,token in zip(allowed,tokens):
+        item=public_q(q);item['token']=token;out.append(item)
     return out
 
 def track_snapshot(uid,track):
@@ -142,7 +145,12 @@ def track_snapshot(uid,track):
 
 @app.get('/api/home')
 def home(u=Depends(current_user)):
-    return {'user':u,'tracks':[track_snapshot(u['id'],'tpa'),track_snapshot(u['id'],'substansi')],'sessions':store.recent_sessions(u['id'],6)}
+    return {
+        'user':u,
+        'tracks':[track_snapshot(u['id'],'tpa'),track_snapshot(u['id'],'substansi')],
+        'sessions':store.recent_sessions(u['id'],6),
+        'active_sessions':store.active_sessions(u['id'],5),
+    }
 
 @app.get('/api/progress')
 def progress(track:str='tpa',u=Depends(current_user)):
@@ -211,23 +219,38 @@ def mastery_challenge(section:str,u=Depends(current_user)):
     for q in qs:q['_exam_mode']=True
     return {'session':s,'questions':prep_questions(u['id'],s['id'],qs),'mode':'tryout','passes':1,'mastery_section':section}
 
+@app.post('/api/session/resume/{sid}')
+def resume_session(sid:str,u=Depends(current_user)):
+    sess=store.get_learning_session(u['id'],sid)
+    if not sess:raise HTTPException(404,'Session not found')
+    if sess.get('ended') is not None:raise HTTPException(409,'Sesi ini sudah selesai dan tidak dapat dilanjutkan.')
+    rows=store.session_question_rows(u['id'],sid,unused_only=True)
+    if not rows:raise HTTPException(409,'Tidak ada soal tersisa di sesi ini.')
+    questions=[]
+    for row in rows:
+        q=row['payload']
+        item=public_q(q);item['token']=row['token'];questions.append(item)
+    mode='tryout' if sess.get('kind') in ('tryout','mastery') else 'practice'
+    return {'session':sess,'questions':questions,'mode':mode,'resumed':True}
+
 @app.post('/api/attempt')
 def attempt(body:AttemptIn,u=Depends(current_user)):
-    throttle(u['id'],'attempt',300,300)
-    q=store.read_question(u['id'],body.question_token)
-    if not q:raise HTTPException(404,'Question token expired or unknown')
-    if body.session_id!=q.get('_session_id'):raise HTTPException(403,'Token belongs to another session')
+    # Token-bound authenticated attempts are naturally capped by session creation.
+    # Keep answer recording to one DB transaction instead of read + throttle + write connections.
     if not body.skipped and body.selected is None:raise HTTPException(422,'Answer required')
-    correct=(body.selected==q.get('ans')) and not body.skipped
-    a=learning.make_attempt(q,selected=body.selected,correct=correct,elapsed_ms=body.elapsed_ms,confidence=body.confidence,first_selection_ms=body.first_selection_ms,answer_changes=body.answer_changes,skipped=body.skipped,pass_number=body.pass_number,session_id=body.session_id)
-    a['track']=q.get('track','tpa')
     consume=(not body.skipped) or body.pass_number>=3
     key=f"{u['id']}:{body.question_token}:p{body.pass_number}:{'skip' if body.skipped else 'answer'}"
-    status=store.record_attempt_atomic(u['id'],a,body.question_token,consume,key)
+    def build_attempt(q):
+        if body.session_id!=q.get('_session_id'):raise HTTPException(403,'Token belongs to another session')
+        correct=(body.selected==q.get('ans')) and not body.skipped
+        a=learning.make_attempt(q,selected=body.selected,correct=correct,elapsed_ms=body.elapsed_ms,confidence=body.confidence,first_selection_ms=body.first_selection_ms,answer_changes=body.answer_changes,skipped=body.skipped,pass_number=body.pass_number,session_id=body.session_id)
+        a['track']=q.get('track','tpa')
+        return a
+    status,q,a=store.record_from_question_atomic(u['id'],body.question_token,consume,key,build_attempt)
     if status=='missing':raise HTTPException(404,'Question expired')
     if status=='duplicate':raise HTTPException(409,'Already submitted')
     if q.get('_exam_mode'):return {'deferred_feedback':True,'recorded':True}
-    return {'correct':correct,'answer':q['ans'],'explanation':q.get('exp',''),'shortcut':q.get('trick',''),'attempt':a,'skill':learning.skill_label(a['skill'])}
+    return {'correct':bool(a.get('correct')),'answer':q['ans'],'explanation':q.get('exp',''),'shortcut':q.get('trick',''),'attempt':a,'skill':learning.skill_label(a['skill'])}
 
 @app.post('/api/session/close')
 def close(body:CloseIn,u=Depends(current_user)):
