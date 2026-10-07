@@ -33,9 +33,23 @@ export default function Page(){
  async function startChapter(code:string){setBusy(true);setBusyKey('chapter:'+code);setPm(null);setActionErr('');try{const d=await api('/api/session/chapter?code='+encodeURIComponent(code)+'&n=10&level=0',{method:'POST'});rememberBundle(d);setView('learn')}catch(e:any){setActionErr(e.message||'Gagal menyiapkan drill.')}finally{setBusy(false);setBusyKey('')}}
  async function startTryout(t:Track){setBusy(true);setBusyKey('tryout:'+t);setPm(null);setActionErr('');try{const d=await api('/api/session/tryout?track='+t,{method:'POST'});rememberBundle(d);setTrack(t);setView('tryout')}catch(e:any){setActionErr(e.message||'Gagal menyiapkan Try Out.')}finally{setBusy(false);setBusyKey('')}}
  async function startMastery(section:string){setBusy(true);setBusyKey('mastery:'+section);setPm(null);setActionErr('');try{const d=await api('/api/session/mastery?section='+section,{method:'POST'});rememberBundle(d);setTrack('tpa');setView('progress')}catch(e:any){setActionErr(e.message||'Mastery Challenge belum bisa dimulai.')}finally{setBusy(false);setBusyKey('')}}
- async function sessionDone(x:any){clearBundle();setPm(x);await loadHome();await loadProgress(track)}
- async function sessionExited(){clearBundle();setPm(null);setView('home');await loadHome();await loadProgress(track)}
- async function resumeSession(sid:string){setBusy(true);setBusyKey('resume:'+sid);setActionErr('');try{const d=await api('/api/session/resume/'+encodeURIComponent(sid),{method:'POST'});rememberBundle(d);setTrack(d.session.track||'tpa');setView(d.mode==='tryout'?'tryout':'learn')}catch(e:any){setActionErr(e.message||'Sesi tidak dapat dilanjutkan.')}finally{setBusy(false);setBusyKey('')}}
+ async function sessionDone(x:any){
+   if(bundle?.session?.id&&typeof window!=='undefined')localStorage.removeItem('upkp_paused_bundle_'+bundle.session.id)
+   clearBundle();setPm(x);await loadHome();await loadProgress(track)
+ }
+ async function sessionExited(){
+   if(bundle?.session?.id&&typeof window!=='undefined')localStorage.setItem('upkp_paused_bundle_'+bundle.session.id,JSON.stringify(bundle))
+   clearBundle();setPm(null);setView('home');await loadHome();await loadProgress(track)
+ }
+ async function resumeSession(sid:string){
+   setBusy(true);setBusyKey('resume:'+sid);setActionErr('')
+   try{
+     const local=typeof window!=='undefined'?localStorage.getItem('upkp_paused_bundle_'+sid):null
+     const d=local?JSON.parse(local):await api('/api/session/resume/'+encodeURIComponent(sid),{method:'POST'})
+     rememberBundle(d);setTrack(d.session.track||'tpa');setView(d.mode==='tryout'?'tryout':'learn')
+   }catch(e:any){setActionErr(e.message||'Sesi tidak dapat dilanjutkan.')}
+   finally{setBusy(false);setBusyKey('')}
+ }
  async function navigate(id:string){
    if(bundle){window.alert('Masih ada sesi aktif. Gunakan tombol “Keluar sesi” di atas soal agar progress parsial tersimpan.');return}
    setView(id);setPm(null);setMobileMenu(false)
