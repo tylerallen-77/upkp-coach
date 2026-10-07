@@ -49,7 +49,9 @@ class AttemptIn(BaseModel):
     question_token:str; selected:int|None=None; elapsed_ms:int=Field(ge=0,le=300000)
     first_selection_ms:int|None=Field(default=None,ge=0,le=300000); answer_changes:int=Field(default=0,ge=0,le=50)
     confidence:str=''; skipped:bool=False; pass_number:int=Field(default=1,ge=1,le=3); session_id:str
-class CloseIn(BaseModel): session_id:str
+class CloseIn(BaseModel):
+    session_id:str
+    abandoned:bool=False
 class AdminReset(BaseModel): password:str=Field(min_length=8,max_length=128)
 class DeleteAccountIn(BaseModel): password:str=Field(min_length=8,max_length=128)
 class ReportIn(BaseModel):
@@ -231,7 +233,11 @@ def attempt(body:AttemptIn,u=Depends(current_user)):
 def close(body:CloseIn,u=Depends(current_user)):
     rows=store.attempts(u['id']);pm=learning.session_postmortem(rows,body.session_id)
     sess=store.get_learning_session(u['id'],body.session_id)
-    if sess and sess.get('kind')=='mastery':
+    if not sess: raise HTTPException(404,'Session not found')
+    pm['abandoned']=bool(body.abandoned)
+    if body.abandoned:
+        pm['recommendation']='Sesi dihentikan. Jawaban yang sudah dikirim tetap tersimpan dan ikut memperbarui profil belajar.'
+    if sess.get('kind')=='mastery' and not body.abandoned:
         verdict=mastery.evaluate_mastery_challenge(sess.get('meta',{}).get('section',''),rows,body.session_id)
         pm={**pm,**verdict}
     store.close_learning_session(u['id'],body.session_id,pm)
