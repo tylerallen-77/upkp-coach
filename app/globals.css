@@ -12,3 +12,9 @@
 .termsCheck{display:flex!important;gap:9px;align-items:flex-start;font-size:12px;color:var(--muted)}.termsCheck input{width:auto!important;margin-top:2px}.termsCheck a,.userBox a,.helper a{color:var(--blue);text-decoration:none}.reportBtn{margin-top:10px;border:0;background:transparent;color:#6b7280;text-decoration:underline;cursor:pointer;font-size:12px}.reportBtn:disabled{cursor:default;text-decoration:none}.legal{max-width:760px;margin:48px auto;padding:0 22px;font-family:system-ui;color:#152238}.legal h1{font-size:38px}.legal h2{margin-top:28px}.legal p{line-height:1.7;color:#516078}.legal a{color:#315ec0;text-decoration:none}
 
 .accountPanel{margin-top:16px}.accountPanel summary{cursor:pointer}.danger{border-color:#e8b8b8!important;color:#9f2f2f!important}
+
+.actionError{position:sticky;top:8px;z-index:50;margin:0 0 14px;background:#fff0f0;border:1px solid #efb3b3;color:#8f1d1d;padding:11px 13px;border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:var(--shadow)}
+.actionError button{border:0;background:transparent;font-size:20px;cursor:pointer;color:inherit}
+.mobileActions{display:flex;align-items:center;gap:8px}.mobileLogout{border:1px solid rgba(255,255,255,.28);background:transparent;color:white;border-radius:9px;padding:7px 10px;font-weight:700}
+.sessionShell{width:100%}.sessionBar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;padding:8px 2px}.sessionBar span{font-size:12px;color:var(--muted)}.sessionExit{border:0;background:transparent;color:#334f7d;font-weight:800;cursor:pointer;padding:8px 0}.sessionExit:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:850px){.sessionBar{position:sticky;top:0;z-index:25;background:rgba(247,249,252,.96);backdrop-filter:blur(8px);padding:9px 3px}.mobileHeader{gap:8px}.mobileActions select{max-width:120px}.mobileLogout{display:inline-flex}}
