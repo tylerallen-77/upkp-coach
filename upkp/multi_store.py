@@ -143,13 +143,41 @@ def recent_sessions(uid,limit=8):
         out.append({'id':r[0],'track':r[1],'kind':r[2],'title':r[3],'started':r[4],'ended':r[5],'meta':_decode(r[6],{}),'summary':_decode(r[7],{})})
     return out
 
-def stash_question(uid,sid,q):
-    token=secrets.token_urlsafe(24)
+def active_sessions(uid,limit=5):
     with connect() as c:
-        execute(c,'DELETE FROM question_tokens WHERE created<?',(time.time()-86400,))
-        execute(c,'INSERT INTO question_tokens(token,user_id,session_id,payload,created,used) VALUES(?,?,?,?,?,0)',(token,uid,sid,_json(q),time.time()))
+        rows=fetchall(c,'SELECT id,track,kind,title,started,ended,meta,summary FROM learning_sessions WHERE user_id=? AND ended IS NULL ORDER BY started DESC LIMIT ?',(uid,limit))
+    return [{'id':r[0],'track':r[1],'kind':r[2],'title':r[3],'started':r[4],'ended':r[5],
+             'meta':_decode(r[6],{}),'summary':_decode(r[7],{})} for r in rows]
+
+def stash_question(uid,sid,q):
+    return stash_questions(uid,sid,[q])[0]
+
+def stash_questions(uid,sid,questions):
+    # Persist a whole session in one DB transaction instead of one connection per question.
+    now=time.time(); out=[]
+    with connect() as c:
+        execute(c,'DELETE FROM question_tokens WHERE created<?',(now-86400,))
+        for q in questions:
+            token=secrets.token_urlsafe(24); out.append(token)
+            execute(c,'INSERT INTO question_tokens(token,user_id,session_id,payload,created,used) VALUES(?,?,?,?,?,0)',
+                    (token,uid,sid,_json(q),now))
         if _is_pg():c.commit()
-    return token
+    return out
+
+def session_question_rows(uid,sid,unused_only=True):
+    sql='SELECT token,payload,created,used FROM question_tokens WHERE user_id=? AND session_id=?'
+    if unused_only: sql+=' AND used=0'
+    sql+=' ORDER BY created ASC, token ASC'
+    with connect() as c: rows=fetchall(c,sql,(uid,sid))
+    return [{'token':r[0],'payload':_decode(r[1],{}),'created':r[2],'used':bool(r[3])} for r in rows]
+
+def quarantined_signatures(signatures):
+    sigs=[str(x) for x in signatures if x]
+    if not sigs:return set()
+    marks=','.join('?' for _ in sigs)
+    with connect() as c:
+        rows=fetchall(c,f'SELECT item_signature FROM content_quarantine WHERE active=1 AND item_signature IN ({marks})',tuple(sigs))
+    return {str(r[0]) for r in rows}
 
 def read_question(uid,token):
     with connect() as c:
@@ -184,6 +212,39 @@ def record_attempt_atomic(uid,attempt,question_token,consume,attempt_key):
             if _is_pg():c.rollback()
             raise
 
+def record_from_question_atomic(uid,question_token,consume,attempt_key,attempt_factory):
+    # Read/lock token, build attempt, consume token and record stats in one transaction.
+    with connect() as c:
+        try:
+            if _is_pg():
+                r=fetchone(c,'SELECT payload,used,created,session_id FROM question_tokens WHERE token=? AND user_id=? FOR UPDATE',(question_token,uid))
+            else:
+                execute(c,'BEGIN IMMEDIATE')
+                r=fetchone(c,'SELECT payload,used,created,session_id FROM question_tokens WHERE token=? AND user_id=?',(question_token,uid))
+            if not r or time.time()-float(r[2])>86400:
+                if _is_pg():c.rollback()
+                return 'missing',None,None
+            q=_decode(r[0],{}); q['_session_id']=r[3]
+            attempt=attempt_factory(q)
+            if consume:
+                cur=execute(c,'UPDATE question_tokens SET used=1 WHERE token=? AND user_id=? AND used=0',(question_token,uid))
+                if cur.rowcount!=1:
+                    if _is_pg():c.rollback()
+                    return 'duplicate',q,None
+            try:
+                execute(c,'INSERT INTO attempts(user_id,attempt_key,ts,session_id,question_id,track,skill,item_signature,payload) VALUES(?,?,?,?,?,?,?,?,?)',
+                        (uid,attempt_key,float(attempt.get('ts',time.time())),str(attempt.get('session_id','')),
+                         str(attempt.get('question_id','')),str(attempt.get('track','tpa')),str(attempt.get('skill','unknown')),
+                         str(attempt.get('item_signature','')),_json(attempt)))
+                _update_population_stats(c,attempt)
+            except Exception:
+                if _is_pg():c.rollback()
+                return 'duplicate',q,None
+            if _is_pg():c.commit()
+            return 'recorded',q,attempt
+        except Exception:
+            if _is_pg():c.rollback()
+            raise
 def list_users():
     with connect() as c:
         rows=fetchall(c,'SELECT u.id,u.username,u.role,u.disabled,u.created_at,COUNT(a.id) FROM users u LEFT JOIN attempts a ON a.user_id=u.id GROUP BY u.id,u.username,u.role,u.disabled,u.created_at ORDER BY u.created_at DESC')
