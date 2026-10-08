@@ -16,7 +16,7 @@ from upkp import mastery
 from upkp import tpa_enrichment
 from upkp.exam_engine import structural_signature
 
-app=FastAPI(title='UPKP Coach Final API',version='1.4.1',docs_url=None if os.getenv('VERCEL')=='1' else '/docs',redoc_url=None)
+app=FastAPI(title='UPKP Coach Final API',version='1.5.0',docs_url=None if os.getenv('VERCEL')=='1' else '/docs',redoc_url=None)
 app.add_middleware(CORSMiddleware,allow_origins=[],allow_credentials=True,allow_methods=['*'],allow_headers=['*'])
 
 class SameOriginMiddleware(BaseHTTPMiddleware):
@@ -82,7 +82,7 @@ def set_cookie(resp:Response,token:str):
 @app.get('/api/health')
 def health():
     ok=store.db_health()
-    return JSONResponse({'ok':ok,'version':'1.4.1','database':'postgres' if store.DATABASE_URL else 'sqlite-local'},status_code=200 if ok else 503)
+    return JSONResponse({'ok':ok,'version':'1.5.0','database':'postgres' if store.DATABASE_URL else 'sqlite-local'},status_code=200 if ok else 503)
 
 @app.post('/api/auth/register')
 def register(body:AuthIn,response:Response,request:Request):
@@ -139,7 +139,7 @@ def prep_questions(uid,sid,qs):
 
 def track_snapshot(uid,track):
     a=track_attempts(uid,track);m=learning.overall_metrics(a);p=learning.profile_attempts(a);rx=learning.daily_prescription(a,max_minutes=18)
-    out={'track':track,'label':TRACKS[track],'metrics':m,'skills':p[:8],'prescription':rx,'review':learning.review_queue(a,6),'review_due':learning.spaced_review_queue(a,6)}
+    out={'track':track,'label':TRACKS[track],'metrics':m,'skills':p[:8],'prescription':rx,'review':learning.review_queue(a,6),'review_due':learning.spaced_review_queue(a,6),'teacher':learning.teacher_plan(a,track)}
     sessions=store.recent_sessions(uid,100)
     if track=='tpa':
         out['mastery']=mastery.tpa_badges(a,sessions)
@@ -162,6 +162,13 @@ def progress(track:str='tpa',u=Depends(current_user)):
     a=track_attempts(u['id'],track)
     return {'snapshot':track_snapshot(u['id'],track),'skills':learning.profile_attempts(a),'sessions':[s for s in store.recent_sessions(u['id'],30) if s['track']==track]}
 
+@app.get('/api/coach')
+def coach(track:str='tpa',u=Depends(current_user)):
+    if track not in TRACKS:raise HTTPException(404,'Unknown track')
+    a=track_attempts(u['id'],track)
+    return {'track':track,'teacher':learning.teacher_plan(a,track),'prescription':learning.daily_prescription(a,max_minutes=18)}
+
+
 @app.get('/api/catalog')
 def catalog(track:str='tpa',u=Depends(current_user)):
     bagian='Tes Potensi' if track=='tpa' else 'TSKKWK'
@@ -173,10 +180,15 @@ def catalog(track:str='tpa',u=Depends(current_user)):
         material=materi.MATERI.get(b.kode,'')
         if extra: material=(material+'\n\n'+extra).strip()
         meta=material_meta.metadata(b.kode,b.sumber)
+        chapter_stats=learning.chapter_coaching(track_attempts(u['id'],track),b.kode,track)
+        headings=[ln[4:].strip() for ln in material.splitlines() if ln.strip().startswith('### ')][:4]
+        objectives=[f"Pahami {h.lower()}" for h in headings[:3]]
+        checks=[f"Bisakah kamu menjelaskan {h.lower()} tanpa melihat catatan?" for h in headings[:3]]
         chapters.append({'code':b.kode,'title':b.judul,'subtest':b.subtes,'source_type':b.sumber,'source_note':source_note,'material':material,
                          'source_refs':tpa_enrichment.SOURCES if track=='tpa' else [],
                          'source_status':meta.get('status'),'source_status_label':meta.get('status_label'),
-                         'verified_at':meta.get('verified'),'freshness_note':meta.get('note'),'page':b.halaman})
+                         'verified_at':meta.get('verified'),'freshness_note':meta.get('note'),'page':b.halaman,
+                         'learner':chapter_stats,'objectives':objectives,'self_checks':checks})
     return {'track':track,'chapters':chapters}
 
 @app.post('/api/session/guided')
@@ -262,7 +274,7 @@ def attempt(body:AttemptIn,u=Depends(current_user)):
     if status=='missing':raise HTTPException(404,'Question expired')
     if status=='duplicate':raise HTTPException(409,'Already submitted')
     if q.get('_exam_mode'):return {'deferred_feedback':True,'recorded':True}
-    return {'correct':bool(a.get('correct')),'answer':q['ans'],'explanation':q.get('exp',''),'shortcut':q.get('trick',''),'attempt':a,'skill':learning.skill_label(a['skill'])}
+    return {'correct':bool(a.get('correct')),'answer':q['ans'],'explanation':q.get('exp',''),'shortcut':q.get('trick',''),'attempt':a,'skill':learning.skill_label(a['skill']),'teacher_feedback':learning.attempt_coach_note(a)}
 
 @app.post('/api/session/close')
 def close(body:CloseIn,u=Depends(current_user)):
@@ -275,6 +287,7 @@ def close(body:CloseIn,u=Depends(current_user)):
     if sess.get('kind')=='mastery' and not body.abandoned:
         verdict=mastery.evaluate_mastery_challenge(sess.get('meta',{}).get('section',''),rows,body.session_id,sess.get('track','tpa'))
         pm={**pm,**verdict}
+    pm=learning.enrich_postmortem(pm)
     store.close_learning_session(u['id'],body.session_id,pm)
     return {'ok':True,'postmortem':pm}
 
