@@ -33,3 +33,5 @@
   .drawerNav{display:grid;gap:6px;padding:18px 0}.drawerNav button{border:0;background:transparent;color:#c7d2e4;text-align:left;padding:13px 14px;border-radius:11px;font-weight:800}.drawerNav button.active{background:var(--nav2);color:white}
   .drawerAccount{margin-top:auto;padding-top:16px;border-top:1px solid #294873;display:grid;gap:9px}.drawerAccount small{color:#aab9d1}.drawerAccount a{color:#dbe4f3;text-decoration:none;font-size:13px}.drawerLogout{margin-top:7px;border:1px solid #48658f;background:#172d55;color:white;border-radius:10px;padding:11px;text-align:left;font-weight:800}
 }
+
+.accountCard h3{margin-bottom:4px}.accountLink{display:inline-block;text-decoration:none}.accountLinks{display:flex;gap:16px;flex-wrap:wrap}.accountLinks a{color:var(--blue);text-decoration:none;font-weight:700}
