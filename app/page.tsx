@@ -4,7 +4,7 @@ import {api,pct,sec} from '../lib/api'
 import QuestionRunner from '../components/QuestionRunner'
 
 type Track='tpa'|'substansi'
-const nav=[['home','Beranda'],['learn','Belajar'],['tryout','Try Out'],['progress','Progress']]
+const nav=[['home','Beranda'],['learn','Belajar'],['tryout','Try Out'],['progress','Progress'],['account','Account']]
 
 export default function Page(){
  const [me,setMe]=useState<any>(null),[authMode,setAuthMode]=useState<'login'|'register'>('login'),[auth,setAuth]=useState({username:'',password:'',accept_terms:false}),[err,setErr]=useState('')
@@ -32,7 +32,7 @@ export default function Page(){
  async function startGuided(t:Track){setBusy(true);setBusyKey('guided:'+t);setPm(null);setActionErr('');try{const d=await api('/api/session/guided?track='+t,{method:'POST'});rememberBundle(d);setTrack(t);setView('learn')}catch(e:any){setActionErr(e.message||'Gagal menyiapkan sesi. Coba lagi.')}finally{setBusy(false);setBusyKey('')}}
  async function startChapter(code:string){setBusy(true);setBusyKey('chapter:'+code);setPm(null);setActionErr('');try{const d=await api('/api/session/chapter?code='+encodeURIComponent(code)+'&n=10&level=0',{method:'POST'});rememberBundle(d);setView('learn')}catch(e:any){setActionErr(e.message||'Gagal menyiapkan drill.')}finally{setBusy(false);setBusyKey('')}}
  async function startTryout(t:Track){setBusy(true);setBusyKey('tryout:'+t);setPm(null);setActionErr('');try{const d=await api('/api/session/tryout?track='+t,{method:'POST'});rememberBundle(d);setTrack(t);setView('tryout')}catch(e:any){setActionErr(e.message||'Gagal menyiapkan Try Out.')}finally{setBusy(false);setBusyKey('')}}
- async function startMastery(section:string){setBusy(true);setBusyKey('mastery:'+section);setPm(null);setActionErr('');try{const d=await api('/api/session/mastery?section='+section,{method:'POST'});rememberBundle(d);setTrack('tpa');setView('progress')}catch(e:any){setActionErr(e.message||'Mastery Challenge belum bisa dimulai.')}finally{setBusy(false);setBusyKey('')}}
+ async function startMastery(section:string,t:Track=track){setBusy(true);setBusyKey('mastery:'+section);setPm(null);setActionErr('');try{const d=await api('/api/session/mastery?track='+t+'&section='+encodeURIComponent(section),{method:'POST'});rememberBundle(d);setTrack(t);setView('progress')}catch(e:any){setActionErr(e.message||'Mastery Challenge belum bisa dimulai.')}finally{setBusy(false);setBusyKey('')}}
  async function sessionDone(x:any){
    if(bundle?.session?.id&&typeof window!=='undefined')localStorage.removeItem('upkp_paused_bundle_'+bundle.session.id)
    clearBundle();setPm(x);await loadHome();await loadProgress(track)
@@ -60,6 +60,7 @@ export default function Page(){
  {view==='learn'&&<Learn track={track} setTrack={setTrack} catalog={catalog} bundle={bundle} pm={pm} startGuided={startGuided} startChapter={startChapter} onDone={sessionDone} onExit={sessionExited} busy={busy}/>}
  {view==='tryout'&&<TryOut track={track} setTrack={setTrack} bundle={bundle} pm={pm} start={startTryout} onDone={sessionDone} onExit={sessionExited} busy={busy}/>}
  {view==='progress'&&<Progress track={track} setTrack={setTrack} data={progress} bundle={bundle} pm={pm} startMastery={startMastery} onDone={sessionDone} onExit={sessionExited} busy={busy}/>}
+ {view==='account'&&<Account me={me} onReset={async()=>{clearBundle();if(typeof window!=='undefined'){Object.keys(localStorage).filter(k=>k.startsWith('upkp_runner_')||k.startsWith('upkp_paused_bundle_')).forEach(k=>localStorage.removeItem(k))}await loadHome();await loadProgress(track)}}/>}
  </main></div>
 }
 
