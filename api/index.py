@@ -16,7 +16,7 @@ from upkp import mastery
 from upkp import tpa_enrichment
 from upkp.exam_engine import structural_signature
 
-app=FastAPI(title='UPKP Coach Final API',version='1.3.2',docs_url=None if os.getenv('VERCEL')=='1' else '/docs',redoc_url=None)
+app=FastAPI(title='UPKP Coach Final API',version='1.3.3',docs_url=None if os.getenv('VERCEL')=='1' else '/docs',redoc_url=None)
 app.add_middleware(CORSMiddleware,allow_origins=[],allow_credentials=True,allow_methods=['*'],allow_headers=['*'])
 
 class SameOriginMiddleware(BaseHTTPMiddleware):
@@ -54,6 +54,7 @@ class CloseIn(BaseModel):
     abandoned:bool=False
 class AdminReset(BaseModel): password:str=Field(min_length=8,max_length=128)
 class DeleteAccountIn(BaseModel): password:str=Field(min_length=8,max_length=128)
+class ResetLearningIn(BaseModel): password:str=Field(min_length=8,max_length=128)
 class ReportIn(BaseModel):
     item_signature:str=Field(min_length=8,max_length=64)
     question_id:str=Field(min_length=1,max_length=128)
@@ -81,7 +82,7 @@ def set_cookie(resp:Response,token:str):
 @app.get('/api/health')
 def health():
     ok=store.db_health()
-    return JSONResponse({'ok':ok,'version':'1.3.2','database':'postgres' if store.DATABASE_URL else 'sqlite-local'},status_code=200 if ok else 503)
+    return JSONResponse({'ok':ok,'version':'1.3.3','database':'postgres' if store.DATABASE_URL else 'sqlite-local'},status_code=200 if ok else 503)
 
 @app.post('/api/auth/register')
 def register(body:AuthIn,response:Response,request:Request):
@@ -139,8 +140,11 @@ def prep_questions(uid,sid,qs):
 def track_snapshot(uid,track):
     a=track_attempts(uid,track);m=learning.overall_metrics(a);p=learning.profile_attempts(a);rx=learning.daily_prescription(a,max_minutes=18)
     out={'track':track,'label':TRACKS[track],'metrics':m,'skills':p[:8],'prescription':rx,'review':learning.review_queue(a,6),'review_due':learning.spaced_review_queue(a,6)}
+    sessions=store.recent_sessions(uid,100)
     if track=='tpa':
-        out['mastery']=mastery.tpa_badges(a,store.recent_sessions(uid,100))
+        out['mastery']=mastery.tpa_badges(a,sessions)
+    elif track=='substansi':
+        out['mastery']=mastery.substansi_badges(a,sessions)
     return out
 
 @app.get('/api/home')
@@ -202,22 +206,27 @@ def tryout(track:str='tpa',u=Depends(current_user)):
 
 
 @app.get('/api/mastery')
-def mastery_status(u=Depends(current_user)):
-    a=track_attempts(u['id'],'tpa')
-    return mastery.tpa_badges(a,store.recent_sessions(u['id'],100))
+def mastery_status(track:str='tpa',u=Depends(current_user)):
+    if track not in TRACKS:raise HTTPException(404,'Unknown track')
+    a=track_attempts(u['id'],track);sessions=store.recent_sessions(u['id'],100)
+    return mastery.tpa_badges(a,sessions) if track=='tpa' else mastery.substansi_badges(a,sessions)
 
 @app.post('/api/session/mastery')
-def mastery_challenge(section:str,u=Depends(current_user)):
+def mastery_challenge(section:str,track:str='tpa',u=Depends(current_user)):
     throttle(u['id'],'session',30,3600)
-    current=mastery.tpa_badges(track_attempts(u['id'],'tpa'),store.recent_sessions(u['id'],100))
+    if track not in TRACKS:raise HTTPException(404,'Unknown track')
+    attempts=track_attempts(u['id'],track);sessions=store.recent_sessions(u['id'],100)
+    current=mastery.tpa_badges(attempts,sessions) if track=='tpa' else mastery.substansi_badges(attempts,sessions)
     badge=next((b for b in current['badges'] if b['section']==section),None)
     if not badge:raise HTTPException(404,'Unknown mastery section')
     if not badge['challenge_unlocked'] and not bool(int(os.getenv('UPKP_ALLOW_EARLY_MASTERY','0'))):
-        raise HTTPException(409,'Mastery Challenge belum terbuka. Selesaikan coverage dan Exam-level gate lebih dulu.')
-    qs=core.build_mastery_challenge(section)
-    s=store.new_learning_session(u['id'],'tpa','mastery',f"{badge['label']} Challenge",{'section':section,'question_count':len(qs)})
+        gate='coverage, retention, dan Exam-level gate' if track=='substansi' else 'coverage dan Exam-level gate'
+        raise HTTPException(409,f'Mastery Challenge belum terbuka. Selesaikan {gate} lebih dulu.')
+    qs=core.build_mastery_challenge(section,track)
+    if not qs:raise HTTPException(503,'Mastery Challenge belum dapat dibangun untuk section ini.')
+    s=store.new_learning_session(u['id'],track,'mastery',f"{badge['label']} Challenge",{'section':section,'question_count':len(qs),'track':track})
     for q in qs:q['_exam_mode']=True
-    return {'session':s,'questions':prep_questions(u['id'],s['id'],qs),'mode':'tryout','passes':1,'mastery_section':section}
+    return {'session':s,'questions':prep_questions(u['id'],s['id'],qs),'mode':'tryout','passes':1,'mastery_section':section,'mastery_track':track}
 
 @app.post('/api/session/resume/{sid}')
 def resume_session(sid:str,u=Depends(current_user)):
@@ -261,7 +270,7 @@ def close(body:CloseIn,u=Depends(current_user)):
     if body.abandoned:
         pm['recommendation']='Sesi dihentikan. Jawaban yang sudah dikirim tetap tersimpan dan ikut memperbarui profil belajar.'
     if sess.get('kind')=='mastery' and not body.abandoned:
-        verdict=mastery.evaluate_mastery_challenge(sess.get('meta',{}).get('section',''),rows,body.session_id)
+        verdict=mastery.evaluate_mastery_challenge(sess.get('meta',{}).get('section',''),rows,body.session_id,sess.get('track','tpa'))
         pm={**pm,**verdict}
     store.close_learning_session(u['id'],body.session_id,pm)
     return {'ok':True,'postmortem':pm}
@@ -274,6 +283,14 @@ def report_question(body:ReportIn,u=Depends(current_user)):
     result=store.report_question(u['id'],body.item_signature,body.question_id,body.reason,body.detail)
     if result.get('error')=='not_attempted':raise HTTPException(403,'Hanya soal yang pernah dikerjakan yang dapat dilaporkan')
     return result
+
+@app.post('/api/account/reset-learning')
+def reset_learning(body:ResetLearningIn,u=Depends(current_user)):
+    row=store.get_user_by_username(u['username'])
+    try:ph.verify(row['password_hash'],body.password)
+    except VerifyMismatchError:raise HTTPException(401,'Password salah')
+    store.reset_learning_history(u['id'])
+    return {'ok':True}
 
 @app.post('/api/account/delete')
 def delete_account(body:DeleteAccountIn,response:Response,u=Depends(current_user)):
@@ -292,14 +309,41 @@ def admin_calibration(u=Depends(admin_user)):return {'items':store.population_st
 @app.post('/api/admin/quarantine/{signature}')
 def admin_quarantine(signature:str,active:bool=True,u=Depends(admin_user)):
     store.set_quarantine(signature,active,'admin review')
+    store.write_audit(u['id'],'set_quarantine','question',signature,{'active':active})
     return {'ok':True,'active':active}
 
 @app.post('/api/admin/maintenance')
-def admin_maintenance(u=Depends(admin_user)):return {'ok':True,'cleanup':store.maintenance_cleanup()}
+def admin_maintenance(u=Depends(admin_user)):
+    cleanup=store.maintenance_cleanup()
+    store.write_audit(u['id'],'maintenance_cleanup','system','database',cleanup)
+    return {'ok':True,'cleanup':cleanup}
 
 @app.get('/api/admin/users')
 def admin_users(u=Depends(admin_user)):return {'users':store.list_users()}
+
+@app.get('/api/admin/data/overview')
+def admin_data_overview(u=Depends(admin_user)):return {'counts':store.admin_data_overview()}
+
+@app.get('/api/admin/data/users/{uid}')
+def admin_data_user(uid:str,u=Depends(admin_user)):
+    d=store.admin_user_detail(uid)
+    if not d:raise HTTPException(404,'User not found')
+    return d
+
+@app.get('/api/admin/audit')
+def admin_audit(u=Depends(admin_user)):return {'items':store.audit_log(150)}
+
 @app.post('/api/admin/users/{uid}/disable')
-def admin_disable(uid:str,disabled:bool=True,u=Depends(admin_user)):store.set_disabled(uid,disabled);return {'ok':True}
+def admin_disable(uid:str,disabled:bool=True,u=Depends(admin_user)):
+    if uid==u['id'] and disabled:raise HTTPException(409,'Admin tidak dapat menonaktifkan akun sendiri.')
+    store.set_disabled(uid,disabled);store.write_audit(u['id'],'set_user_disabled','user',uid,{'disabled':disabled});return {'ok':True}
+
 @app.post('/api/admin/users/{uid}/reset-password')
-def admin_reset(uid:str,body:AdminReset,u=Depends(admin_user)):store.reset_password(uid,ph.hash(body.password));return {'ok':True}
+def admin_reset(uid:str,body:AdminReset,u=Depends(admin_user)):
+    store.reset_password(uid,ph.hash(body.password));store.write_audit(u['id'],'reset_password','user',uid,{});return {'ok':True}
+
+@app.post('/api/admin/users/{uid}/reset-learning')
+def admin_reset_learning(uid:str,u=Depends(admin_user)):
+    if not store.admin_user_detail(uid):raise HTTPException(404,'User not found')
+    store.reset_learning_history(uid);store.write_audit(u['id'],'reset_learning_history','user',uid,{})
+    return {'ok':True}
