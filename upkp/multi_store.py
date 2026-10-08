@@ -45,6 +45,7 @@ def init_schema():
         CREATE TABLE IF NOT EXISTS question_reports(id INTEGER PRIMARY KEY AUTOINCREMENT,user_id TEXT NOT NULL,item_signature TEXT NOT NULL,question_id TEXT NOT NULL,reason TEXT NOT NULL,detail TEXT NOT NULL DEFAULT '',created_at REAL NOT NULL,UNIQUE(user_id,item_signature),FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE);
         CREATE TABLE IF NOT EXISTS content_quarantine(item_signature TEXT PRIMARY KEY,reason TEXT NOT NULL,report_count INTEGER NOT NULL DEFAULT 0,active INTEGER NOT NULL DEFAULT 1,created_at REAL NOT NULL,updated_at REAL NOT NULL);
         CREATE TABLE IF NOT EXISTS population_item_stats(item_signature TEXT PRIMARY KEY,skill TEXT NOT NULL,authored_level INTEGER NOT NULL,attempts INTEGER NOT NULL DEFAULT 0,correct INTEGER NOT NULL DEFAULT 0,skipped INTEGER NOT NULL DEFAULT 0,elapsed_sum_ms INTEGER NOT NULL DEFAULT 0,answer_changes INTEGER NOT NULL DEFAULT 0,high_confidence_wrong INTEGER NOT NULL DEFAULT 0,updated_at REAL NOT NULL);
+        CREATE TABLE IF NOT EXISTS admin_audit_log(id INTEGER PRIMARY KEY AUTOINCREMENT,actor_user_id TEXT NOT NULL,action TEXT NOT NULL,target_type TEXT NOT NULL,target_id TEXT NOT NULL,detail TEXT NOT NULL DEFAULT '{}',created_at REAL NOT NULL);
         ''')
         try:c.execute('ALTER TABLE attempts ADD COLUMN item_signature TEXT')
         except Exception:pass
@@ -361,6 +362,61 @@ def delete_user(uid):
     with connect() as c:
         execute(c,'DELETE FROM users WHERE id=?',(uid,))
         if _is_pg():c.commit()
+
+
+def _ensure_audit_table(c):
+    if _is_pg():
+        execute(c,'''CREATE TABLE IF NOT EXISTS admin_audit_log(
+            id bigserial PRIMARY KEY,
+            actor_user_id text NOT NULL,
+            action text NOT NULL,
+            target_type text NOT NULL,
+            target_id text NOT NULL,
+            detail text NOT NULL DEFAULT '{}',
+            created_at double precision NOT NULL
+        )''')
+        execute(c,'CREATE INDEX IF NOT EXISTS admin_audit_created_idx ON admin_audit_log(created_at DESC)')
+
+def write_audit(actor_uid,action,target_type,target_id,detail=None):
+    with connect() as c:
+        _ensure_audit_table(c)
+        execute(c,'INSERT INTO admin_audit_log(actor_user_id,action,target_type,target_id,detail,created_at) VALUES(?,?,?,?,?,?)',
+                (actor_uid,action,target_type,target_id,_json(detail or {}),time.time()))
+        if _is_pg():c.commit()
+
+def audit_log(limit=100):
+    with connect() as c:
+        _ensure_audit_table(c)
+        rows=fetchall(c,'SELECT id,actor_user_id,action,target_type,target_id,detail,created_at FROM admin_audit_log ORDER BY created_at DESC LIMIT ?',(limit,))
+    return [{'id':r[0],'actor_user_id':r[1],'action':r[2],'target_type':r[3],'target_id':r[4],
+             'detail':_decode(r[5],{}),'created_at':r[6]} for r in rows]
+
+def reset_learning_history(uid):
+    with connect() as c:
+        execute(c,'DELETE FROM question_tokens WHERE user_id=?',(uid,))
+        execute(c,'DELETE FROM attempts WHERE user_id=?',(uid,))
+        execute(c,'DELETE FROM learning_sessions WHERE user_id=?',(uid,))
+        if _is_pg():c.commit()
+
+def admin_data_overview():
+    tables=('users','learning_sessions','attempts','question_reports','content_quarantine','population_item_stats')
+    out={}
+    with connect() as c:
+        for table in tables:
+            out[table]=int(fetchone(c,f'SELECT COUNT(*) FROM {table}')[0])
+    return out
+
+def admin_user_detail(uid):
+    with connect() as c:
+        u=fetchone(c,'SELECT id,username,role,disabled,created_at FROM users WHERE id=?',(uid,))
+        if not u:return None
+        sessions=fetchall(c,'SELECT id,track,kind,title,started,ended,meta,summary FROM learning_sessions WHERE user_id=? ORDER BY started DESC LIMIT 50',(uid,))
+        attempts_rows=fetchall(c,'SELECT id,ts,session_id,question_id,track,skill,item_signature,payload FROM attempts WHERE user_id=? ORDER BY id DESC LIMIT 100',(uid,))
+    return {
+        'user':{'id':u[0],'username':u[1],'role':u[2],'disabled':bool(u[3]),'created_at':u[4]},
+        'sessions':[{'id':r[0],'track':r[1],'kind':r[2],'title':r[3],'started':r[4],'ended':r[5],'meta':_decode(r[6],{}),'summary':_decode(r[7],{})} for r in sessions],
+        'attempts':[{'id':r[0],'ts':r[1],'session_id':r[2],'question_id':r[3],'track':r[4],'skill':r[5],'item_signature':r[6],'payload':_decode(r[7],{})} for r in attempts_rows],
+    }
 
 init_schema()
 
