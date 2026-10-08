@@ -62,7 +62,12 @@ SECTION_LABELS = {
     "numerical":"Numerical Mastery",
     "logical":"Logical Mastery",
     "figural":"Figural Mastery",
-    "substansi":"Substansi Mastery",
+    "substansi_etika":"Etika PNS Mastery",
+    "substansi_wawasan":"Wawasan Kebangsaan Mastery",
+    "substansi_nilai":"Nilai Kemenkeu Mastery",
+    "substansi_kepegawaian":"Kepegawaian Mastery",
+    "substansi_keuangan":"Keuangan Negara Mastery",
+    "substansi_struktur":"Struktur Kemenkeu Mastery",
 }
 
 BADGE_SKILLS = {
@@ -76,6 +81,12 @@ BADGE_SKILLS = {
     ],
     "logical":["logika.silogisme_quantifier","logika.only_if","logika.penalaran_analitis","logika.constraint_ordering","logika.assignment_constraints"],
     "figural":["figural.deret","figural.analogi","figural.matrix_transform"],
+    "substansi_etika":["substansi.etika"],
+    "substansi_wawasan":["substansi.wawasan"],
+    "substansi_nilai":["substansi.nilai_kemenkeu"],
+    "substansi_kepegawaian":["substansi.kepegawaian"],
+    "substansi_keuangan":["substansi.keuangan_negara"],
+    "substansi_struktur":["substansi.struktur_kemenkeu"],
 }
 
 def label(skill: str) -> str:
