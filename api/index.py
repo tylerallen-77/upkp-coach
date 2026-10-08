@@ -9,14 +9,14 @@ from pydantic import BaseModel, Field
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 
-from upkp import curriculum, materi, learning, engine, material_meta, course_materials, official_sources
+from upkp import curriculum, materi, learning, engine, material_meta, course_materials, official_sources, lesson_cards
 from upkp import final_core as core
 from upkp import multi_store as store
 from upkp import mastery
 from upkp import tpa_enrichment
 from upkp.exam_engine import structural_signature
 
-app=FastAPI(title='UPKP Coach Final API',version='1.6.0',docs_url=None if os.getenv('VERCEL')=='1' else '/docs',redoc_url=None)
+app=FastAPI(title='UPKP Coach Final API',version='1.6.1',docs_url=None if os.getenv('VERCEL')=='1' else '/docs',redoc_url=None)
 app.add_middleware(CORSMiddleware,allow_origins=[],allow_credentials=True,allow_methods=['*'],allow_headers=['*'])
 
 class SameOriginMiddleware(BaseHTTPMiddleware):
@@ -82,7 +82,7 @@ def set_cookie(resp:Response,token:str):
 @app.get('/api/health')
 def health():
     ok=store.db_health()
-    return JSONResponse({'ok':ok,'version':'1.6.0','database':'postgres' if store.DATABASE_URL else 'sqlite-local'},status_code=200 if ok else 503)
+    return JSONResponse({'ok':ok,'version':'1.6.1','database':'postgres' if store.DATABASE_URL else 'sqlite-local'},status_code=200 if ok else 503)
 
 @app.post('/api/auth/register')
 def register(body:AuthIn,response:Response,request:Request):
@@ -191,7 +191,8 @@ def catalog(track:str='tpa',u=Depends(current_user)):
                          'source_status':meta.get('status'),'source_status_label':meta.get('status_label'),
                          'verified_at':meta.get('verified'),'freshness_note':meta.get('note'),'page':b.halaman if track=='tpa' else '',
                          'learner':chapter_stats,'objectives':objectives,'self_checks':checks,
-                         'official_scope_note':official_sources.VALIDATION.get('tskkwk_scope') if track=='substansi' else ''})
+                         'official_scope_note':official_sources.VALIDATION.get('tskkwk_scope') if track=='substansi' else '',
+                         'lesson_cards':lesson_cards.cards(b.kode)})
     return {'track':track,'chapters':chapters}
 
 @app.post('/api/session/guided')
