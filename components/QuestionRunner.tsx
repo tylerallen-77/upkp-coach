@@ -3,7 +3,7 @@ import {useEffect,useRef,useState} from 'react'
 import {api} from '../lib/api'
 import RichContent from './RichContent'
 
-type Q={token:string,id:string,bab:string,lv:number,difficulty_label?:string,item_signature?:string,stem:string,opts:string[],svg?:string,opt_svgs?:string[],waktu:number,skill?:string}
+type Q={token:string,id:string,bab:string,lv:number,difficulty_label?:string,item_signature?:string,stem:string,opts:string[],svg?:string,opt_svgs?:string[],waktu:number,skill?:string,hints?:string[]}
 type Props={bundle:any,onDone:(pm:any)=>void,onExit?:()=>void}
 export default function QuestionRunner({bundle,onDone,onExit}:Props){
  const sid=String(bundle?.session?.id||'')
@@ -17,20 +17,20 @@ export default function QuestionRunner({bundle,onDone,onExit}:Props){
  const [i,setI]=useState(initial?.i||0),[pass,setPass]=useState(initial?.pass||1),[deferred,setDeferred]=useState<number[]>(initial?.deferred||[])
  const [selected,setSelected]=useState<number|null>(initial?.selected??null)
  const [confidence,setConfidence]=useState(initial?.confidence||''),[changes,setChanges]=useState(initial?.changes||0),[first,setFirst]=useState<number|null>(initial?.first??null)
- const [feedback,setFeedback]=useState<any>(initial?.feedback||null),[busy,setBusy]=useState(false),[elapsed,setElapsed]=useState(initial?.elapsed||0),[reported,setReported]=useState(false)
+ const [feedback,setFeedback]=useState<any>(initial?.feedback||null),[busy,setBusy]=useState(false),[elapsed,setElapsed]=useState(initial?.elapsed||0),[reported,setReported]=useState(false),[hintLevel,setHintLevel]=useState(initial?.hintLevel||0)
  const started=useRef(performance.now()-(initial?.elapsed||0)); const current=questions[indices[i]]
  const isExam=bundle.mode==='tryout'
 
  useEffect(()=>{
    if(!sid||typeof window==='undefined')return
-   const state={indices,i,pass,deferred,selected,confidence,changes,first,feedback,elapsed}
+   const state={indices,i,pass,deferred,selected,confidence,changes,first,feedback,elapsed,hintLevel}
    localStorage.setItem('upkp_runner_'+sid,JSON.stringify(state))
- },[sid,indices,i,pass,deferred,selected,confidence,changes,first,feedback,elapsed])
+ },[sid,indices,i,pass,deferred,selected,confidence,changes,first,feedback,elapsed,hintLevel])
 
  useEffect(()=>{const x=setInterval(()=>setElapsed(performance.now()-started.current),250);return()=>clearInterval(x)},[i,pass])
 
  function resetForNext(){
-   started.current=performance.now();setElapsed(0);setSelected(null);setConfidence('');setChanges(0);setFirst(null);setFeedback(null);setReported(false)
+   started.current=performance.now();setElapsed(0);setSelected(null);setConfidence('');setChanges(0);setFirst(null);setFeedback(null);setReported(false);setHintLevel(0)
  }
  async function finish(){
    setBusy(true)
@@ -56,7 +56,7 @@ export default function QuestionRunner({bundle,onDone,onExit}:Props){
    if(feedback){advance();return} if(selected===null&&!skip)return
    setBusy(true)
    try{
-    const d=await api('/api/attempt',{method:'POST',body:JSON.stringify({question_token:current.token,selected,elapsed_ms:Math.round(elapsed),first_selection_ms:first,answer_changes:changes,confidence,skipped:skip,pass_number:pass,session_id:sid})})
+    const d=await api('/api/attempt',{method:'POST',body:JSON.stringify({question_token:current.token,selected,elapsed_ms:Math.round(elapsed),first_selection_ms:first,answer_changes:changes,confidence,skipped:skip,pass_number:pass,session_id:sid,hint_level:hintLevel})})
     if(skip&&isExam&&pass<3)setDeferred(x=>[...x,indices[i]])
     if(d.deferred_feedback){advance();return}
     setFeedback(d)
@@ -76,6 +76,7 @@ export default function QuestionRunner({bundle,onDone,onExit}:Props){
     <div className="options">{current.opts.map((o,idx)=><button key={idx} className={'option '+(selected===idx?'selected ':'')+(feedback&&feedback.answer===idx?'correct ':'')+(feedback&&selected===idx&&!feedback.correct?'wrong ':'')} onClick={()=>pick(idx)}>
       <b>{'ABCDE'[idx]}</b>{current.opt_svgs?.[idx]?<span className="optSvg" dangerouslySetInnerHTML={{__html:current.opt_svgs[idx]}}/>:<span>{o}</span>}
     </button>)}</div>
+    {!isExam&&!feedback&&current.hints?.length>0&&<div className="hintCoach"><div className="hintCoachHead"><div><span className="eyebrow">BUTUH ARAHAN?</span><b>Hint bertahap — tanpa membocorkan jawaban.</b></div>{hintLevel<Math.min(3,current.hints.length)&&<button className="hintButton" onClick={()=>setHintLevel((x:number)=>Math.min(x+1,Math.min(3,current.hints?.length||0)))}>Buka Hint {hintLevel+1}</button>}</div>{current.hints.slice(0,hintLevel).map((h:string,idx:number)=><div className="hintStep" key={idx}><span>{idx+1}</span><p>{h}</p></div>)}{hintLevel>0&&<small className="hintEvidence">Hint dipakai level {hintLevel}. Jawaban benar tetap tercatat, tapi bobot evidence mastery lebih rendah daripada jawaban mandiri.</small>}</div>}
     {feedback&&<div className={'feedback '+(feedback.correct?'ok':'no')}><strong>{feedback.correct?'Benar':'Belum tepat'}</strong><RichContent text={feedback.explanation}/>{feedback.shortcut&&<p><b>⚡ Jalan cepat:</b> {feedback.shortcut}</p>}{feedback.teacher_feedback&&<div className="teacherFeedback"><span className="eyebrow">COACH NOTE</span><b>{feedback.teacher_feedback.title}</b><p>{feedback.teacher_feedback.action}</p></div>}<button className="reportBtn" onClick={report} disabled={reported}>{reported?'✓ Laporan terkirim':'⚑ Laporkan soal ini'}</button></div>}
     <div className="runnerActions">{!feedback&&<button className="btn ghost" onClick={()=>submit(true)} disabled={busy}>{isExam?'Parkir ke pass berikutnya':'Lewati'}</button>}<button className="btn primary" disabled={busy||(selected===null&&!feedback)} onClick={()=>feedback?advance():submit(false)}>{busy?'Menyimpan…':feedback?'Lanjut →':'Jawab →'}</button></div>
    </section>
