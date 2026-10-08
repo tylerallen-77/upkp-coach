@@ -1,9 +1,13 @@
-"""Daftar bab mengikuti DAFTAR ISI buku "Anak UPKP" (29 bab, 3 bagian besar).
+"""Kurikulum kerja UPKP Coach.
 
-`sumber` menunjukkan asal isi:
-  - "buku"   : pola, rumus, dan jenis soal dibaca dari halaman buku yang diunggah (hlm. 1-82).
-  - "umum"   : halaman buku belum tersedia; isi disusun dari pengetahuan umum dan sumber resmi
-               yang bisa dicek. WAJIB dicocokkan dengan buku saat halamannya tersedia.
+Struktur resmi UPKP 2026 mengikuti ND-1188/PP.7/2026:
+- Tes Potensi: Verbal, Numerikal, Figural
+- TSKKWK
+- Tes Psikologi
+
+Bab di bawah adalah struktur pembelajaran UPKP Coach. Khusus TSKKWK, pembagian
+ke enam domain adalah domain belajar internal, bukan klaim subtes resmi.
+`sumber` hanya menandai provenance konten awal dan tidak ditampilkan sebagai merek.
 """
 from __future__ import annotations
 
