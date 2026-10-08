@@ -59,7 +59,7 @@ CHAPTER_DEFAULT = {
 
 SECTION_LABELS = {
     "verbal":"Verbal Mastery",
-    "numerical":"Numerical Mastery",
+    "numerical":"Numerikal Mastery",
     "logical":"Logical Mastery",
     "figural":"Figural Mastery",
     "substansi_etika":"Etika PNS Mastery",
@@ -71,7 +71,7 @@ SECTION_LABELS = {
 }
 
 BADGE_SKILLS = {
-    "verbal":["verbal.padanan_relasi","verbal.pengelompokan","verbal.critical_inference"],
+    "verbal":["verbal.padanan_relasi","verbal.pengelompokan","verbal.critical_inference","logika.silogisme_quantifier","logika.only_if","logika.penalaran_analitis","logika.constraint_ordering","logika.assignment_constraints"],
     "numerical":[
         "numerik.operasi_bilangan","numerik.persamaan","numerik.aritmatika_sosial",
         "numerik.ratio","numerik.reverse_percentage","numerik.work_rate",
