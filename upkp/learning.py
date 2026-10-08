@@ -369,3 +369,19 @@ def enrich_postmortem(pm:dict)->dict:
     pm["clean_correct"]=pm.get("n",0)-sum(int(v) for k,v in errors.items() if k!="clean_correct")
     return pm
 
+
+def attempt_coach_note(a:dict)->dict:
+    e=a.get("error_type")
+    notes={
+        "clean_correct":("Bagus. Metodenya sudah benar dan efisien.","Jangan overthink; lanjutkan."),
+        "slow_correct":("Benar, tetapi waktunya terlalu mahal.","Bandingkan dengan shortcut/cara cepat dan cari langkah yang bisa dipangkas."),
+        "hesitation":("Jawaban benar, tapi reasoning belum mantap.","Sebelum lanjut, sebutkan satu alasan kenapa pilihan ini benar."),
+        "high_confidence_wrong":("Ini miskonsepsi, bukan sekadar miss.","Jangan hafal kunci. Baca penjelasan sampai tahu aturan mana yang tadi keliru."),
+        "premature_guess":("Kamu memutuskan terlalu cepat.","Ulangi proses: identifikasi yang ditanya → syarat kunci → eliminasi."),
+        "unstable_reasoning":("Perubahan jawaban menunjukkan reasoning belum stabil.","Tulis/ingat aturan utama dulu sebelum memilih opsi."),
+        "wrong":("Jawaban belum tepat.","Cari langkah pertama yang salah, bukan hanya melihat jawaban akhir."),
+        "skipped":("Soal dilewati.","Pastikan ini keputusan strategi, bukan karena konsepnya belum dikenali."),
+    }
+    title,action=notes.get(e,("Catat pola jawabanmu.","Gunakan feedback ini untuk percobaan berikutnya."))
+    return {"title":title,"action":action,"error_type":e}
+
