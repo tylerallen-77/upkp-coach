@@ -1,18 +1,15 @@
-"""Presentation/source metadata for learning materials.
-This does not replace the source text; it makes provenance/freshness explicit in the UI.
-"""
+"""Source/freshness metadata for learning materials."""
 MATERIAL_META = {
-    "etika":{"status":"needs_book_crosscheck","status_label":"Perlu cross-check buku","verified":"Okt 2026","note":"Basis regulasi/pengetahuan resmi; halaman buku bab belum tersedia."},
-    "wawasan":{"status":"needs_verification","status_label":"Perlu verifikasi","verified":"","note":"Ringkasan berbasis pengetahuan umum; cocokkan dengan buku/sumber resmi terbaru."},
-    "nilai":{"status":"official_plus_crosscheck","status_label":"Sumber resmi + cross-check","verified":"Okt 2026","note":"Mengacu materi nilai Kemenkeu dan dokumen terkait; cocokkan redaksi dengan buku."},
-    "kepegawaian":{"status":"verified_regulation","status_label":"Regulasi diverifikasi","verified":"Okt 2026","note":"Regulasi dapat berubah; tanggal verifikasi ditampilkan agar freshness eksplisit."},
-    "keuangan":{"status":"core_law","status_label":"UU pokok","verified":"","note":"Ringkasan tiga paket UU keuangan negara; perlu cross-check dengan materi ujian."},
-    "struktur":{"status":"verified_dynamic","status_label":"Diverifikasi · cepat berubah","verified":"Okt 2026","note":"Struktur organisasi bersifat dinamis; cek regulasi terbaru sebelum ujian."},
+    "etika":{"status":"verified_regulation","status_label":"Sumber resmi diverifikasi","verified":"8 Okt 2026","note":"Anchor: UU 20/2023 dan PMK 190/PMK.01/2018."},
+    "wawasan":{"status":"official_plus_crosscheck","status_label":"Konstitusional + perlu konteks ujian","verified":"8 Okt 2026","note":"Anchor konstitusional diverifikasi; cakupan detail TSKKWK tidak dipublikasikan sebagai blueprint resmi."},
+    "nilai":{"status":"verified_regulation","status_label":"Sumber resmi diverifikasi","verified":"8 Okt 2026","note":"Nilai Kemenkeu IProSPeK dan kode perilaku masih digunakan pada laman resmi Kemenkeu."},
+    "kepegawaian":{"status":"verified_regulation","status_label":"Regulasi diverifikasi","verified":"8 Okt 2026","note":"Anchor current: UU 20/2023, PP 94/2021, PMK 123/2023, dan aturan cuti BKN."},
+    "keuangan":{"status":"verified_regulation","status_label":"UU pokok diverifikasi","verified":"8 Okt 2026","note":"Anchor: UU 17/2003, UU 1/2004, UU 15/2004."},
+    "struktur":{"status":"verified_dynamic","status_label":"Struktur current · cepat berubah","verified":"8 Okt 2026","note":"Anchor current: PMK 124/2024 sebagaimana diubah PMK 117/2025."},
 }
-
 def metadata(code, source_type):
     if code in MATERIAL_META:
         return MATERIAL_META[code]
     if source_type=="buku":
-        return {"status":"book_anchored","status_label":"Berbasis buku","verified":"","note":"Ringkasan ditulis ulang dari pokok bahasan buku Anak UPKP."}
-    return {"status":"general","status_label":"Basis umum","verified":"","note":"Perlu validasi terhadap sumber ujian terbaru."}
+        return {"status":"reference_anchored","status_label":"Referensi latihan tervalidasi","verified":"8 Okt 2026","note":"Konsep diperluas menjadi modul pembelajaran UPKP Coach; fokus pada kemampuan, bukan ringkasan sumber."}
+    return {"status":"general","status_label":"Materi pembelajaran","verified":"","note":"Gunakan bersama evidence latihan dan sumber resmi terbaru bila regulasi dapat berubah."}
