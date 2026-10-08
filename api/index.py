@@ -9,14 +9,14 @@ from pydantic import BaseModel, Field
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 
-from upkp import curriculum, materi, learning, engine
+from upkp import curriculum, materi, learning, engine, material_meta
 from upkp import final_core as core
 from upkp import multi_store as store
 from upkp import mastery
 from upkp import tpa_enrichment
 from upkp.exam_engine import structural_signature
 
-app=FastAPI(title='UPKP Coach Final API',version='1.3.3',docs_url=None if os.getenv('VERCEL')=='1' else '/docs',redoc_url=None)
+app=FastAPI(title='UPKP Coach Final API',version='1.4.1',docs_url=None if os.getenv('VERCEL')=='1' else '/docs',redoc_url=None)
 app.add_middleware(CORSMiddleware,allow_origins=[],allow_credentials=True,allow_methods=['*'],allow_headers=['*'])
 
 class SameOriginMiddleware(BaseHTTPMiddleware):
@@ -82,7 +82,7 @@ def set_cookie(resp:Response,token:str):
 @app.get('/api/health')
 def health():
     ok=store.db_health()
-    return JSONResponse({'ok':ok,'version':'1.3.3','database':'postgres' if store.DATABASE_URL else 'sqlite-local'},status_code=200 if ok else 503)
+    return JSONResponse({'ok':ok,'version':'1.4.1','database':'postgres' if store.DATABASE_URL else 'sqlite-local'},status_code=200 if ok else 503)
 
 @app.post('/api/auth/register')
 def register(body:AuthIn,response:Response,request:Request):
@@ -172,8 +172,11 @@ def catalog(track:str='tpa',u=Depends(current_user)):
         extra=tpa_enrichment.ENRICHMENT.get(b.kode,'') if track=='tpa' else ''
         material=materi.MATERI.get(b.kode,'')
         if extra: material=(material+'\n\n'+extra).strip()
+        meta=material_meta.metadata(b.kode,b.sumber)
         chapters.append({'code':b.kode,'title':b.judul,'subtest':b.subtes,'source_type':b.sumber,'source_note':source_note,'material':material,
-                         'source_refs':tpa_enrichment.SOURCES if track=='tpa' else []})
+                         'source_refs':tpa_enrichment.SOURCES if track=='tpa' else [],
+                         'source_status':meta.get('status'),'source_status_label':meta.get('status_label'),
+                         'verified_at':meta.get('verified'),'freshness_note':meta.get('note'),'page':b.halaman})
     return {'track':track,'chapters':chapters}
 
 @app.post('/api/session/guided')
