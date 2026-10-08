@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 
-from upkp import curriculum, materi, learning, engine, material_meta, course_materials, official_sources, lesson_cards, study_tools
+from upkp import curriculum, materi, learning, engine, material_meta, course_materials, official_sources, lesson_cards, study_tools, regulation_deepdives
 from upkp import final_core as core
 from upkp import multi_store as store
 from upkp import mastery
@@ -181,6 +181,8 @@ def catalog(track:str='tpa',u=Depends(current_user)):
         material=materi.MATERI.get(b.kode,'')
         if extra: material=(material+'\n\n'+extra).strip()
         material=course_materials.expand(b.kode,material)
+        deep=regulation_deepdives.get(b.kode) if track=='substansi' else ''
+        if deep: material=(material+'\n\n'+deep).strip()
         meta=material_meta.metadata(b.kode,b.sumber)
         chapter_stats=learning.chapter_coaching(track_attempts(u['id'],track),b.kode,track)
         headings=[ln[4:].strip() for ln in material.splitlines() if ln.strip().startswith('### ')][:6]
