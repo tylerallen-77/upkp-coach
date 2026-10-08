@@ -2,8 +2,12 @@
 import React from 'react'
 
 function Inline({text}:{text:string}){
- const parts=text.split(/(\*\*[^*]+\*\*)/g).filter(Boolean)
- return <>{parts.map((p,i)=>p.startsWith('**')&&p.endsWith('**')?<strong key={i}>{p.slice(2,-2)}</strong>:<React.Fragment key={i}>{p}</React.Fragment>)}</>
+ const parts=text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g).filter(Boolean)
+ return <>{parts.map((p,i)=>{
+   if(p.startsWith('**')&&p.endsWith('**'))return <strong key={i}>{p.slice(2,-2)}</strong>
+   if(p.startsWith('*')&&p.endsWith('*'))return <em key={i}>{p.slice(1,-1)}</em>
+   return <React.Fragment key={i}>{p}</React.Fragment>
+ })}</>
 }
 function Table({lines}:{lines:string[]}){
  const rows=lines.map(x=>x.split('|').map(c=>c.trim()).filter(Boolean))
