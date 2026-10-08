@@ -272,92 +272,94 @@ Putaran (90°, 180°), pembalikan warna, penambahan atau pengurangan sisi, pertu
 3. Coret opsi yang gagal pada atribut pertama yang diperiksa. Biasanya dua atau tiga opsi gugur dengan sekali cek warna atau bentuk.
 """
 
-# ---- TSKKWK: isi umum, bukan dari buku
+# ---- TSKKWK: validated learning domains (not claimed as official subtests)
 MATERI["etika"] = """
-### Nilai dasar ASN: BerAKHLAK
-**Ber**orientasi pelayanan, **A**kuntabel, **K**ompeten, **H**armonis, **L**oyal, **A**daptif, **K**olaboratif.
+### Nilai dasar dan peran ASN
+UU 20/2023 tentang ASN menekankan ASN yang profesional, netral, bebas dari intervensi politik, bersih dari KKN, serta berorientasi pelayanan. Nilai dasar ASN dikenal sebagai **BerAKHLAK**: Berorientasi Pelayanan, Akuntabel, Kompeten, Harmonis, Loyal, Adaptif, dan Kolaboratif.
 
-### Hal yang sering diuji
-- Dasar hukum: UU 20/2023 tentang ASN; kode etik dan kode perilaku menjabarkan nilai dasar.
-- Gratifikasi: pemberian terkait jabatan → tolak dan laporkan.
-- Netralitas, menjaga rahasia jabatan, tidak menyalahgunakan wewenang, tidak menyebarkan hoaks.
-- Etika bermedia sosial dan berhubungan dengan pihak yang dilayani.
+### Kode etik dan kode perilaku Kemenkeu
+Dalam konteks Kementerian Keuangan, PMK 190/PMK.01/2018 menjadi salah satu anchor penting untuk kode etik dan kode perilaku pegawai.
 
-### Cara cepat
-Pada soal kasus, pilih jawaban yang (1) mematuhi aturan, (2) menjaga kepentingan publik, (3) menyampaikan lewat jalur resmi, bukan yang paling nyaman atau paling cepat.
+### Prinsip soal kasus
+- utamakan kepentingan publik dan organisasi;
+- hindari konflik kepentingan;
+- jaga netralitas dan kerahasiaan;
+- gunakan kewenangan secara sah;
+- gunakan jalur resmi bila menemukan dugaan pelanggaran.
+
+### Catatan belajar
+Pada soal situasional, pilihan terbaik biasanya bukan yang paling nyaman, melainkan yang paling dapat dipertanggungjawabkan secara aturan, etika, dan transparansi.
 """
 
 MATERI["wawasan"] = """
-### Pokok bahasan
-- **Pancasila:** 1 Ketuhanan Yang Maha Esa; 2 Kemanusiaan yang Adil dan Beradab; 3 Persatuan Indonesia; 4 Kerakyatan yang Dipimpin oleh Hikmat Kebijaksanaan dalam Permusyawaratan/Perwakilan; 5 Keadilan Sosial bagi Seluruh Rakyat Indonesia.
-- **UUD 1945:** Pembukaan (alinea 4 memuat dasar negara), empat kali amandemen (1999–2002), Pasal 1 ayat (2) tentang kedaulatan rakyat.
-- **Empat pilar:** Pancasila, UUD NRI 1945, NKRI, Bhinneka Tunggal Ika.
-- Nasionalisme, bela negara, wawasan nusantara, ketahanan nasional, hak dan kewajiban warga negara, ancaman dan tantangan kebangsaan.
+### Pancasila
+Kuasai lima sila, hubungan antarsila, dan contoh penerapannya. Jangan berhenti pada hafalan lambang; pahami nilai yang diwujudkan dalam tindakan.
 
-### Cara cepat
-Hafal urutan sila dengan lambang (bintang, rantai, beringin, banteng, padi dan kapas). Kaitkan butir pengamalan dengan sila asalnya.
+### UUD NRI Tahun 1945
+Fokus pada Pembukaan, tujuan negara, prinsip kedaulatan rakyat, negara hukum, struktur dasar ketatanegaraan, serta hak dan kewajiban warga negara.
+
+### Persatuan dan kebangsaan
+Pahami NKRI, Bhinneka Tunggal Ika, nasionalisme, bela negara, toleransi, wawasan nusantara, dan bagaimana prinsip-prinsip itu diterapkan dalam pelayanan publik.
+
+### Cara belajar
+Latih dua arah: konsep → contoh perilaku, dan kasus → prinsip konstitusional/kebangsaan yang paling relevan.
 """
 
 MATERI["nilai"] = """
 ### IProSPeK
-Nilai-Nilai Kementerian Keuangan: **I**ntegritas, **Pro**fesionalisme, **S**inergi, **Pe**layanan, **K**esempurnaan (KMK 312/KMK.01/2011). Kode etik dan kode perilaku: PMK 190/PMK.01/2018.
+Nilai-Nilai Kementerian Keuangan: **Integritas, Profesionalisme, Sinergi, Pelayanan, dan Kesempurnaan**. Nilai ini masih digunakan pada laman resmi Kementerian Keuangan; kaidah perilaku utamanya berakar pada KMK 312/KMK.01/2011 dan kode etik/perilaku pada PMK 190/PMK.01/2018.
 
-| Nilai | Makna ringkas | Kata kunci perilaku utama |
+| Nilai | Fokus utama | Contoh perilaku |
 |---|---|---|
-| Integritas | berpikir, berkata, berperilaku, bertindak baik dan benar; memegang teguh kode etik dan prinsip moral | jujur, tulus, dapat dipercaya, transparan, menjaga martabat |
-| Profesionalisme | bekerja tuntas dan akurat atas dasar kompetensi terbaik dengan tanggung jawab dan komitmen tinggi | ahli, efisien dan efektif, cerdas, cepat, tuntas |
-| Sinergi | membangun kerja sama internal yang produktif dan kemitraan harmonis dengan pemangku kepentingan | sangka baik, saling percaya, menghormati, terbuka |
-| Pelayanan | melayani demi kepuasan pemangku kepentingan dengan sepenuh hati, transparan, cepat, akurat, aman | berorientasi kepuasan, ramah, adil |
-| Kesempurnaan | senantiasa melakukan upaya perbaikan di segala bidang untuk menjadi dan memberikan yang terbaik | perbaikan berkelanjutan, inovasi |
+| Integritas | benar, jujur, dapat dipercaya | objektif, transparan, menjaga martabat |
+| Profesionalisme | kompeten, akurat, tuntas | bekerja efektif, bertanggung jawab |
+| Sinergi | kerja sama produktif | terbuka, saling percaya, solusi bersama |
+| Pelayanan | kepuasan pemangku kepentingan | cepat, akurat, aman, proaktif |
+| Kesempurnaan | perbaikan berkelanjutan | inovasi, kreativitas, kualitas lebih baik |
 
-> Sumber: laman resmi Kemenkeu dan DJPb. Gunakan redaksi sumber resmi terbaru bila terdapat pembaruan regulasi.
-
-### Cara cepat
-Kata kunci → nilai: tuntas/akurat → Profesionalisme; jujur/transparan → Integritas; kerja sama → Sinergi; kepuasan pemangku kepentingan → Pelayanan; perbaikan terus-menerus → Kesempurnaan.
+### Cara membedakan
+Cari perilaku dominan dalam kasus. Satu tindakan bisa mencerminkan beberapa nilai, tetapi soal biasanya meminta nilai yang paling langsung menjelaskan perilaku tersebut.
 """
 
 MATERI["kepegawaian"] = """
-### Dasar hukum
-- **UU 20/2023 tentang ASN** (menggantikan UU 5/2014).
-- **PP 94/2021 tentang Disiplin PNS** (menggantikan PP 53/2010). Memuat kewajiban, larangan, dan hukuman disiplin.
-- PMK 123/2023 (tata cara pemeriksaan pelanggaran disiplin di lingkungan Kemenkeu).
+### Peta regulasi current
+- **UU 20/2023 tentang ASN** menggantikan UU 5/2014.
+- **PP 94/2021 tentang Disiplin PNS** mengatur kewajiban, larangan, pelanggaran, hukuman, kewenangan, dan upaya administratif.
+- **PMK 123/2023** mengatur tata cara pemeriksaan pelanggaran disiplin dan penjatuhan hukuman disiplin di lingkungan Kementerian Keuangan.
+- **Peraturan BKN 24/2017 jo. Peraturan BKN 7/2021** menjadi anchor tata cara pemberian cuti PNS.
 
-### Hukuman disiplin (PP 94/2021)
-- **Ringan:** teguran lisan, teguran tertulis, pernyataan tidak puas secara tertulis.
-- **Sedang:** pemotongan tunjangan kinerja dengan jangka waktu tertentu.
-- **Berat:** penurunan jabatan, pembebasan dari jabatan, pemberhentian dengan hormat tidak atas permintaan sendiri, pemberhentian tidak dengan hormat.
+### Disiplin
+PP 94/2021 mengenal tingkat hukuman disiplin **ringan, sedang, dan berat**. Untuk hukuman sedang terdapat ketentuan transisi pelaksanaan yang perlu dibaca bersama peraturan pelaksana BKN dan ketentuan internal Kemenkeu; karena itu jangan menghafal satu daftar sanksi tanpa konteks regulasi yang berlaku.
 
-### Cara cepat
-Hukuman makin berat jika melanggar larangan berat atau berulang. Jenis dan tingkat selalu berurutan: ringan → sedang → berat.
+### Cara mengerjakan soal
+Pisahkan tiga lapis: apa pelanggarannya, bagaimana proses pemeriksaannya, dan siapa pejabat/otoritas yang berwenang.
 """
 
 MATERI["keuangan"] = """
-### Tiga paket UU keuangan negara
-- **UU 17/2003** tentang Keuangan Negara.
-- **UU 1/2004** tentang Perbendaharaan Negara.
-- **UU 15/2004** tentang Pemeriksaan Pengelolaan dan Tanggung Jawab Keuangan Negara.
+### Tiga pilar utama
+- **UU 17/2003 tentang Keuangan Negara**: ruang lingkup, asas, kekuasaan pengelolaan, APBN/APBD.
+- **UU 1/2004 tentang Perbendaharaan Negara**: pejabat perbendaharaan, pelaksanaan pendapatan/belanja, uang, utang/piutang, investasi, BMN/D, penatausahaan, pertanggungjawaban, dan pengendalian intern.
+- **UU 15/2004**: pemeriksaan pengelolaan dan tanggung jawab keuangan negara oleh BPK.
 
-### Pokok
-- Keuangan negara: semua hak dan kewajiban negara yang dapat dinilai dengan uang, serta segala sesuatu yang dapat dijadikan milik negara.
-- Presiden memegang kekuasaan pengelolaan keuangan negara, dikuasakan kepada **Menteri Keuangan** (pengelola fiskal dan wakil pemerintah dalam kepemilikan kekayaan negara yang dipisahkan) dan **menteri/pimpinan lembaga** (pengguna anggaran/barang).
-- Tahun anggaran = Januari–Desember. RAPBN diajukan Agustus tahun sebelumnya.
-- Pemeriksa eksternal: **BPK**. Pengawas internal: Inspektorat dan BPKP.
+### Kekuasaan pengelolaan
+Presiden memegang kekuasaan pengelolaan keuangan negara dan mendelegasikan pelaksanaannya sesuai undang-undang, termasuk kepada Menteri Keuangan sebagai pengelola fiskal dan kepada menteri/pimpinan lembaga sebagai pengguna anggaran/barang.
 
-### Cara cepat
-Urutan siklus APBN: perencanaan → penyusunan → pembahasan DPR → pelaksanaan → pengawasan → pertanggungjawaban (laporan keuangan diperiksa BPK).
+### Siklus belajar
+Perencanaan → penganggaran → pelaksanaan → penatausahaan → pelaporan/pertanggungjawaban → pemeriksaan → tindak lanjut.
+
+### Bedakan fungsi
+**BPK** adalah pemeriksa eksternal yang bebas dan mandiri. Pengawasan/pengendalian intern berada dalam sistem pengendalian intern pemerintah dan aparat pengawasan intern sesuai kewenangannya; jangan menyamakan fungsi internal dengan pemeriksaan eksternal BPK.
 """
 
 MATERI["struktur"] = """
-### Unit eselon I utama
-Sekretariat Jenderal; Inspektorat Jenderal; **DJA** (Anggaran); **DJP** (Pajak); **DJBC** (Bea dan Cukai); **DJPb** (Perbendaharaan); **DJKN** (Kekayaan Negara); **DJPK** (Perimbangan Keuangan); **DJPPR** (Pengelolaan Pembiayaan dan Risiko); **BPPK** (Pendidikan dan Pelatihan Keuangan).
+### Baseline organisasi current
+Struktur Kementerian Keuangan saat ini harus mengacu pada **PMK 124 Tahun 2024** tentang Organisasi dan Tata Kerja Kementerian Keuangan sebagaimana diubah dengan **PMK 117 Tahun 2025**. PMK 118/PMK.01/2021 sudah bukan baseline aktif.
 
-### Perubahan terbaru
-- **Badan Kebijakan Fiskal (BKF) dihapus** dari susunan organisasi.
-- Dibentuk **Direktorat Jenderal Strategi Ekonomi dan Fiskal**, **Direktorat Jenderal Stabilitas dan Pengembangan Sektor Keuangan**, dan **Badan Teknologi, Informasi, dan Intelijen Keuangan**.
-- Juga ada Staf Ahli Menteri.
+### Unit organisasi pimpinan tinggi madya / Eselon I
+Sekretariat Jenderal; Inspektorat Jenderal; Direktorat Jenderal Strategi Ekonomi dan Fiskal; Direktorat Jenderal Anggaran; Direktorat Jenderal Pajak; Direktorat Jenderal Bea dan Cukai; Direktorat Jenderal Perbendaharaan; Direktorat Jenderal Kekayaan Negara; Direktorat Jenderal Perimbangan Keuangan; Direktorat Jenderal Pengelolaan Pembiayaan dan Risiko; Direktorat Jenderal Stabilitas dan Pengembangan Sektor Keuangan; Badan Teknologi, Informasi, dan Intelijen Keuangan; serta Badan Pendidikan dan Pelatihan Keuangan.
 
-### Cara cepat
-Hafal fungsi dengan kata kunci: pajak (DJP), bea dan cukai (DJBC), anggaran (DJA), kas dan perbendaharaan (DJPb), aset dan lelang (DJKN), transfer ke daerah (DJPK), utang dan SBN (DJPPR), diklat (BPPK).
+### Cara belajar
+Jangan hanya hafal singkatan. Untuk setiap unit, kuasai domain tugas dan bedakan dari unit yang paling mudah tertukar. LNSW muncul sebagai entitas tersendiri dalam pemberitahuan peserta UPKP 2026 dan tidak perlu dipaksakan sebagai Eselon I Kemenkeu.
 """
 
 # ---- Psikologi: format perkiraan
