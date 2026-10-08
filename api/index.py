@@ -9,14 +9,14 @@ from pydantic import BaseModel, Field
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 
-from upkp import curriculum, materi, learning, engine, material_meta
+from upkp import curriculum, materi, learning, engine, material_meta, course_materials, official_sources
 from upkp import final_core as core
 from upkp import multi_store as store
 from upkp import mastery
 from upkp import tpa_enrichment
 from upkp.exam_engine import structural_signature
 
-app=FastAPI(title='UPKP Coach Final API',version='1.5.0',docs_url=None if os.getenv('VERCEL')=='1' else '/docs',redoc_url=None)
+app=FastAPI(title='UPKP Coach Final API',version='1.6.0',docs_url=None if os.getenv('VERCEL')=='1' else '/docs',redoc_url=None)
 app.add_middleware(CORSMiddleware,allow_origins=[],allow_credentials=True,allow_methods=['*'],allow_headers=['*'])
 
 class SameOriginMiddleware(BaseHTTPMiddleware):
@@ -38,7 +38,7 @@ app.add_middleware(SameOriginMiddleware)
 ph=PasswordHasher(time_cost=2,memory_cost=19456,parallelism=1)
 COOKIE='upkp_session'
 USERNAME_RE=re.compile(r'^[a-z0-9_]{3,24}$')
-TRACKS={'tpa':'TPA','substansi':'Substansi Kemenkeu'}
+TRACKS={'tpa':'Tes Potensi','substansi':'TSKKWK'}
 DIFFICULTY={1:'Foundation',2:'Standard',3:'Exam',4:'Hard',5:'Expert'}
 
 class AuthIn(BaseModel):
@@ -82,7 +82,7 @@ def set_cookie(resp:Response,token:str):
 @app.get('/api/health')
 def health():
     ok=store.db_health()
-    return JSONResponse({'ok':ok,'version':'1.5.0','database':'postgres' if store.DATABASE_URL else 'sqlite-local'},status_code=200 if ok else 503)
+    return JSONResponse({'ok':ok,'version':'1.6.0','database':'postgres' if store.DATABASE_URL else 'sqlite-local'},status_code=200 if ok else 503)
 
 @app.post('/api/auth/register')
 def register(body:AuthIn,response:Response,request:Request):
@@ -175,20 +175,23 @@ def catalog(track:str='tpa',u=Depends(current_user)):
     chapters=[]
     for b in curriculum.BAB:
         if b.bagian!=bagian:continue
-        source_note='Buku Anak UPKP + enrichment archetype TPA eksternal' if b.sumber=='buku' else 'Basis pengetahuan/regulasi; verifikasi aturan terbaru sebelum dijadikan patokan ujian.'
+        source_note='Konsep, strategi, dan pola latihan Tes Potensi' if track=='tpa' else 'Materi TSKKWK divalidasi terhadap sumber resmi/current; enam domain adalah struktur belajar internal.'
         extra=tpa_enrichment.ENRICHMENT.get(b.kode,'') if track=='tpa' else ''
         material=materi.MATERI.get(b.kode,'')
         if extra: material=(material+'\n\n'+extra).strip()
+        material=course_materials.expand(b.kode,material)
         meta=material_meta.metadata(b.kode,b.sumber)
         chapter_stats=learning.chapter_coaching(track_attempts(u['id'],track),b.kode,track)
-        headings=[ln[4:].strip() for ln in material.splitlines() if ln.strip().startswith('### ')][:4]
-        objectives=[f"Pahami {h.lower()}" for h in headings[:3]]
-        checks=[f"Bisakah kamu menjelaskan {h.lower()} tanpa melihat catatan?" for h in headings[:3]]
+        headings=[ln[4:].strip() for ln in material.splitlines() if ln.strip().startswith('### ')][:6]
+        objectives=[f"Jelaskan dan terapkan {h.lower()}" for h in headings[:4]]
+        checks=[f"Tanpa melihat catatan, bisakah kamu menjelaskan {h.lower()} dan memberi satu contoh?" for h in headings[:4]]
+        source_refs=tpa_enrichment.SOURCES if track=='tpa' else official_sources.TSKKWK_SOURCES.get(b.kode,[])
         chapters.append({'code':b.kode,'title':b.judul,'subtest':b.subtes,'source_type':b.sumber,'source_note':source_note,'material':material,
-                         'source_refs':tpa_enrichment.SOURCES if track=='tpa' else [],
+                         'source_refs':source_refs,
                          'source_status':meta.get('status'),'source_status_label':meta.get('status_label'),
-                         'verified_at':meta.get('verified'),'freshness_note':meta.get('note'),'page':b.halaman,
-                         'learner':chapter_stats,'objectives':objectives,'self_checks':checks})
+                         'verified_at':meta.get('verified'),'freshness_note':meta.get('note'),'page':b.halaman if track=='tpa' else '',
+                         'learner':chapter_stats,'objectives':objectives,'self_checks':checks,
+                         'official_scope_note':official_sources.VALIDATION.get('tskkwk_scope') if track=='substansi' else ''})
     return {'track':track,'chapters':chapters}
 
 @app.post('/api/session/guided')
