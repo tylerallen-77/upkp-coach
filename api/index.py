@@ -9,14 +9,14 @@ from pydantic import BaseModel, Field
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 
-from upkp import curriculum, materi, learning, engine, material_meta, course_materials, official_sources, lesson_cards
+from upkp import curriculum, materi, learning, engine, material_meta, course_materials, official_sources, lesson_cards, study_tools
 from upkp import final_core as core
 from upkp import multi_store as store
 from upkp import mastery
 from upkp import tpa_enrichment
 from upkp.exam_engine import structural_signature
 
-app=FastAPI(title='UPKP Coach Final API',version='1.6.1',docs_url=None if os.getenv('VERCEL')=='1' else '/docs',redoc_url=None)
+app=FastAPI(title='UPKP Coach Final API',version='1.7.0',docs_url=None if os.getenv('VERCEL')=='1' else '/docs',redoc_url=None)
 app.add_middleware(CORSMiddleware,allow_origins=[],allow_credentials=True,allow_methods=['*'],allow_headers=['*'])
 
 class SameOriginMiddleware(BaseHTTPMiddleware):
@@ -48,7 +48,7 @@ class AuthIn(BaseModel):
 class AttemptIn(BaseModel):
     question_token:str; selected:int|None=None; elapsed_ms:int=Field(ge=0,le=300000)
     first_selection_ms:int|None=Field(default=None,ge=0,le=300000); answer_changes:int=Field(default=0,ge=0,le=50)
-    confidence:str=''; skipped:bool=False; pass_number:int=Field(default=1,ge=1,le=3); session_id:str
+    confidence:str=''; skipped:bool=False; pass_number:int=Field(default=1,ge=1,le=3); session_id:str; hint_level:int=Field(default=0,ge=0,le=3)
 class CloseIn(BaseModel):
     session_id:str
     abandoned:bool=False
@@ -82,7 +82,7 @@ def set_cookie(resp:Response,token:str):
 @app.get('/api/health')
 def health():
     ok=store.db_health()
-    return JSONResponse({'ok':ok,'version':'1.6.1','database':'postgres' if store.DATABASE_URL else 'sqlite-local'},status_code=200 if ok else 503)
+    return JSONResponse({'ok':ok,'version':'1.7.0','database':'postgres' if store.DATABASE_URL else 'sqlite-local'},status_code=200 if ok else 503)
 
 @app.post('/api/auth/register')
 def register(body:AuthIn,response:Response,request:Request):
@@ -124,6 +124,7 @@ def public_q(q):
     item={k:v for k,v in q.items() if k not in ('ans','exp','trick','_exam_mode','_session_id')}
     lv=int(item.get('lv',1));item['difficulty_label']=DIFFICULTY.get(lv,'Standard')
     item['item_signature']=structural_signature(q)
+    item['hints']=[x for x in study_tools.hints(str(q.get('bab',''))) if x]
     return item
 def prep_questions(uid,sid,qs):
     # Batch quarantine lookup + token insert: one read and one write transaction for the whole session.
@@ -192,7 +193,10 @@ def catalog(track:str='tpa',u=Depends(current_user)):
                          'verified_at':meta.get('verified'),'freshness_note':meta.get('note'),'page':b.halaman if track=='tpa' else '',
                          'learner':chapter_stats,'objectives':objectives,'self_checks':checks,
                          'official_scope_note':official_sources.VALIDATION.get('tskkwk_scope') if track=='substansi' else '',
-                         'lesson_cards':lesson_cards.cards(b.kode)})
+                         'lesson_cards':lesson_cards.cards(b.kode),
+                         'reading_lens':study_tools.reading_lens(b.kode),
+                         'formulas':study_tools.formulas(b.kode),
+                         'mnemonics':study_tools.mnemonics(b.kode)})
     return {'track':track,'chapters':chapters}
 
 @app.post('/api/session/guided')
@@ -272,7 +276,7 @@ def attempt(body:AttemptIn,u=Depends(current_user)):
         if body.session_id!=q.get('_session_id'):raise HTTPException(403,'Token belongs to another session')
         correct=(body.selected==q.get('ans')) and not body.skipped
         a=learning.make_attempt(q,selected=body.selected,correct=correct,elapsed_ms=body.elapsed_ms,confidence=body.confidence,first_selection_ms=body.first_selection_ms,answer_changes=body.answer_changes,skipped=body.skipped,pass_number=body.pass_number,session_id=body.session_id)
-        a['track']=q.get('track','tpa')
+        a['track']=q.get('track','tpa');a['hint_level']=body.hint_level
         return a
     status,q,a=store.record_from_question_atomic(u['id'],body.question_token,consume,key,build_attempt)
     if status=='missing':raise HTTPException(404,'Question expired')
