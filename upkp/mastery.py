@@ -8,7 +8,7 @@ SUBSTANSI_ORDER=["substansi_etika","substansi_wawasan","substansi_nilai","substa
 
 def _median(xs): return statistics.median(xs) if xs else 0
 
-def _skill_rows(attempts,skill): return [a for a in attempts if a.get("skill")==skill and not a.get("skipped")]
+def _skill_rows(attempts,skill): return [a for a in attempts if a.get("skill")==skill and not a.get("skipped") and int(a.get("hint_level",0) or 0)<=1]
 
 def _skill_gate(rows):
     if not rows:
@@ -34,8 +34,8 @@ def section_badge(attempts, section, sessions=None):
     passed=sum(1 for x in details if x["pass"])
     coverage=covered/max(1,len(skills))
     gate_ratio=passed/max(1,len(skills))
-    exam_rows=[a for a in attempts if a.get("skill") in skills and int(a.get("level",1))>=3 and not a.get("skipped")]
-    hard_rows=[a for a in attempts if a.get("skill") in skills and int(a.get("level",1))>=4 and not a.get("skipped")]
+    exam_rows=[a for a in attempts if a.get("skill") in skills and int(a.get("level",1))>=3 and not a.get("skipped") and int(a.get("hint_level",0) or 0)<=1]
+    hard_rows=[a for a in attempts if a.get("skill") in skills and int(a.get("level",1))>=4 and not a.get("skipped") and int(a.get("hint_level",0) or 0)<=1]
     exam_acc=sum(bool(a.get("correct")) for a in exam_rows[-30:])/len(exam_rows[-30:]) if exam_rows else 0
     hard_acc=sum(bool(a.get("correct")) for a in hard_rows[-15:])/len(hard_rows[-15:]) if hard_rows else None
     challenge=False
