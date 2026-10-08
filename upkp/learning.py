@@ -244,3 +244,128 @@ def session_postmortem(attempts:list[dict],session_id:str)->dict:
     weakest=skills[0] if skills else None
     recommendation=(f"Next drill: {weakest['label']} — accuracy {round(weakest['accuracy']*100)}%, median {round(weakest['median_ms']/1000)}s." if weakest else "Lanjut mixed drill.")
     return {"session_id":session_id,"n":len(rows),"correct":correct,"accuracy":correct/len(rows),"median_ms":med,"errors":dict(errors),"skills":skills,"recommendation":recommendation}
+
+ERROR_LABELS = {
+    "high_confidence_wrong":"Miskonsepsi",
+    "wrong":"Salah konsep / langkah",
+    "premature_guess":"Terlalu cepat menebak",
+    "unstable_reasoning":"Reasoning belum stabil",
+    "skipped":"Dilewati",
+    "slow_correct":"Benar tapi terlalu lambat",
+    "hesitation":"Ragu-ragu",
+    "clean_correct":"Benar & efisien",
+}
+
+def _teaching_action(p: dict, track: str) -> dict:
+    """Convert learner evidence into a concrete teacher action."""
+    skill=p.get("skill",""); ch=chapter_for_skill(skill)
+    if p.get("high_confidence_wrong",0)>0:
+        issue="Ada jawaban salah dengan confidence tinggi — tanda miskonsepsi, bukan sekadar kurang teliti."
+        action="Pelajari ulang konsep inti, jelaskan kembali dengan kata sendiri, lalu mulai dari soal Standard sebelum naik level."
+        mode="relearn"
+    elif p.get("accuracy",0)<.68:
+        issue="Akurasi belum stabil. Menambah kecepatan sekarang justru berisiko memperkuat pola salah."
+        action="Fokus pada pola penyelesaian yang benar. Kerjakan perlahan sampai 3 jawaban bersih berturut-turut."
+        mode="concept"
+    elif track=="tpa" and p.get("speed_ratio",0)>1.15:
+        issue="Konsep cukup dipahami, tetapi waktu penyelesaian masih di atas target."
+        action="Jangan baca ulang semuanya. Fokus shortcut/cara cepat, lalu drill bertimer dengan metode yang sama."
+        mode="speed"
+    elif p.get("overdue_days",0)>0:
+        issue="Skill ini sudah jatuh tempo untuk review. Kita perlu memastikan ingatan masih kuat."
+        action="Coba recall tanpa catatan lebih dulu, lalu kerjakan beberapa soal transfer."
+        mode="retention"
+    else:
+        issue="Skill sudah berkembang tetapi belum stabil di kondisi ujian."
+        action="Naikkan sedikit difficulty dan uji pada soal campuran agar kemampuan tidak bergantung pada template."
+        mode="transfer"
+    return {"skill":skill,"label":p.get("label",skill),"chapter":ch,"issue":issue,"action":action,
+            "mode":mode,"state":p.get("state"),"accuracy":p.get("accuracy",0),
+            "median_ms":p.get("median_ms",0),"target_ms":p.get("personal_target_ms",p.get("target_median_ms",45000)),
+            "level":p.get("recommended_level",1)}
+
+def teacher_plan(attempts:list[dict], track:str)->dict:
+    prof=profile_attempts(attempts)
+    errors=defaultdict(int)
+    for a in attempts[-40:]:
+        errors[a.get("error_type","unknown")]+=1
+    error_mix=[{"type":k,"label":ERROR_LABELS.get(k,k),"count":v} for k,v in sorted(errors.items(),key=lambda x:-x[1]) if k!="clean_correct" and v]
+    if not prof:
+        return {
+            "phase":"diagnose",
+            "headline":"Saya belum cukup mengenal pola kemampuanmu.",
+            "message":"Kita mulai dengan diagnostic mixed. Jangan mengejar skor; saya ingin melihat cara kamu salah, bagian yang lambat, dan level yang masih nyaman.",
+            "focus":None,"priorities":[],"error_mix":[],
+            "success_criteria":"Selesaikan diagnostic dengan confidence yang jujur. Setelah itu saya akan memilih apa yang perlu dipelajari dan apa yang cukup dilatih.",
+        }
+    gaps=[p for p in prof if p.get("state")!="Mastered"]
+    ranked=sorted(gaps or prof,key=lambda p:-p.get("priority",0))
+    priorities=[_teaching_action(p,track) for p in ranked[:3]]
+    focus=priorities[0] if priorities else None
+    if focus:
+        headline=f"Fokus utama sekarang: {focus['label']}."
+        message=focus["issue"]+" "+focus["action"]
+    else:
+        headline="Fondasi sudah kuat."
+        message="Sekarang tugas kita menjaga retention dan memindahkan kemampuan ke kondisi campuran/ujian."
+    if track=="tpa":
+        criteria="Saya anggap sesi efektif bila akurasi stabil, median mendekati target, dan kesalahan yang sama tidak berulang."
+    else:
+        criteria="Saya anggap sesi efektif bila fakta/konsep bisa diingat tanpa melihat catatan, akurasi stabil, dan tetap benar saat pertanyaan diubah konteksnya."
+    return {"phase":"teach","headline":headline,"message":message,"focus":focus,"priorities":priorities,
+            "error_mix":error_mix[:4],"success_criteria":criteria}
+
+def chapter_coaching(attempts:list[dict], code:str, track:str)->dict:
+    rows=[a for a in attempts if a.get("bab")==code and not a.get("skipped")]
+    if not rows:
+        return {"n":0,"accuracy":0,"median_ms":0,"status":"unseen",
+                "teacher_note":"Belum ada evidence. Baca konsep inti secukupnya, lalu langsung cek pemahaman dengan 5 soal pemanasan.",
+                "recommended":"warmup"}
+    recent=rows[-20:];acc=sum(bool(a.get("correct")) for a in recent)/len(recent);med=_median(a.get("elapsed_ms",0) for a in recent)
+    wrong=sum(1 for a in recent if not a.get("correct"));hc=sum(1 for a in recent if a.get("error_type")=="high_confidence_wrong")
+    tgt=_median(a.get("target_ms",45000) for a in recent) or 45000
+    if hc:
+        note="Ada miskonsepsi terdeteksi. Jangan langsung menambah volume soal; baca ulang konsep dan cocokkan dengan penjelasan dari jawaban yang salah."
+        rec="relearn"
+    elif acc<.7:
+        note="Akurasi menunjukkan konsep belum stabil. Prioritaskan memahami langkah/pola sebelum latihan bertimer."
+        rec="concept"
+    elif track=="tpa" and med>tgt*1.15:
+        note="Akurasi sudah cukup, tetapi masih lambat. Fokus bagian 'Cara cepat' lalu lakukan drill bertimer."
+        rec="speed"
+    elif wrong:
+        note="Dasar cukup baik. Gunakan materi hanya untuk menutup celah spesifik, lalu uji lagi dengan soal transfer."
+        rec="transfer"
+    else:
+        note="Evidence terakhir bersih. Tidak perlu reread panjang; lakukan recall singkat lalu naik ke drill yang lebih menantang."
+        rec="challenge"
+    return {"n":len(rows),"accuracy":acc,"median_ms":med,"target_ms":tgt,"status":"practiced",
+            "teacher_note":note,"recommended":rec,"high_confidence_wrong":hc}
+
+def enrich_postmortem(pm:dict)->dict:
+    """Teacher-language interpretation of one completed session."""
+    if not pm or not pm.get("n"): return pm
+    acc=float(pm.get("accuracy",0)); errors=pm.get("errors") or {}
+    if errors.get("high_confidence_wrong",0):
+        diagnosis="Ada miskonsepsi: setidaknya satu jawaban salah diberikan dengan confidence tinggi."
+        next_action="Buka materi skill terlemah, pahami alasan jawaban benar, lalu ulangi drill pendek sebelum mixed practice."
+    elif acc<.6:
+        diagnosis="Konsep belum cukup stabil untuk dikejar dengan speed."
+        next_action="Turunkan beban: pelajari pola inti, kerjakan 5 soal tanpa tekanan waktu, baru ulangi sesi."
+    elif errors.get("premature_guess",0):
+        diagnosis="Sebagian kehilangan poin berasal dari keputusan terlalu cepat, bukan semata-mata kurang pengetahuan."
+        next_action="Gunakan checkpoint singkat sebelum memilih: apa yang ditanya, syarat kunci, lalu eliminasi opsi."
+    elif errors.get("slow_correct",0):
+        diagnosis="Akurasi cukup, tetapi metode masih terlalu mahal secara waktu."
+        next_action="Bandingkan solusi dengan shortcut/cara cepat, lalu ulangi tipe yang sama dengan target waktu."
+    elif acc>=.85:
+        diagnosis="Pemahaman sesi ini sudah kuat."
+        next_action="Jangan over-practice topik yang sama. Pindahkan kemampuan ke mixed transfer atau level lebih tinggi."
+    else:
+        diagnosis="Dasar sudah terbentuk, tetapi konsistensi masih perlu diperkuat."
+        next_action="Review hanya kesalahan yang terjadi, lalu ulangi targeted drill singkat."
+    pm["teacher_diagnosis"]=diagnosis
+    pm["teacher_next_action"]=next_action
+    pm["clean_correct"]=pm.get("n",0)-sum(int(v) for k,v in errors.items() if k!="clean_correct")
+    return pm
+
