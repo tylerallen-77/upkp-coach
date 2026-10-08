@@ -1,4 +1,10 @@
-"""Core concept notes for UPKP Coach.\n\nThese notes are expanded at runtime by course_materials into full teaching modules.\nTSKKWK regulatory content is separately validated against official/current sources.\n"""\n\nMATERI = {}
+"""Core concept notes for UPKP Coach.
+
+These notes are expanded at runtime by course_materials into full teaching modules.
+TSKKWK regulatory content is separately validated against official/current sources.
+"""
+
+MATERI = {}
 
 MATERI["padanan"] = """
 ### Tiga jenis soal
