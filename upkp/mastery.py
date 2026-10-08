@@ -66,11 +66,12 @@ def knowledge_section_badge(attempts, section, sessions=None):
     """
     skills=BADGE_SKILLS.get(section,[])
     rows=[a for a in attempts if a.get("skill") in skills and not a.get("skipped")]
-    recent=rows[-30:]
+    strong=[a for a in rows if int(a.get("hint_level",0) or 0)<=1]
+    recent=strong[-30:]
     accuracy=sum(bool(a.get("correct")) for a in recent)/len(recent) if recent else 0
-    exam=[a for a in rows if int(a.get("level",1))>=3]
+    exam=[a for a in strong if int(a.get("level",1))>=3]
     exam_accuracy=sum(bool(a.get("correct")) for a in exam[-20:])/len(exam[-20:]) if exam else 0
-    days={int(float(a.get("ts",0))//86400) for a in rows if a.get("correct")}
+    days={int(float(a.get("ts",0))//86400) for a in strong if a.get("correct")}
     retention=len(days)>=2
     coverage=min(1.0,len(rows)/10.0)
     challenge=False
@@ -78,7 +79,7 @@ def knowledge_section_badge(attempts, section, sessions=None):
         if sess.get("kind")=="mastery" and sess.get("track")=="substansi" and sess.get("meta",{}).get("section")==section:
             if (sess.get("summary") or {}).get("mastery_passed"):
                 challenge=True;break
-    prereq=len(rows)>=10 and accuracy>=.82 and len(exam)>=6 and exam_accuracy>=.80 and retention
+    prereq=len(strong)>=10 and accuracy>=.82 and len(exam)>=6 and exam_accuracy>=.80 and retention
     progress=min(100,round(
         25*coverage +
         25*min(1,accuracy/.82 if accuracy else 0) +
