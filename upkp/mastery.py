@@ -4,6 +4,7 @@ import statistics, time
 from .skill_catalog import BADGE_SKILLS, SECTION_LABELS, label
 
 SECTION_ORDER=["verbal","numerical","logical","figural"]
+SUBSTANSI_ORDER=["substansi_etika","substansi_wawasan","substansi_nilai","substansi_kepegawaian","substansi_keuangan","substansi_struktur"]
 
 def _median(xs): return statistics.median(xs) if xs else 0
 
@@ -58,7 +59,49 @@ def tpa_badges(attempts,sessions=None):
     return {"badges":badges,"earned":sum(x["earned"] for x in badges),"total":len(badges),
             "tpa_ready":all(x["earned"] for x in badges)}
 
-def evaluate_mastery_challenge(section, attempts, session_id):
+
+def knowledge_section_badge(attempts, section, sessions=None):
+    """Mastery gate for knowledge/regulation content: accuracy + coverage + retention + transfer.
+    Unlike TPA, speed is observed but is not a mastery requirement.
+    """
+    skills=BADGE_SKILLS.get(section,[])
+    rows=[a for a in attempts if a.get("skill") in skills and not a.get("skipped")]
+    recent=rows[-30:]
+    accuracy=sum(bool(a.get("correct")) for a in recent)/len(recent) if recent else 0
+    exam=[a for a in rows if int(a.get("level",1))>=3]
+    exam_accuracy=sum(bool(a.get("correct")) for a in exam[-20:])/len(exam[-20:]) if exam else 0
+    days={int(float(a.get("ts",0))//86400) for a in rows if a.get("correct")}
+    retention=len(days)>=2
+    coverage=min(1.0,len(rows)/10.0)
+    challenge=False
+    for sess in sessions or []:
+        if sess.get("kind")=="mastery" and sess.get("track")=="substansi" and sess.get("meta",{}).get("section")==section:
+            if (sess.get("summary") or {}).get("mastery_passed"):
+                challenge=True;break
+    prereq=len(rows)>=10 and accuracy>=.82 and len(exam)>=6 and exam_accuracy>=.80 and retention
+    progress=min(100,round(
+        25*coverage +
+        25*min(1,accuracy/.82 if accuracy else 0) +
+        25*min(1,len(exam)/6) +
+        15*(1 if retention else 0) +
+        10*(1 if challenge else 0)
+    ))
+    earned=bool(prereq and challenge)
+    return {
+        "section":section,"label":SECTION_LABELS.get(section,section.title()+" Mastery"),
+        "earned":earned,"progress":100 if earned else progress,
+        "coverage":coverage,"accuracy":accuracy,"exam_attempts":len(exam),
+        "exam_accuracy":exam_accuracy,"retention":retention,
+        "challenge_passed":challenge,"challenge_unlocked":prereq,
+        "skills":[{"skill":sk,"label":label(sk)} for sk in skills],
+    }
+
+def substansi_badges(attempts,sessions=None):
+    badges=[knowledge_section_badge(attempts,s,sessions) for s in SUBSTANSI_ORDER]
+    return {"badges":badges,"earned":sum(x["earned"] for x in badges),"total":len(badges),
+            "substansi_ready":all(x["earned"] for x in badges)}
+
+def evaluate_mastery_challenge(section, attempts, session_id, track="tpa"):
     rows=[a for a in attempts if a.get("session_id")==session_id and not a.get("skipped")]
     if not rows:return {"mastery_passed":False,"reason":"No answered items"}
     acc=sum(bool(a.get("correct")) for a in rows)/len(rows)
@@ -69,7 +112,9 @@ def evaluate_mastery_challenge(section, attempts, session_id):
         sr=[a for a in rows if a.get("skill")==sk]
         skill_acc[sk]=sum(bool(a.get("correct")) for a in sr)/len(sr)
     critical_ok=all(v>=.60 for v in skill_acc.values())
-    # Challenge deliberately includes L3/L4; Expert L5 is optional.
-    passed=len(rows)>=10 and acc>=.85 and med<=target*1.08 and critical_ok
+    if track=="substansi":
+        passed=len(rows)>=10 and acc>=.85 and critical_ok
+    else:
+        passed=len(rows)>=10 and acc>=.85 and med<=target*1.08 and critical_ok
     return {"mastery_passed":passed,"accuracy":acc,"median_ms":med,"target_ms":target,
-            "skill_accuracy":skill_acc,"critical_ok":critical_ok,"section":section}
+            "skill_accuracy":skill_acc,"critical_ok":critical_ok,"section":section,"track":track}
