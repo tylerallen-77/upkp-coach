@@ -98,20 +98,43 @@ function Learn({track,setTrack,catalog,bundle,pm,startGuided,startChapter,teachC
 }
 
 function Materials({track,setTrack,catalog,startChapter,busyKey,focus,teacher}:any){
- const [open,setOpen]=useState<string>(focus||'')
- useEffect(()=>{if(focus)setOpen(focus)},[focus])
- return <><div className="pageHead"><div><div className="eyebrow">MATERI · TEACH MODE</div><h1>Baca seperlunya. Buktikan pemahamanmu.</h1><p>Materi bukan untuk dihafal pasif. Setiap bab punya tujuan, self-check, evidence kemampuan, dan jalan langsung ke latihan.</p></div><TrackTabs track={track} setTrack={setTrack}/></div>
- <section className="materialIntro teacherMaterialIntro"><div className="materialIntroIcon">▥</div><div><span className="eyebrow">{track==='tpa'?'TES POTENSI · LEARNING MODULE':'TSKKWK · LEARNING MODULE'}</span><h2>{teacher?.focus?'Coach menyarankan: '+teacher.focus.label:(track==='tpa'?'Pahami pola, lalu percepat metode.':'Pahami konsep, aturan, dan penerapannya; lalu buktikan retention.')}</h2><p>{teacher?.focus?.issue||(track==='tpa'?'Baca bagian yang relevan, lakukan active recall, lalu langsung uji dengan soal.':'Jangan menganggap familiar = hafal. Tutup catatan dan recall sebelum drill.')}</p></div></section>
+ const [selected,setSelected]=useState<string>(focus||'')
+ useEffect(()=>{if(focus)setSelected(focus)},[focus])
+ useEffect(()=>{setSelected('')},[track])
+ const lesson=selected?catalog.find((c:any)=>c.code===selected):null
+ if(lesson)return <LessonPage lesson={lesson} track={track} startChapter={startChapter} busyKey={busyKey} onBack={()=>setSelected('')}/>
+ return <><div className="pageHead"><div><div className="eyebrow">MATERI</div><h1>Pilih satu bab. Saya ajarkan sampai kamu bisa mengerjakannya.</h1><p>Bukan kumpulan rangkuman. Setiap lesson punya peta konsep, metode, contoh, jebakan, active recall, dan latihan untuk membuktikan pemahaman.</p></div><TrackTabs track={track} setTrack={setTrack}/></div>
+ <section className="materialIntro teacherMaterialIntro"><div className="materialIntroIcon">▥</div><div><span className="eyebrow">{track==='tpa'?'TES POTENSI · COURSE':'TSKKWK · COURSE'}</span><h2>{teacher?.focus?'Coach menyarankan mulai dari '+teacher.focus.label:(track==='tpa'?'Bangun metode yang benar, lalu kejar speed.':'Pahami aturan dan konteks, lalu buktikan retention.')}</h2><p>{teacher?.focus?.issue||(track==='tpa'?'Pilih bab untuk melihat lesson map sebelum membaca detail.':'Setiap domain disusun sebagai materi belajar; enam domain ini bukan klaim pembagian subtes resmi.')}</p></div></section>
  {track==='substansi'&&catalog?.[0]?.official_scope_note&&<div className="officialScopeNote"><b>Catatan kurikulum:</b> {catalog[0].official_scope_note}</div>}
- <div className="materialGrid">{catalog.map((c:any)=>{const active=open===c.code;return <article className={'materialCard '+(active?'open ':'')+('rec-'+(c.learner?.recommended||'unseen'))} key={c.code}>
-   <button className="materialCardHead" onClick={()=>setOpen(active?'':c.code)}><div><div className="materialMeta"><span className="pill">{c.subtest}</span><span className={'sourceStatus status-'+(c.source_status||'general')}>{c.source_status_label||'Basis materi'}</span>{c.learner?.n>0&&<span className="evidencePill">{pct(c.learner.accuracy)} · {c.learner.n} soal</span>}</div><h3>{c.title}</h3><p className="teacherMini">{c.learner?.teacher_note||c.freshness_note||c.source_note}</p></div><div className="materialOpen">{active?'−':'+'}</div></button>
-   {active&&<div className="materialLesson"><div className="lessonToolbar"><div><span className="eyebrow">SOURCE & FRESHNESS</span><b>{c.source_type==='buku'?'Referensi konsep & latihan Tes Potensi':'Sumber resmi / regulasi TSKKWK'}</b>{c.page&&<small>Halaman referensi: {c.page}</small>}{c.verified_at&&<small>Terakhir diverifikasi: {c.verified_at}</small>}</div><div className="lessonEvidence"><small>Evidence kamu</small><b>{c.learner?.n?pct(c.learner.accuracy):'Belum ada'}</b></div></div>
-   {c.objectives?.length>0&&<div className="teachObjectives"><div><span className="eyebrow">SETELAH BAB INI</span><h4>Kamu harus mampu:</h4></div><ol>{c.objectives.map((x:string,i:number)=><li key={i}>{x}</li>)}</ol></div>}
-   <RichContent text={c.material||'Materi ringkas belum tersedia.'} className="lessonContent"/>
-   {c.self_checks?.length>0&&<div className="recallCheck"><span className="eyebrow">TUTUP CATATAN · ACTIVE RECALL</span><h4>Jangan lanjut sebelum bisa menjawab ini dengan kata-katamu sendiri:</h4>{c.self_checks.map((x:string,i:number)=><div key={i}><span>{i+1}</span><p>{x}</p></div>)}</div>}
-   {c.source_refs?.length>0&&<div className="sourceRefs"><b>Sumber pengayaan</b>{c.source_refs.map((x:any)=><a key={x.url} href={x.url} target="_blank" rel="noreferrer">{x.name}</a>)}</div>}
-   <div className="lessonFooter teacherFooter"><div><b>Jangan ukur pemahaman dari rasa familiar.</b><span>Ukur dari kemampuan menjawab tanpa catatan.</span></div><div className="footerActions"><button className="btn ghost" disabled={busyKey==='chapter:'+c.code} onClick={()=>startChapter(c.code,5,1)}>5 soal pemanasan</button><button className="btn primary" disabled={busyKey==='chapter:'+c.code} onClick={()=>startChapter(c.code,10,0)}>Uji pemahaman →</button></div></div></div>}
- </article>})}</div></>
+ <div className="courseLibrary">{catalog.map((c:any)=><button className={'courseTile rec-'+(c.learner?.recommended||'unseen')} key={c.code} onClick={()=>setSelected(c.code)}>
+   <div className="courseTileTop"><span className="pill">{c.subtest}</span>{c.learner?.n>0&&<span className="evidencePill">{pct(c.learner.accuracy)} · {c.learner.n} soal</span>}</div>
+   <h3>{c.title}</h3><p>{c.learner?.teacher_note||'Belum ada evidence. Mulai dari lesson map, lalu uji pemahaman.'}</p>
+   <div className="courseTileFoot"><span>{(c.lesson_cards||[]).length||c.objectives?.length||0} pokok penting</span><b>Buka lesson →</b></div>
+ </button>)}</div></>
+}
+
+function LessonPage({lesson,track,startChapter,busyKey,onBack}:any){
+ const cards=lesson.lesson_cards||[]
+ return <div className="lessonPage">
+  <button className="lessonBack" onClick={onBack}>← Kembali ke daftar materi</button>
+  <header className="lessonHero"><div><div className="materialMeta"><span className="pill">{lesson.subtest}</span>{lesson.learner?.n>0&&<span className="evidencePill">{pct(lesson.learner.accuracy)} · {lesson.learner.n} soal</span>}</div><h1>{lesson.title}</h1><p>{lesson.learner?.teacher_note||'Pelajari konsepnya, cek dengan active recall, lalu buktikan lewat soal.'}</p></div><div className="lessonHeroActions"><button className="btn ghost" disabled={busyKey==='chapter:'+lesson.code} onClick={()=>startChapter(lesson.code,5,1)}>Pemanasan 5 soal</button><button className="btn primary" disabled={busyKey==='chapter:'+lesson.code} onClick={()=>startChapter(lesson.code,10,0)}>Uji pemahaman →</button></div></header>
+
+  {(cards.length>0||lesson.objectives?.length>0)&&<section className="lessonMap"><div className="sectionTitle"><div><span className="eyebrow">LESSON MAP</span><h2>Sebelum mulai, lihat gambaran besarnya.</h2><p className="muted">Ini yang perlu kamu pahami—bukan sekadar hafal.</p></div></div>
+   <div className="lessonCardGrid">{cards.map((x:any,i:number)=><article className={'lessonConceptCard kind-'+x.kind} key={i}><span className="conceptKind">{x.kind==='formula'?'RUMUS':x.kind==='trap'?'JEBAKAN':x.kind==='shortcut'?'SHORTCUT':x.kind==='method'?'METODE':x.kind==='rule'?'ATURAN':'KONSEP'}</span><h3>{x.title}</h3>{x.formula&&<div className="formulaBox">{x.formula}</div>}<p>{x.body}</p></article>)}</div>
+  </section>}
+
+  {lesson.objectives?.length>0&&<section className="lessonObjectives"><span className="eyebrow">TARGET KEMAMPUAN</span><h2>Setelah lesson ini, kamu harus bisa:</h2><div>{lesson.objectives.map((x:string,i:number)=><p key={i}><span>{i+1}</span>{x}</p>)}</div></section>}
+
+  <section className="lessonBody"><div className="lessonRail"><div className="railCard"><span className="eyebrow">CARA BELAJAR</span><ol><li>Pahami ide utama.</li><li>Ikuti contoh.</li><li>Cek jebakan.</li><li>Tutup catatan.</li><li>Kerjakan soal.</li></ol></div>{lesson.learner?.n>0&&<div className="railCard"><span className="eyebrow">EVIDENCE KAMU</span><b className="railScore">{pct(lesson.learner.accuracy)}</b><small>{lesson.learner.n} soal terakhir pada bab ini</small></div>}</div>
+   <div className="lessonMain"><RichContent text={lesson.material||'Materi belum tersedia.'} className="lessonContent"/></div>
+  </section>
+
+  {lesson.self_checks?.length>0&&<section className="recallCheck lessonRecall"><span className="eyebrow">ACTIVE RECALL · TUTUP CATATAN</span><h2>Kalau belum bisa jawab ini tanpa melihat materi, belum waktunya lanjut.</h2>{lesson.self_checks.map((x:string,i:number)=><div key={i}><span>{i+1}</span><p>{x}</p></div>)}</section>}
+
+  <section className="lessonFinish"><div><span className="eyebrow">PROVE IT</span><h2>Merasa paham belum cukup. Buktikan.</h2><p>Mulai dari pemanasan jika konsep masih baru. Pilih uji pemahaman jika kamu sudah bisa menjelaskan materi tanpa catatan.</p></div><div className="footerActions"><button className="btn ghost" disabled={busyKey==='chapter:'+lesson.code} onClick={()=>startChapter(lesson.code,5,1)}>5 soal pemanasan</button><button className="btn primary" disabled={busyKey==='chapter:'+lesson.code} onClick={()=>startChapter(lesson.code,10,0)}>Uji pemahaman →</button></div></section>
+
+  <details className="sourceDisclosure"><summary>Sumber & validasi materi</summary><div><p>{lesson.freshness_note||lesson.source_note}</p>{lesson.verified_at&&<p><b>Terakhir diverifikasi:</b> {lesson.verified_at}</p>}{lesson.source_refs?.length>0&&<div className="sourceRefs">{lesson.source_refs.map((x:any)=><a key={x.url} href={x.url} target="_blank" rel="noreferrer">{x.name}</a>)}</div>}</div></details>
+ </div>
 }
 
 function TryOut({track,setTrack,bundle,pm,start,onDone,onExit,busy}:any){if(bundle)return <QuestionRunner bundle={bundle} onDone={onDone} onExit={onExit}/>;return <><div className="pageHead"><div><div className="eyebrow">TRY OUT</div><h1>Simulasikan kondisi ujian.</h1><p>Feedback ditahan sampai selesai. Gunakan pass pertama untuk mengamankan cheap points.</p></div><TrackTabs track={track} setTrack={setTrack}/></div>{pm&&<PostMortem pm={pm}/>}<section className="tryCard"><div className="tryIcon">◎</div><div><span className="pill">3-PASS STRATEGY</span><h2>{track==='tpa'?'Try Out Tes Potensi':'Try Out TSKKWK'}</h2><p>Hasil try out ikut memengaruhi model kemampuanmu.</p></div><button className="btn primary" disabled={busy} onClick={()=>start(track)}>{busy?'Menyiapkan…':'Mulai Try Out'}</button></section></>}
