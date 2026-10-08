@@ -137,8 +137,10 @@ def profile_attempts(attempts: Iterable[dict], now: float | None = None) -> list
         for r in reversed(rows):
             if r.get("error_type")=="clean_correct": clean_recent+=1
             else: break
-        evidence=min(1.0,n/12); speed_score=max(0,min(1,1.35-speed_ratio))
-        mastery=max(0,min(1,.62*acc+.23*speed_score+.15*evidence))
+        independence=sum(1.0 if int(r.get("hint_level",0) or 0)==0 else 0.75 if int(r.get("hint_level",0) or 0)==1 else 0.45 if int(r.get("hint_level",0) or 0)==2 else 0.20 for r in rows)/max(1,n)
+        evidence=min(1.0,(n*independence)/12); speed_score=max(0,min(1,1.35-speed_ratio))
+        independent_acc=acc*(0.55+0.45*independence)
+        mastery=max(0,min(1,.62*independent_acc+.23*speed_score+.15*evidence))
         if n<3: state="Learning"
         elif acc<.62: state="Weak"
         elif mastery<.76 or clean_recent<2: state="Improving"
