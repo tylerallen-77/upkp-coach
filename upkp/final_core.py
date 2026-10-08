@@ -91,25 +91,36 @@ def build_tryout(track:str,n:int|None=None,seed=None):
         return [q.to_dict()|{"track":track} for q in engine.bangun_tryout(package,0,rng)]
     return [q.to_dict()|{"track":track} for q in build_mixed(track,n,0,seed)]
 
-def build_mastery_challenge(section:str,seed=None):
-    """15-item section challenge: mostly Exam L3 + selected true Hard L4 archetypes."""
+def build_mastery_challenge(section:str,track:str="tpa",seed=None):
+    """Section challenge. TPA uses Exam/Hard transfer; Substansi uses fresh Exam-level knowledge items."""
     if section not in BADGE_SKILLS: return []
     rng=random.Random(seed if seed is not None else time.time_ns())
     qs=[]
+    if track=="substansi":
+        skills=BADGE_SKILLS[section]
+        i=0
+        while len(qs)<15 and i<180:
+            sk=skills[i%len(skills)]
+            ch=chapter(sk)
+            if ch:
+                built=engine.bangun(ch,1,3,rng)
+                if built:
+                    q=tag_question(built[0]);qs.append(q.to_dict()|{"track":"substansi","challenge":True})
+            i+=1
+        rng.shuffle(qs)
+        return qs[:15]
     advanced_by_section={
         "verbal":["verbal.critical_inference"],
         "numerical":["numerik.multi_step_percent","numerik.weighted_average","numerik.data_interpretation"],
         "logical":["logika.constraint_ordering","logika.assignment_constraints","logika.only_if"],
         "figural":["figural.matrix_transform"],
     }
-    # 4 hard items where supported
     hard=advanced_by_section.get(section,[])
     for i in range(4):
         if not hard:break
         skill=hard[i%len(hard)]
         q=generate_advanced(skill,4,rng)
         if q:qs.append(q.to_dict()|{"track":"tpa","challenge":True})
-    # remainder Exam L3 across section chapters
     skills=BADGE_SKILLS[section]
     i=0
     while len(qs)<15 and i<150:
