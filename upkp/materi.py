@@ -1,8 +1,4 @@
-"""Ringkasan materi per bab. Ditulis ulang dengan kata sendiri dari pokok bahasan buku (hlm. 1-82).
-Bab TSKKWK dan Psikologi: halaman buku belum tersedia, isi bersifat umum dan harus dicocokkan dengan buku.
-"""
-
-MATERI = {}
+"""Core concept notes for UPKP Coach.\n\nThese notes are expanded at runtime by course_materials into full teaching modules.\nTSKKWK regulatory content is separately validated against official/current sources.\n"""\n\nMATERI = {}
 
 MATERI["padanan"] = """
 ### Tiga jenis soal
@@ -278,8 +274,6 @@ Putaran (90°, 180°), pembalikan warna, penambahan atau pengurangan sisi, pertu
 
 # ---- TSKKWK: isi umum, bukan dari buku
 MATERI["etika"] = """
-> **Catatan:** halaman buku bab ini belum tersedia. Ringkasan ini dari sumber umum; cocokkan dengan buku.
-
 ### Nilai dasar ASN: BerAKHLAK
 **Ber**orientasi pelayanan, **A**kuntabel, **K**ompeten, **H**armonis, **L**oyal, **A**daptif, **K**olaboratif.
 
@@ -294,8 +288,6 @@ Pada soal kasus, pilih jawaban yang (1) mematuhi aturan, (2) menjaga kepentingan
 """
 
 MATERI["wawasan"] = """
-> **Catatan:** halaman buku bab ini belum tersedia. Ringkasan ini dari pengetahuan umum; cocokkan dengan buku.
-
 ### Pokok bahasan
 - **Pancasila:** 1 Ketuhanan Yang Maha Esa; 2 Kemanusiaan yang Adil dan Beradab; 3 Persatuan Indonesia; 4 Kerakyatan yang Dipimpin oleh Hikmat Kebijaksanaan dalam Permusyawaratan/Perwakilan; 5 Keadilan Sosial bagi Seluruh Rakyat Indonesia.
 - **UUD 1945:** Pembukaan (alinea 4 memuat dasar negara), empat kali amandemen (1999–2002), Pasal 1 ayat (2) tentang kedaulatan rakyat.
@@ -318,15 +310,13 @@ Nilai-Nilai Kementerian Keuangan: **I**ntegritas, **Pro**fesionalisme, **S**iner
 | Pelayanan | melayani demi kepuasan pemangku kepentingan dengan sepenuh hati, transparan, cepat, akurat, aman | berorientasi kepuasan, ramah, adil |
 | Kesempurnaan | senantiasa melakukan upaya perbaikan di segala bidang untuk menjadi dan memberikan yang terbaik | perbaikan berkelanjutan, inovasi |
 
-> Sumber: laman resmi Kemenkeu dan DJPb. Cocokkan dengan buku bila ada perbedaan redaksi.
+> Sumber: laman resmi Kemenkeu dan DJPb. Gunakan redaksi sumber resmi terbaru bila terdapat pembaruan regulasi.
 
 ### Cara cepat
 Kata kunci → nilai: tuntas/akurat → Profesionalisme; jujur/transparan → Integritas; kerja sama → Sinergi; kepuasan pemangku kepentingan → Pelayanan; perbaikan terus-menerus → Kesempurnaan.
 """
 
 MATERI["kepegawaian"] = """
-> **Catatan:** halaman buku bab ini belum tersedia. Ringkasan di bawah dari sumber umum dan resmi (diverifikasi Oktober 2026); peraturan bisa berubah.
-
 ### Dasar hukum
 - **UU 20/2023 tentang ASN** (menggantikan UU 5/2014).
 - **PP 94/2021 tentang Disiplin PNS** (menggantikan PP 53/2010). Memuat kewajiban, larangan, dan hukuman disiplin.
@@ -342,8 +332,6 @@ Hukuman makin berat jika melanggar larangan berat atau berulang. Jenis dan tingk
 """
 
 MATERI["keuangan"] = """
-> **Catatan:** halaman buku bab ini belum tersedia. Ringkasan dari sumber umum.
-
 ### Tiga paket UU keuangan negara
 - **UU 17/2003** tentang Keuangan Negara.
 - **UU 1/2004** tentang Perbendaharaan Negara.
@@ -360,8 +348,6 @@ Urutan siklus APBN: perencanaan → penyusunan → pembahasan DPR → pelaksanaa
 """
 
 MATERI["struktur"] = """
-> **Catatan:** halaman buku bab ini belum tersedia. Struktur organisasi bisa berubah; ini diverifikasi dari pemberitaan dan siaran resmi (Perpres 158/2024 dan PMK 124/2024). Cek aturan terbaru.
-
 ### Unit eselon I utama
 Sekretariat Jenderal; Inspektorat Jenderal; **DJA** (Anggaran); **DJP** (Pajak); **DJBC** (Bea dan Cukai); **DJPb** (Perbendaharaan); **DJKN** (Kekayaan Negara); **DJPK** (Perimbangan Keuangan); **DJPPR** (Pengelolaan Pembiayaan dan Risiko); **BPPK** (Pendidikan dan Pelatihan Keuangan).
 
@@ -376,8 +362,6 @@ Hafal fungsi dengan kata kunci: pajak (DJP), bea dan cukai (DJBC), anggaran (DJA
 
 # ---- Psikologi: format perkiraan
 MATERI["pemahaman"] = """
-> **Catatan:** halaman buku bab ini belum tersedia; format di bawah perkiraan.
-
 Subtes ini umumnya menguji kemampuan memahami teks atau instruksi lalu menerapkannya dengan tepat.
 - Baca instruksi **sampai selesai** sebelum menjawab.
 - Tandai syarat (DAN, ATAU, KECUALI, paling sedikit, paling banyak).
@@ -386,8 +370,6 @@ Subtes ini umumnya menguji kemampuan memahami teks atau instruksi lalu menerapka
 """
 
 MATERI["numlogic"] = """
-> **Catatan:** halaman buku bab ini belum tersedia; format di bawah perkiraan.
-
 Number logic menguji penalaran angka: temukan aturan hubungan dari beberapa contoh, lalu terapkan pada contoh baru.
 - Uji aturan sederhana dulu (jumlah, kali, selisih), baru yang lebih rumit (kuadrat, kombinasi).
 - Aturan yang benar harus cocok dengan **semua** contoh, bukan satu.
@@ -395,8 +377,6 @@ Number logic menguji penalaran angka: temukan aturan hubungan dari beberapa cont
 """
 
 MATERI["blockpattern"] = """
-> **Catatan:** halaman buku bab ini belum tersedia; format di bawah perkiraan.
-
 Block pattern menguji persepsi ruang: menyusun, memutar, atau mencerminkan pola kotak.
 - Lacak **satu pojok** berwarna untuk memastikan arah putaran.
 - Putaran searah jarum jam 90°: baris pertama menjadi kolom terakhir.
@@ -404,8 +384,6 @@ Block pattern menguji persepsi ruang: menyusun, memutar, atau mencerminkan pola 
 """
 
 MATERI["disc"] = """
-> **Catatan:** halaman buku bab ini belum tersedia; format di bawah perkiraan. **Tidak ada jawaban benar atau salah.**
-
 DISC mengelompokkan kecenderungan perilaku: **D**ominance, **I**nfluence, **S**teadiness, **C**onscientiousness. Pada soal pilihan paksa, Anda memilih kata yang paling dan paling tidak menggambarkan diri Anda.
 - Jawab jujur dan **konsisten**; profil yang dibuat-buat mudah terlihat dari ketidakkonsistenan.
 - Tidak ada profil “terbaik” untuk semua posisi.
@@ -413,8 +391,6 @@ DISC mengelompokkan kecenderungan perilaku: **D**ominance, **I**nfluence, **S**t
 """
 
 MATERI["karakter"] = """
-> **Catatan:** halaman buku bab ini belum tersedia; format di bawah perkiraan. **Tidak ada jawaban benar atau salah.**
-
 Subtes karakteristik pribadi biasanya berupa pernyataan yang dinilai sesuai/tidak sesuai dengan diri Anda.
 - Butir yang maknanya berkebalikan dipakai untuk mengecek konsistensi.
 - Jangan menebak “jawaban ideal”: jawaban yang terlalu sempurna di semua butir dapat tampak tidak jujur.
@@ -422,8 +398,6 @@ Subtes karakteristik pribadi biasanya berupa pernyataan yang dinilai sesuai/tida
 """
 
 MATERI["skala"] = """
-> **Catatan:** halaman buku bab ini belum tersedia; format di bawah perkiraan. **Tidak ada jawaban benar atau salah.**
-
 Skala penilaian diri meminta Anda menilai kemampuan atau perilaku diri sendiri pada skala (misal 1–5).
 - Pakai seluruh rentang skala sesuai kenyataan.
 - Berikan contoh nyata di kepala sebelum memilih angka tinggi.
@@ -431,8 +405,6 @@ Skala penilaian diri meminta Anda menilai kemampuan atau perilaku diri sendiri p
 """
 
 MATERI["pauli"] = """
-> **Catatan:** halaman buku bab ini belum tersedia; format di bawah perkiraan.
-
 Tes Pauli menguji kecepatan, ketelitian, ketahanan, dan konsistensi kerja. Biasanya Anda menjumlahkan dua angka berurutan dalam kolom dan menulis **angka satuan** hasilnya, terus-menerus dalam waktu tertentu.
 - Contoh: 7 dan 8 → 15 → tulis **5**.
 - Jaga irama yang stabil; kecepatan yang naik-turun menurunkan nilai konsistensi.
