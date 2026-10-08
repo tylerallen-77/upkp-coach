@@ -2,10 +2,11 @@
 import {useEffect,useState} from 'react'
 import {api,pct,sec} from '../lib/api'
 import QuestionRunner from '../components/QuestionRunner'
+import RichContent from '../components/RichContent'
 
 type Track='tpa'|'substansi'
-const nav=[['home','Beranda'],['learn','Belajar'],['tryout','Try Out'],['progress','Progress'],['account','Account']]
-const navGlyph:any={home:'⌂',learn:'▤',tryout:'◎',progress:'◒',account:'◉'}
+const nav=[['home','Beranda'],['materials','Materi'],['learn','Belajar'],['tryout','Try Out'],['progress','Progress'],['account','Account']]
+const navGlyph:any={home:'⌂',materials:'▥',learn:'▤',tryout:'◎',progress:'◒',account:'◉'}
 
 export default function Page(){
  const [me,setMe]=useState<any>(null),[authMode,setAuthMode]=useState<'login'|'register'>('login'),[auth,setAuth]=useState({username:'',password:'',accept_terms:false}),[err,setErr]=useState('')
@@ -60,6 +61,7 @@ export default function Page(){
  {view==='home'&&<Home data={home} busy={busy} busyKey={busyKey} start={startGuided} resume={resumeSession}/>}
  {view==='learn'&&<Learn track={track} setTrack={setTrack} catalog={catalog} bundle={bundle} pm={pm} startGuided={startGuided} startChapter={startChapter} onDone={sessionDone} onExit={sessionExited} busy={busy}/>}
  {view==='tryout'&&<TryOut track={track} setTrack={setTrack} bundle={bundle} pm={pm} start={startTryout} onDone={sessionDone} onExit={sessionExited} busy={busy}/>}
+ {view==='materials'&&<Materials track={track} setTrack={setTrack} catalog={catalog} startChapter={startChapter} busyKey={busyKey}/>} 
  {view==='progress'&&<Progress track={track} setTrack={setTrack} data={progress} bundle={bundle} pm={pm} startMastery={startMastery} onDone={sessionDone} onExit={sessionExited} busy={busy}/>}
  {view==='account'&&<Account me={me} onReset={async()=>{clearBundle();if(typeof window!=='undefined'){Object.keys(localStorage).filter(k=>k.startsWith('upkp_runner_')||k.startsWith('upkp_paused_bundle_')).forEach(k=>localStorage.removeItem(k))}await loadHome();await loadProgress(track)}}/>}
  </main></div>
@@ -88,7 +90,20 @@ function Learn({track,setTrack,catalog,bundle,pm,startGuided,startChapter,onDone
  if(bundle)return <QuestionRunner bundle={bundle} onDone={onDone} onExit={onExit}/>
  return <><div className="pageHead"><div><div className="eyebrow">BELAJAR</div><h1>Coach yang memilih arah utama.</h1><p>Kamu cukup mulai dari sesi rekomendasi. Materi per bab tersedia kalau ingin memahami pola atau shortcut tertentu.</p></div><TrackTabs track={track} setTrack={setTrack}/></div>{pm&&<PostMortem pm={pm}/>}
  <section className="guidedCard"><div><span className="pill">RECOMMENDED</span><h2>Today's guided session</h2><p>Weakness drill + review jatuh tempo + maintenance area yang sudah kuat.</p></div><button className="btn primary" disabled={busy} onClick={()=>startGuided(track)}>{busy?'Menyiapkan…':'Mulai →'}</button></section>
- <div className="chapters">{catalog.map((c:any)=><details className="chapter" key={c.code}><summary><div><b>{c.title}</b><small>{c.subtest}</small></div><span>＋</span></summary><div className="chapterBody"><div className="material">{c.material||'Materi ringkas belum tersedia.'}</div><div className="sourceNote">Basis: {c.source_note}</div>{c.source_refs?.length>0&&<div className="sourceRefs">{c.source_refs.map((s:any)=><a key={s.url} href={s.url} target="_blank" rel="noreferrer">{s.name}</a>)}</div>}<button className="btn ghost" onClick={()=>startChapter(c.code)}>Drill bab ini</button></div></details>)}</div></>
+ <section className="practiceCatalog"><div className="sectionTitle"><div><span className="eyebrow">DRILL PER BAB</span><h3>Latihan terarah</h3></div><small className="muted">Baca konsep lengkap di menu Materi.</small></div><div className="practiceGrid">{catalog.map((c:any)=><article className="practiceCard" key={c.code}><div><span className="pill">{c.subtest}</span><h3>{c.title}</h3><small className="muted">{c.source_status_label||c.source_note}</small></div><button className="btn ghost" disabled={busy} onClick={()=>startChapter(c.code)}>Drill bab ini →</button></article>)}</div></section></>
+}
+
+function Materials({track,setTrack,catalog,startChapter,busyKey}:any){
+ const [open,setOpen]=useState<string>('')
+ return <><div className="pageHead"><div><div className="eyebrow">MATERI</div><h1>Pelajari konsep sebelum mengejar skor.</h1><p>Ringkasan yang bisa dipindai cepat, provenance yang jelas, dan jalur langsung dari konsep ke drill.</p></div><TrackTabs track={track} setTrack={setTrack}/></div>
+ <section className="materialIntro"><div className="materialIntroIcon">▥</div><div><span className="eyebrow">{track==='tpa'?'TPA KNOWLEDGE BASE':'SUBSTANSI · BETA'}</span><h2>{track==='tpa'?'Shortcut, konsep, dan pola yang perlu dikuasai.':'Materi regulasi harus benar sekaligus current.'}</h2><p>{track==='tpa'?'Materi TPA di-anchor ke buku dan diperkaya archetype latihan.':'Setiap bab menampilkan status sumber dan tanggal verifikasi bila tersedia. Label Beta dipertahankan sampai provenance audit selesai.'}</p></div></section>
+ <div className="materialGrid">{catalog.map((c:any)=>{const active=open===c.code;return <article className={'materialCard '+(active?'open':'')} key={c.code}>
+   <button className="materialCardHead" onClick={()=>setOpen(active?'':c.code)}><div><div className="materialMeta"><span className="pill">{c.subtest}</span><span className={'sourceStatus status-'+(c.source_status||'general')}>{c.source_status_label||'Basis materi'}</span></div><h3>{c.title}</h3><p>{c.freshness_note||c.source_note}</p></div><div className="materialOpen">{active?'−':'+'}</div></button>
+   {active&&<div className="materialLesson"><div className="lessonToolbar"><div><span className="eyebrow">SOURCE & FRESHNESS</span><b>{c.source_type==='buku'?'Buku Anak UPKP':'Basis regulasi / pengetahuan'}</b>{c.page&&<small>Halaman referensi: {c.page}</small>}{c.verified_at&&<small>Terakhir diverifikasi: {c.verified_at}</small>}</div><button className="btn primary" disabled={busyKey==='chapter:'+c.code} onClick={()=>startChapter(c.code)}>{busyKey==='chapter:'+c.code?'Menyiapkan…':'Drill bab ini →'}</button></div>
+   <RichContent text={c.material||'Materi ringkas belum tersedia.'} className="lessonContent"/>
+   {c.source_refs?.length>0&&<div className="sourceRefs"><b>Sumber pengayaan</b>{c.source_refs.map((x:any)=><a key={x.url} href={x.url} target="_blank" rel="noreferrer">{x.name}</a>)}</div>}
+   <div className="lessonFooter"><span>Sudah paham konsepnya?</span><button className="btn primary" disabled={busyKey==='chapter:'+c.code} onClick={()=>startChapter(c.code)}>Uji dengan drill →</button></div></div>}
+ </article>})}</div></>
 }
 
 function TryOut({track,setTrack,bundle,pm,start,onDone,onExit,busy}:any){if(bundle)return <QuestionRunner bundle={bundle} onDone={onDone} onExit={onExit}/>;return <><div className="pageHead"><div><div className="eyebrow">TRY OUT</div><h1>Simulasikan kondisi ujian.</h1><p>Feedback ditahan sampai selesai. Gunakan pass pertama untuk mengamankan cheap points.</p></div><TrackTabs track={track} setTrack={setTrack}/></div>{pm&&<PostMortem pm={pm}/>}<section className="tryCard"><div className="tryIcon">◎</div><div><span className="pill">3-PASS STRATEGY</span><h2>{track==='tpa'?'Try Out Tes Potensi':'Try Out Substansi Kemenkeu'}</h2><p>Hasil try out ikut memengaruhi model kemampuanmu.</p></div><button className="btn primary" disabled={busy} onClick={()=>start(track)}>{busy?'Menyiapkan…':'Mulai Try Out'}</button></section></>}
@@ -102,7 +117,20 @@ function Progress({track,setTrack,data,bundle,pm,startMastery,onDone,onExit,busy
  <section className="panel"><h3>Skill map</h3><div className="skillTable"><div className="skillRow head"><span>Skill</span><span>Akurasi</span><span>Median</span><span>Status</span></div>{data.skills.map((s:any)=><div className="skillRow" key={s.skill}><span><b>{s.label}</b><small>{s.n} attempt · recommended {difficulty(s.recommended_level)}</small></span><span>{pct(s.accuracy)}</span><span>{sec(s.median_ms)}</span><span className={'state '+s.state.toLowerCase()}>{s.state}</span></div>)}</div></section></>}</>
 }
 function ReadinessRing({earned,total}:{earned:number,total:number}){const pct=Math.round(earned/Math.max(1,total)*100);return <div className="readinessRing" style={{'--ring':pct+'%'} as any}><div><b>{pct}%</b><small>ready</small></div></div>}
-function MasterySeal({badge,compact=false}:{badge:any,compact?:boolean}){const code:any={verbal:'VB',numerical:'NM',logical:'LG',figural:'FG',substansi_etika:'ET',substansi_wawasan:'WK',substansi_nilai:'NK',substansi_kepegawaian:'KP',substansi_keuangan:'KN',substansi_struktur:'SK'};return <div className={'masterySeal seal-'+badge.section+' '+(badge.earned?'earned ':'')+(compact?'compact':'')} title={badge.label}><div className="sealRim"><div className="sealCore"><b>{badge.earned?'✓':code[badge.section]||'UP'}</b><small>{compact?'':badge.progress+'%'}</small></div></div>{!compact&&<span>{badge.label.replace(' Mastery','')}</span>}</div>}
+function BadgeGlyph({section}:{section:string}){
+ const common={viewBox:'0 0 48 48',fill:'none',stroke:'currentColor',strokeWidth:2.4,strokeLinecap:'round' as const,strokeLinejoin:'round' as const}
+ if(section==='verbal')return <svg {...common}><path d="M8 10h25a6 6 0 0 1 6 6v12a6 6 0 0 1-6 6H20l-8 6v-6H8a4 4 0 0 1-4-4V14a4 4 0 0 1 4-4Z"/><path d="M12 18h18M12 24h14"/></svg>
+ if(section==='numerical')return <svg {...common}><rect x="8" y="5" width="24" height="36" rx="3"/><path d="M13 11h14v7H13zM13 24h3m5 0h3m-11 6h3m5 0h3m-11 6h3m5 0h3M37 34V20m5 14V14"/></svg>
+ if(section==='logical')return <svg {...common}><circle cx="24" cy="8" r="4"/><circle cx="10" cy="34" r="4"/><circle cx="38" cy="34" r="4"/><circle cx="24" cy="25" r="4"/><path d="M22 12l-9 18m13-18 9 18M14 34h20M24 12v9"/></svg>
+ if(section==='figural')return <svg {...common}><path d="M7 36 17 17l10 19H7ZM26 11h14v14H26z"/><circle cx="36" cy="35" r="7"/></svg>
+ if(section==='substansi_etika')return <svg {...common}><path d="M24 5 39 11v11c0 10-6 17-15 21C15 39 9 32 9 22V11l15-6Z"/><path d="M15 20h18M18 20l-4 8h8l-4-8Zm12 0-4 8h8l-4-8ZM24 14v17"/></svg>
+ if(section==='substansi_wawasan')return <svg {...common}><path d="m24 5 4 11 11 4-11 4-4 11-4-11-11-4 11-4 4-11Z"/><path d="M7 39c8-5 26-5 34 0"/></svg>
+ if(section==='substansi_nilai')return <svg {...common}><path d="m24 5 5 14 14 5-14 5-5 14-5-14-14-5 14-5 5-14Z"/><circle cx="24" cy="24" r="5"/></svg>
+ if(section==='substansi_kepegawaian')return <svg {...common}><rect x="9" y="8" width="30" height="34" rx="4"/><circle cx="24" cy="20" r="6"/><path d="M15 35c2-6 16-6 18 0M18 8V4h12v4"/></svg>
+ if(section==='substansi_keuangan')return <svg {...common}><ellipse cx="16" cy="12" rx="8" ry="4"/><path d="M8 12v17c0 2 4 4 8 4s8-2 8-4V12M8 20c0 2 4 4 8 4s8-2 8-4M8 28c0 2 4 4 8 4"/><path d="M29 35h15M31 31V20h11v11M29 20h15l-7-7-8 7Z"/></svg>
+ return <svg {...common}><rect x="20" y="6" width="8" height="8" rx="2"/><rect x="5" y="34" width="8" height="8" rx="2"/><rect x="20" y="34" width="8" height="8" rx="2"/><rect x="35" y="34" width="8" height="8" rx="2"/><path d="M24 14v9M9 34v-7h30v7M24 23v11"/></svg>
+}
+function MasterySeal({badge,compact=false}:{badge:any,compact?:boolean}){const progress=Math.max(0,Math.min(100,Number(badge.progress||0)));return <div className={'masterySeal seal-'+badge.section+' '+(badge.earned?'earned ':'')+(compact?'compact':'')} title={badge.label}><div className="sealProgress" style={{'--progress':progress+'%'} as any}><div className="sealRim"><div className="sealCore"><BadgeGlyph section={badge.section}/>{badge.earned&&<span className="sealCheck">✓</span>}</div></div></div>{!compact&&<><span>{badge.label.replace(' Mastery','')}</span><small className="sealPercent">{progress}%</small></>}</div>}
 function EmptyState({icon,title,text}:{icon:string,title:string,text:string}){return <div className="emptyState"><div className="emptyIcon">{icon}</div><div><b>{title}</b><p>{text}</p></div></div>}
 
 function Account({me,onReset}:any){
