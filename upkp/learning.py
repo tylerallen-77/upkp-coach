@@ -126,7 +126,7 @@ def profile_attempts(attempts: Iterable[dict], now: float | None = None) -> list
     out=[]
     for skill,rows in groups.items():
         rows=sorted(rows,key=lambda x:x.get("ts",0)); n=len(rows)
-        weights=[_recency_weight(float(r.get("ts",now)),now) for r in rows]; wsum=sum(weights) or 1
+        weights=[_recency_weight(float(r.get("ts",now)),now)*(1.0 if int(r.get("hint_level",0) or 0)==0 else 0.75 if int(r.get("hint_level",0) or 0)==1 else 0.45 if int(r.get("hint_level",0) or 0)==2 else 0.20) for r in rows]; wsum=sum(weights) or 1
         acc=sum(w*(1 if r.get("correct") else 0) for w,r in zip(weights,rows))/wsum
         med=_median(float(r.get("elapsed_ms",0)) for r in rows)
         base_target=_median(float(r.get("target_ms",45_000)) for r in rows) or 45_000
