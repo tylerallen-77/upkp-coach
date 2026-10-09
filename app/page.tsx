@@ -97,20 +97,63 @@ function Learn({track,setTrack,catalog,bundle,pm,startGuided,startChapter,teachC
  <section className="practiceCatalog"><div className="sectionTitle"><div><span className="eyebrow">LATIHAN PER BAB</span><h3>Pilih manual hanya kalau kamu punya alasan.</h3></div><small className="muted">Coach tetap memberi konteks berdasarkan history-mu.</small></div><div className="practiceGrid">{catalog.map((c:any)=><article className={'practiceCard rec-'+(c.learner?.recommended||'unseen')} key={c.code}><div><div className="materialMeta"><span className="pill">{c.subtest}</span>{c.learner?.n>0&&<span className="evidencePill">{pct(c.learner.accuracy)} · {c.learner.n} soal</span>}</div><h3>{c.title}</h3><p className="teacherMini">{c.learner?.teacher_note||'Belum ada evidence.'}</p></div><div className="practiceActions"><button className="btn ghost" onClick={()=>teachChapter(c.code)}>Pelajari</button><button className="btn ghost" disabled={busy} onClick={()=>startChapter(c.code,10,0)}>Drill →</button></div></article>)}</div></section></>
 }
 
+
 function Materials({track,setTrack,catalog,startChapter,busyKey,focus,teacher}:any){
  const [selected,setSelected]=useState<string>(focus||'')
- useEffect(()=>{if(focus)setSelected(focus)},[focus])
+ const [mode,setMode]=useState<'course'|'map'>('map')
+ useEffect(()=>{if(focus){setSelected(focus);setMode('course')}},[focus])
  useEffect(()=>{setSelected('')},[track])
  const lesson=selected?catalog.find((c:any)=>c.code===selected):null
  if(lesson)return <LessonPage lesson={lesson} track={track} startChapter={startChapter} busyKey={busyKey} onBack={()=>setSelected('')}/>
- return <><div className="pageHead"><div><div className="eyebrow">MATERI</div><h1>Pilih satu bab. Saya ajarkan sampai kamu bisa mengerjakannya.</h1><p>Bukan kumpulan rangkuman. Setiap lesson punya peta konsep, metode, contoh, jebakan, active recall, dan latihan untuk membuktikan pemahaman.</p></div><TrackTabs track={track} setTrack={setTrack}/></div>
+ return <><div className="pageHead"><div><div className="eyebrow">MATERI</div><h1>{track==='substansi'?'Lihat peta besarnya, baru masuk detail.':'Rumus dan strategi harus kelihatan sebagai satu sistem.'}</h1><p>{track==='substansi'?'Mindmap membantu hafalan lewat hubungan antartopik, regulasi, mnemonic, dan evidence belajarmu.':'Formula & Strategy Map menghubungkan jenis soal, rumus, shortcut, jebakan, dan lesson lengkap.'}</p></div><TrackTabs track={track} setTrack={setTrack}/></div>
+ <div className="materialModeTabs"><button className={mode==='map'?'active':''} onClick={()=>setMode('map')}>{track==='substansi'?'Peta TSKKWK':'Formula & Strategy Map'}</button><button className={mode==='course'?'active':''} onClick={()=>setMode('course')}>Course Library</button></div>
+ {mode==='map'?<LearningMap track={track} catalog={catalog} onLesson={(code:string)=>setSelected(code)} startChapter={startChapter} busyKey={busyKey}/>:<>
  <section className="materialIntro teacherMaterialIntro"><div className="materialIntroIcon">▥</div><div><span className="eyebrow">{track==='tpa'?'TES POTENSI · COURSE':'TSKKWK · COURSE'}</span><h2>{teacher?.focus?'Coach menyarankan mulai dari '+teacher.focus.label:(track==='tpa'?'Bangun metode yang benar, lalu kejar speed.':'Pahami aturan dan konteks, lalu buktikan retention.')}</h2><p>{teacher?.focus?.issue||(track==='tpa'?'Pilih bab untuk melihat lesson map sebelum membaca detail.':'Setiap domain disusun sebagai materi belajar; enam domain ini bukan klaim pembagian subtes resmi.')}</p></div></section>
  {track==='substansi'&&catalog?.[0]?.official_scope_note&&<div className="officialScopeNote"><b>Catatan kurikulum:</b> {catalog[0].official_scope_note}</div>}
  <div className="courseLibrary">{catalog.map((c:any)=><button className={'courseTile rec-'+(c.learner?.recommended||'unseen')} key={c.code} onClick={()=>setSelected(c.code)}>
    <div className="courseTileTop"><span className="pill">{c.subtest}</span>{c.learner?.n>0&&<span className="evidencePill">{pct(c.learner.accuracy)} · {c.learner.n} soal</span>}</div>
    <h3>{c.title}</h3><p>{c.learner?.teacher_note||'Belum ada evidence. Mulai dari lesson map, lalu uji pemahaman.'}</p>
    <div className="courseTileFoot"><span>{(c.lesson_cards||[]).length||c.objectives?.length||0} pokok penting</span><b>Buka lesson →</b></div>
- </button>)}</div></>
+ </button>)}</div></>}
+ </>
+}
+
+function MapProgress({learner}:{learner:any}){const value=learner?.n?Math.round((learner.accuracy||0)*100):0;return <span className={'mapProgress '+(value>=85?'good':value>=65?'mid':learner?.n?'weak':'new')}><i style={{width:value+'%'}}/>{learner?.n?value+'%':'baru'}</span>}
+
+function LearningMap({track,catalog,onLesson,startChapter,busyKey}:any){
+ const groups=track==='tpa'?['Verbal','Numerikal','Figural']:['TSKKWK']
+ const initial=track==='tpa'?groups:catalog.map((x:any)=>x.code)
+ const [expanded,setExpanded]=useState<Record<string,boolean>>(()=>Object.fromEntries(initial.map((x:string)=>[x,true])))
+ const [active,setActive]=useState<any>(catalog[0]||null)
+ useEffect(()=>{setActive(catalog[0]||null);const keys=track==='tpa'?groups:catalog.map((x:any)=>x.code);setExpanded(Object.fromEntries(keys.map((x:string)=>[x,true])))},[track,catalog])
+ const toggle=(k:string)=>setExpanded(x=>({...x,[k]:!x[k]}))
+ const tpaGroup=(name:string)=>catalog.filter((x:any)=>x.subtest===name || (name==='Verbal'&&x.subtest==='Penalaran'))
+ return <div className={'learningMap '+(track==='substansi'?'knowledgeMap':'formulaMap')}>
+  <section className="mapCanvas">
+   <div className="mapRoot"><span className="mapRootIcon">{track==='substansi'?'◎':'∑'}</span><div><small>{track==='substansi'?'KNOWLEDGE MAP':'FORMULA & STRATEGY MAP'}</small><b>{track==='substansi'?'TSKKWK':'Tes Potensi'}</b></div></div>
+   <div className="mapBranches">{track==='tpa'?groups.map(group=><div className="mapBranch" key={group}>
+      <button className="mapBranchHead" onClick={()=>toggle(group)}><span className={'branchDot branch-'+group.toLowerCase()}/><b>{group}</b><small>{tpaGroup(group).length} bab</small><em>{expanded[group]?'−':'+'}</em></button>
+      {expanded[group]&&<div className="mapChildren">{tpaGroup(group).map((c:any)=><div className="mapNodeWrap" key={c.code}><button className={'mapNode '+(active?.code===c.code?'active ':'')+'rec-'+(c.learner?.recommended||'unseen')} onClick={()=>setActive(c)}><div><b>{c.title}</b><small>{(c.formulas||[]).length?(c.formulas.length+' rumus · '):''}{(c.lesson_cards||[]).length} strategi/kartu</small></div><MapProgress learner={c.learner}/></button>{active?.code===c.code&&c.formulas?.length>0&&<div className="formulaLeaves">{c.formulas.slice(0,5).map((x:any,i:number)=><span key={i}>{x.title}</span>)}{c.formulas.length>5&&<span>{'+'+(c.formulas.length-5)+' lainnya'}</span>}</div>}</div>)}</div>}
+    </div>):catalog.map((c:any)=><div className="mapBranch" key={c.code}>
+      <button className={'mapBranchHead tsk '+(active?.code===c.code?'active':'')} onClick={()=>{setActive(c);toggle(c.code)}}><span className="branchDot"/><div><b>{c.title}</b><small>{(c.mnemonics||[]).length} jembatan ingatan · {(c.lesson_cards||[]).length} konsep</small></div><MapProgress learner={c.learner}/><em>{expanded[c.code]?'−':'+'}</em></button>
+      {expanded[c.code]&&<div className="mapChildren tskChildren">{(c.mnemonics||[]).map((m:any,i:number)=><button className="memoryLeaf" key={'m'+i} onClick={()=>setActive({...c,_focusMnemonic:m})}><small>{m.label}</small><b>{m.mnemonic}</b></button>)}{(c.lesson_cards||[]).map((x:any,i:number)=><button className="conceptLeaf" key={'c'+i} onClick={()=>setActive({...c,_focusCard:x})}><small>{x.kind}</small><b>{x.title}</b></button>)}</div>}
+    </div>)}</div>
+  </section>
+  <aside className="mapDetail">{active?<MapDetail track={track} node={active} onLesson={onLesson} startChapter={startChapter} busyKey={busyKey}/>:<EmptyState icon="◎" title="Pilih node" text="Klik salah satu node untuk melihat detail, mnemonic, rumus, atau shortcut."/>}</aside>
+ </div>
+}
+
+function MapDetail({track,node,onLesson,startChapter,busyKey}:any){
+ const focusM=node._focusMnemonic,focusC=node._focusCard
+ return <div className="mapDetailInner"><div className="mapDetailHead"><span className="pill">{node.subtest}</span><h2>{node.title}</h2><MapProgress learner={node.learner}/></div>
+ {focusM&&<div className="focusMemory"><span className="eyebrow">JEMBATAN INGATAN</span><h3>{focusM.mnemonic}</h3><p>{focusM.meaning}</p><small>{focusM.note}</small></div>}
+ {focusC&&<div className={'focusCard kind-'+focusC.kind}><span className="eyebrow">{focusC.kind}</span><h3>{focusC.title}</h3>{focusC.formula&&<div className="formulaLarge">{focusC.formula}</div>}<p>{focusC.body}</p></div>}
+ {!focusM&&!focusC&&<><p className="mapTeacherNote">{node.learner?.teacher_note||'Belum ada evidence. Mulai dari peta, lalu masuk lesson untuk memahami konsepnya.'}</p>
+ {track==='tpa'&&node.formulas?.length>0&&<div className="detailSection"><span className="eyebrow">RUMUS UTAMA</span>{node.formulas.slice(0,6).map((x:any,i:number)=><div className="detailFormula" key={i}><b>{x.title}</b><code>{x.formula}</code><small>{x.note}</small></div>)}</div>}
+ {track==='tpa'&&node.lesson_cards?.length>0&&<div className="detailSection"><span className="eyebrow">STRATEGI & JEBAKAN</span>{node.lesson_cards.map((x:any,i:number)=><div className="detailBullet" key={i}><b>{x.title}</b><p>{x.body}</p></div>)}</div>}
+ {track==='substansi'&&node.mnemonics?.length>0&&<div className="detailSection"><span className="eyebrow">JEMBATAN INGATAN</span>{node.mnemonics.map((m:any,i:number)=><div className="detailBullet memory" key={i}><b>{m.mnemonic}</b><p>{m.meaning}</p></div>)}</div>}
+ {node.reading_lens&&Object.keys(node.reading_lens).length>0&&<div className="detailSection"><span className="eyebrow">CARA MEMBACA SOAL</span><ol className="miniReading"><li>{node.reading_lens.scan}</li><li>{node.reading_lens.model}</li><li>{node.reading_lens.attack}</li><li>{node.reading_lens.check}</li></ol></div>}</>}
+ <div className="mapDetailActions"><button className="btn ghost" onClick={()=>onLesson(node.code)}>Buka lesson lengkap</button><button className="btn primary" disabled={busyKey==='chapter:'+node.code} onClick={()=>startChapter(node.code,10,0)}>Drill node ini →</button></div></div>
 }
 
 function LessonPage({lesson,track,startChapter,busyKey,onBack}:any){
