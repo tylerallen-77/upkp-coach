@@ -5,7 +5,7 @@ from .skill_catalog import tag_question, BADGE_SKILLS, chapter
 from .advanced_tpa import generate as generate_advanced, ADVANCED_SKILLS
 
 TPA_CODES=["padanan","kelompok","silogisme","analisis","operasi","persamaan","geometri","aritsos","sudut","banding","jarak","peluang","statistika","deret","deretfig","analogifig"]
-SUB_CODES=["etika","wawasan","nilai","kepegawaian","keuangan"]
+SUB_CODES=["etika","nilai","kepegawaian","keuangan","wawasan"]
 TRACK_CODES={"tpa":TPA_CODES,"substansi":SUB_CODES}
 
 def _qs_for_codes(codes,n,level=0,seed=None):
