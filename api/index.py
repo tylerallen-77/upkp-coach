@@ -54,7 +54,6 @@ class OnboardingIn(BaseModel):
     self_assessment:dict[str,str]
     previous_scores:dict[str,str]=Field(default_factory=dict)
     study_pattern:str='mixed'
-    daily_minutes:int=Field(default=60,ge=15)
 class AttemptIn(BaseModel):
     question_token:str; selected:int|None=None; elapsed_ms:int=Field(ge=0,le=300000)
     first_selection_ms:int|None=Field(default=None,ge=0,le=300000); answer_changes:int=Field(default=0,ge=0,le=50)
@@ -169,9 +168,8 @@ def compact_course_plan(uid,profile):
     level=str(profile.get('exam_level') or 'V')
     pattern=profile.get('study_pattern') or 'mixed'
     if pattern not in {'mixed','standalone'}:pattern='mixed'
-    daily=max(15,int(profile.get('daily_minutes',60)))
     targets={'tpa':475 if level in ('V','VI') else 450,'substansi':70}
-    if days<=0:return {'exam_date':profile['exam_date'],'exam_level':level,'targets':targets,'previous_scores':profile.get('previous_scores') or {},'days_remaining':0,'daily_minutes':daily,'study_pattern':pattern,'days':[]}
+    if days<=0:return {'exam_date':profile['exam_date'],'exam_level':level,'targets':targets,'previous_scores':profile.get('previous_scores') or {},'days_remaining':0,'study_pattern':pattern,'days':[]}
     priorities={}
     for track in ('tpa','substansi'):
         attempts=official_track_attempts(uid,track)
@@ -267,7 +265,7 @@ def save_onboarding_profile(body:OnboardingIn,u=Depends(current_user)):
     if set(body.previous_scores)-score_keys or any(not isinstance(v,str) or len(v.strip())>32 for v in body.previous_scores.values()):
         raise HTTPException(422,'Format nilai periode sebelumnya tidak valid.')
     previous_scores={k:v.strip() for k,v in body.previous_scores.items() if v.strip()}
-    saved=store.update_learner_profile(u['id'],exam.isoformat(),body.self_assessment,body.daily_minutes,body.exam_level,previous_scores,body.study_pattern)
+    saved=store.update_learner_profile(u['id'],exam.isoformat(),body.self_assessment,60,body.exam_level,previous_scores,body.study_pattern)
     return {'ok':True,'profile':saved}
 
 @app.post('/api/session/diagnostic')
