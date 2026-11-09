@@ -50,7 +50,9 @@ class AuthIn(BaseModel):
     accept_terms:bool=False
 class OnboardingIn(BaseModel):
     exam_date:str
+    exam_level:str='V'
     self_assessment:dict[str,str]
+    previous_scores:dict[str,str]=Field(default_factory=dict)
     daily_minutes:int=Field(default=60,ge=15,le=240)
 class AttemptIn(BaseModel):
     question_token:str; selected:int|None=None; elapsed_ms:int=Field(ge=0,le=300000)
@@ -128,6 +130,11 @@ def me(u=Depends(current_user)):return {'user':u}
 
 
 def track_attempts(uid,track):return store.attempts(uid,track)
+
+def mastery_inputs(uid,track):
+    diagnostic_ids=store.session_ids_by_kind(uid,'diagnostic')
+    evidence=[a for a in track_attempts(uid,track) if a.get('session_id') not in diagnostic_ids]
+    return evidence,store.recent_sessions(uid,100)
 def public_q(q):
     item={k:v for k,v in q.items() if k not in ('ans','exp','trick','_exam_mode','_session_id')}
     lv=int(item.get('lv',1));item['difficulty_label']=DIFFICULTY.get(lv,'Standard')
@@ -152,7 +159,9 @@ def compact_course_plan(uid,profile):
     today=datetime.now(ZoneInfo('Asia/Jakarta')).date()
     exam=date.fromisoformat(profile['exam_date'])
     days=(exam-today).days
-    if days<=0:return {'exam_date':profile['exam_date'],'days_remaining':0,'daily_minutes':profile.get('daily_minutes',60),'days':[]}
+    level=str(profile.get('exam_level') or 'V')
+    targets={'tpa':475 if level in ('V','VI') else 450,'substansi':70}
+    if days<=0:return {'exam_date':profile['exam_date'],'exam_level':level,'targets':targets,'previous_scores':profile.get('previous_scores') or {},'days_remaining':0,'daily_minutes':profile.get('daily_minutes',60),'days':[]}
     daily=max(15,int(profile.get('daily_minutes',60)))
     priorities={}
     for track in ('tpa','substansi'):
@@ -201,16 +210,16 @@ def compact_course_plan(uid,profile):
             tasks.append({'track':track,'chapter':code,'label':label,'mode':mode,'minutes':max(8,daily//2),'reason':reason})
         study_days.append({'date':(today+timedelta(days=i)).isoformat(),
                            'day':i+1,'phase':phase,'tasks':tasks})
-    return {'exam_date':profile['exam_date'],'days_remaining':days,'daily_minutes':daily,'baseline':baseline,'days':study_days}
+    return {'exam_date':profile['exam_date'],'exam_level':level,'targets':targets,'previous_scores':profile.get('previous_scores') or {},'psychotest':{'recommended':True,'coach_support':'Belum tersedia sebagai diagnostic atau mastery track terverifikasi.'},'days_remaining':days,'daily_minutes':daily,'baseline':baseline,'days':study_days}
 
 def track_snapshot(uid,track):
     a=track_attempts(uid,track);m=learning.overall_metrics(a);p=learning.profile_attempts(a);rx=learning.daily_prescription(a,max_minutes=18)
     out={'track':track,'label':TRACKS[track],'metrics':m,'skills':p[:8],'prescription':rx,'review':learning.review_queue(a,6),'review_due':learning.spaced_review_queue(a,6),'teacher':learning.teacher_plan(a,track)}
-    sessions=store.recent_sessions(uid,100)
+    evidence,sessions=mastery_inputs(uid,track)
     if track=='tpa':
-        out['mastery']=mastery.tpa_badges(a,sessions)
+        out['mastery']=mastery.tpa_badges(evidence,sessions)
     elif track=='substansi':
-        out['mastery']=mastery.substansi_badges(a,sessions)
+        out['mastery']=mastery.substansi_badges(evidence,sessions)
     return out
 
 @app.get('/api/home')
@@ -236,10 +245,15 @@ def save_onboarding_profile(body:OnboardingIn,u=Depends(current_user)):
     today=datetime.now(ZoneInfo('Asia/Jakarta')).date()
     if exam<=today:raise HTTPException(422,'Tanggal tes harus setelah hari ini.')
     if (exam-today).days>365:raise HTTPException(422,'Tanggal tes maksimal satu tahun dari hari ini.')
+    if body.exam_level not in {'IV','V','VI'}:raise HTTPException(422,'Pilih jenjang UPKP IV, V, atau VI.')
     allowed={'new','basic','intermediate','strong'}
     if set(body.self_assessment.keys())!={'tpa','substansi'} or any(v not in allowed for v in body.self_assessment.values()):
         raise HTTPException(422,'Pilih estimasi kemampuan untuk TPA dan TSKKWK.')
-    saved=store.update_learner_profile(u['id'],exam.isoformat(),body.self_assessment,body.daily_minutes)
+    score_keys={'tpa','substansi','psychotest'}
+    if set(body.previous_scores)-score_keys or any(not isinstance(v,str) or len(v.strip())>32 for v in body.previous_scores.values()):
+        raise HTTPException(422,'Format nilai periode sebelumnya tidak valid.')
+    previous_scores={k:v.strip() for k,v in body.previous_scores.items() if v.strip()}
+    saved=store.update_learner_profile(u['id'],exam.isoformat(),body.self_assessment,body.daily_minutes,body.exam_level,previous_scores)
     return {'ok':True,'profile':saved}
 
 @app.post('/api/session/diagnostic')
@@ -331,14 +345,14 @@ def tryout(track:str='tpa',u=Depends(current_user)):
 @app.get('/api/mastery')
 def mastery_status(track:str='tpa',u=Depends(current_user)):
     if track not in TRACKS:raise HTTPException(404,'Unknown track')
-    a=track_attempts(u['id'],track);sessions=store.recent_sessions(u['id'],100)
+    a,sessions=mastery_inputs(u['id'],track)
     return mastery.tpa_badges(a,sessions) if track=='tpa' else mastery.substansi_badges(a,sessions)
 
 @app.post('/api/session/mastery')
 def mastery_challenge(section:str,track:str='tpa',u=Depends(current_user)):
     throttle(u['id'],'session',30,3600)
     if track not in TRACKS:raise HTTPException(404,'Unknown track')
-    attempts=track_attempts(u['id'],track);sessions=store.recent_sessions(u['id'],100)
+    attempts,sessions=mastery_inputs(u['id'],track)
     current=mastery.tpa_badges(attempts,sessions) if track=='tpa' else mastery.substansi_badges(attempts,sessions)
     badge=next((b for b in current['badges'] if b['section']==section),None)
     if not badge:raise HTTPException(404,'Unknown mastery section')
