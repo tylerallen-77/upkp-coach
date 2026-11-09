@@ -46,7 +46,7 @@ TRYOUT_POTENSI = [
 ]
 # Internal balanced practice allocation across the five topics listed by the UPKP 2026 portal.
 # The official page reviewed does not publish per-topic item weights.
-TRYOUT_TSKKWK = [("etika", 4), ("wawasan", 4), ("nilai", 4), ("kepegawaian", 4), ("keuangan", 4)]
+TRYOUT_TSKKWK = [("etika", 4), ("nilai", 4), ("kepegawaian", 4), ("keuangan", 4), ("wawasan", 4)]
 
 PAKET = {
     "potensi": {"nama": "Try Out Tes Potensi (Verbal, Numerikal, Figural)", "rencana": TRYOUT_POTENSI, "menit": 40},
