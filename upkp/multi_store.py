@@ -81,16 +81,19 @@ def _ensure_learner_profiles():
             diagnostic_done TEXT NOT NULL DEFAULT '{}',
             exam_level TEXT NOT NULL DEFAULT 'V',
             previous_scores TEXT NOT NULL DEFAULT '{}',
+            study_pattern TEXT NOT NULL DEFAULT 'mixed',
             updated_at DOUBLE PRECISION NOT NULL
         )''')
         if _is_pg():
             execute(c,"ALTER TABLE learner_profiles ADD COLUMN IF NOT EXISTS exam_level TEXT NOT NULL DEFAULT 'V'")
             execute(c,"ALTER TABLE learner_profiles ADD COLUMN IF NOT EXISTS previous_scores TEXT NOT NULL DEFAULT '{}'")
+            execute(c,"ALTER TABLE learner_profiles ADD COLUMN IF NOT EXISTS study_pattern TEXT NOT NULL DEFAULT 'mixed'")
             c.commit()
         else:
             for sql in (
                 "ALTER TABLE learner_profiles ADD COLUMN exam_level TEXT NOT NULL DEFAULT 'V'",
                 "ALTER TABLE learner_profiles ADD COLUMN previous_scores TEXT NOT NULL DEFAULT '{}'",
+                "ALTER TABLE learner_profiles ADD COLUMN study_pattern TEXT NOT NULL DEFAULT 'mixed'",
             ):
                 try: execute(c,sql)
                 except Exception: pass
@@ -104,14 +107,14 @@ def create_learner_profile(uid):
 def get_learner_profile(uid):
     _ensure_learner_profiles()
     with connect() as c:
-        r=fetchone(c,'SELECT exam_date,self_assessment,daily_minutes,diagnostic_done,exam_level,previous_scores,updated_at FROM learner_profiles WHERE user_id=?',(uid,))
+        r=fetchone(c,'SELECT exam_date,self_assessment,daily_minutes,diagnostic_done,exam_level,previous_scores,study_pattern,updated_at FROM learner_profiles WHERE user_id=?',(uid,))
     if not r:return None
-    return {'exam_date':r[0],'self_assessment':_decode(r[1],{}),'daily_minutes':int(r[2] or 60),'diagnostic_done':_decode(r[3],{}),'exam_level':r[4] or 'V','previous_scores':_decode(r[5],{}),'updated_at':r[6]}
+    return {'exam_date':r[0],'self_assessment':_decode(r[1],{}),'daily_minutes':int(r[2] or 60),'diagnostic_done':_decode(r[3],{}),'exam_level':r[4] or 'V','previous_scores':_decode(r[5],{}),'study_pattern':r[6] or 'mixed','updated_at':r[7]}
 
-def update_learner_profile(uid,exam_date,self_assessment,daily_minutes,exam_level='V',previous_scores=None):
+def update_learner_profile(uid,exam_date,self_assessment,daily_minutes,exam_level='V',previous_scores=None,study_pattern='mixed'):
     _ensure_learner_profiles()
     with connect() as c:
-        execute(c,'UPDATE learner_profiles SET exam_date=?,self_assessment=?,daily_minutes=?,exam_level=?,previous_scores=?,updated_at=? WHERE user_id=?',(exam_date,_json(self_assessment),int(daily_minutes),exam_level,_json(previous_scores or {}),time.time(),uid))
+        execute(c,'UPDATE learner_profiles SET exam_date=?,self_assessment=?,daily_minutes=?,exam_level=?,previous_scores=?,study_pattern=?,updated_at=? WHERE user_id=?',(exam_date,_json(self_assessment),int(daily_minutes),exam_level,_json(previous_scores or {}),study_pattern,time.time(),uid))
         if _is_pg(): c.commit()
     return get_learner_profile(uid)
 
