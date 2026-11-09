@@ -329,6 +329,9 @@ def catalog(track:str='tpa',u=Depends(current_user)):
                          'reading_lens':study_tools.reading_lens(b.kode),
                          'formulas':study_tools.formulas(b.kode),
                          'mnemonics':study_tools.mnemonics(b.kode)})
+    if track=='substansi':
+        order={code:i for i,code in enumerate(official_sources.TSKKWK_OFFICIAL_CODES+official_sources.TSKKWK_ENRICHMENT_CODES)}
+        chapters.sort(key=lambda item:order.get(item['code'],len(order)))
     return {'track':track,'chapters':chapters}
 
 @app.post('/api/session/guided')
