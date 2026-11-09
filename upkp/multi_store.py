@@ -79,8 +79,16 @@ def _ensure_learner_profiles():
             self_assessment TEXT NOT NULL DEFAULT '{}',
             daily_minutes INTEGER NOT NULL DEFAULT 60,
             diagnostic_done TEXT NOT NULL DEFAULT '{}',
+            exam_level TEXT NOT NULL DEFAULT 'V',
+            previous_scores TEXT NOT NULL DEFAULT '{}',
             updated_at DOUBLE PRECISION NOT NULL
         )''')
+        for sql in (
+            "ALTER TABLE learner_profiles ADD COLUMN exam_level TEXT NOT NULL DEFAULT 'V'",
+            "ALTER TABLE learner_profiles ADD COLUMN previous_scores TEXT NOT NULL DEFAULT '{}'",
+        ):
+            try: execute(c,sql)
+            except Exception: pass
         if _is_pg(): c.commit()
 
 def create_learner_profile(uid):
@@ -92,14 +100,14 @@ def create_learner_profile(uid):
 def get_learner_profile(uid):
     _ensure_learner_profiles()
     with connect() as c:
-        r=fetchone(c,'SELECT exam_date,self_assessment,daily_minutes,diagnostic_done,updated_at FROM learner_profiles WHERE user_id=?',(uid,))
+        r=fetchone(c,'SELECT exam_date,self_assessment,daily_minutes,diagnostic_done,exam_level,previous_scores,updated_at FROM learner_profiles WHERE user_id=?',(uid,))
     if not r:return None
-    return {'exam_date':r[0],'self_assessment':_decode(r[1],{}),'daily_minutes':int(r[2] or 60),'diagnostic_done':_decode(r[3],{}),'updated_at':r[4]}
+    return {'exam_date':r[0],'self_assessment':_decode(r[1],{}),'daily_minutes':int(r[2] or 60),'diagnostic_done':_decode(r[3],{}),'exam_level':r[4] or 'V','previous_scores':_decode(r[5],{}),'updated_at':r[6]}
 
-def update_learner_profile(uid,exam_date,self_assessment,daily_minutes):
+def update_learner_profile(uid,exam_date,self_assessment,daily_minutes,exam_level='V',previous_scores=None):
     _ensure_learner_profiles()
     with connect() as c:
-        execute(c,'UPDATE learner_profiles SET exam_date=?,self_assessment=?,daily_minutes=?,updated_at=? WHERE user_id=?',(exam_date,_json(self_assessment),int(daily_minutes),time.time(),uid))
+        execute(c,'UPDATE learner_profiles SET exam_date=?,self_assessment=?,daily_minutes=?,exam_level=?,previous_scores=?,updated_at=? WHERE user_id=?',(exam_date,_json(self_assessment),int(daily_minutes),exam_level,_json(previous_scores or {}),time.time(),uid))
         if _is_pg(): c.commit()
     return get_learner_profile(uid)
 
@@ -177,6 +185,11 @@ def attempts(uid,track=None):
             rows=fetchall(c,'SELECT payload FROM attempts WHERE user_id=? AND track=? ORDER BY id',(uid,track))
         else: rows=fetchall(c,'SELECT payload FROM attempts WHERE user_id=? ORDER BY id',(uid,))
     return [_decode(r[0],{}) for r in rows]
+
+def session_ids_by_kind(uid,kind):
+    with connect() as c:
+        rows=fetchall(c,'SELECT id FROM learning_sessions WHERE user_id=? AND kind=?',(uid,kind))
+    return {r[0] for r in rows}
 
 def recent_sessions(uid,limit=8):
     with connect() as c:
