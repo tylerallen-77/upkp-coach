@@ -99,7 +99,7 @@ function Home({data,busy,busyKey,start,startDiagnostic,saveOnboarding,startChapt
 function OnboardingSetup({busy,save,initialProfile,compact=false}:any){
  const [examDate,setExamDate]=useState(initialProfile?.exam_date||''),[examLevel,setExamLevel]=useState(initialProfile?.exam_level||'V'),[tpa,setTpa]=useState(initialProfile?.self_assessment?.tpa||'basic'),[substansi,setSubstansi]=useState(initialProfile?.self_assessment?.substansi||'basic'),[dailyMinutes,setDailyMinutes]=useState(String(initialProfile?.daily_minutes||60))
  const [priorTpa,setPriorTpa]=useState(initialProfile?.previous_scores?.tpa||''),[priorSubstansi,setPriorSubstansi]=useState(initialProfile?.previous_scores?.substansi||'')
- const [hasPreviousScores,setHasPreviousScores]=useState(Boolean(initialProfile?.previous_scores&&Object.keys(initialProfile.previous_scores).length))
+ const [hasPreviousScores,setHasPreviousScores]=useState(Boolean(initialProfile?.previous_scores&&(initialProfile.previous_scores.tpa||initialProfile.previous_scores.substansi)))
  const tomorrow=new Date();tomorrow.setDate(tomorrow.getDate()+1);const minDate=new Date(tomorrow.getTime()-tomorrow.getTimezoneOffset()*60000).toISOString().slice(0,10)
  const options=[['new','Belum pernah / sangat baru'],['basic','Pemula · tahu dasar, belum konsisten'],['intermediate','Menengah · cukup paham, perlu latihan'],['strong','Mahir · tinggal pemantapan dan speed']]
  const targetTpa=examLevel==='IV'?450:475
