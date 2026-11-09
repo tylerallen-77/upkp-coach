@@ -39,8 +39,9 @@ export default function Page(){
  async function startTryout(t:Track){setBusy(true);setBusyKey('tryout:'+t);setPm(null);setActionErr('');try{const d=await api('/api/session/tryout?track='+t,{method:'POST'});rememberBundle(d);setTrack(t);setView('tryout')}catch(e:any){setActionErr(e.message||'Gagal menyiapkan Try Out.')}finally{setBusy(false);setBusyKey('')}}
  async function startMastery(section:string,t:Track=track){setBusy(true);setBusyKey('mastery:'+section);setPm(null);setActionErr('');try{const d=await api('/api/session/mastery?track='+t+'&section='+encodeURIComponent(section),{method:'POST'});rememberBundle(d);setTrack(t);setView('progress')}catch(e:any){setActionErr(e.message||'Mastery Challenge belum bisa dimulai.')}finally{setBusy(false);setBusyKey('')}}
  async function sessionDone(x:any){
+   const wasDiagnostic=bundle?.session?.kind==='diagnostic'
    if(bundle?.session?.id&&typeof window!=='undefined')localStorage.removeItem('upkp_paused_bundle_'+bundle.session.id)
-   clearBundle();setPm(x);await loadHome();await loadProgress(track)
+   clearBundle();setPm(x);if(wasDiagnostic)setView('home');await loadHome();await loadProgress(track)
  }
  async function sessionExited(){
    if(bundle?.session?.id&&typeof window!=='undefined')localStorage.setItem('upkp_paused_bundle_'+bundle.session.id,JSON.stringify(bundle))
