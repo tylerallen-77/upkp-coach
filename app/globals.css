@@ -137,3 +137,7 @@ html[data-theme="dark"] .memoryBridge,html[data-theme="dark"] .recallCheck{backg
 html[data-theme="dark"] .memoryGrid article{background:#282317;border-color:#5c4d2c}
 html[data-theme="dark"] .sessionBar{background:rgba(11,18,32,.96)}
 @media(max-width:950px){.themeToggle{top:10px;right:12px}.authThemeToggle{top:12px;right:12px}}
+
+
+.themeInline.mobileTheme{width:42px;height:40px;margin:0;padding:0;text-align:center;background:var(--card);color:var(--ink);border:1px solid var(--line);font-size:18px}
+html[data-theme="dark"] .themeInline.mobileTheme{background:#1b2a40;color:var(--ink);border-color:var(--line)}
