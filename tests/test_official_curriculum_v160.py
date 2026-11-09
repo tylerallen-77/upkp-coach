@@ -11,8 +11,14 @@ def test_deep_course_coverage_and_tskkwk_validation():
     from upkp import course_materials, official_sources
     expected={'padanan','kelompok','silogisme','analisis','operasi','persamaan','geometri','aritsos','sudut','banding','jarak','peluang','statistika','deret','deretfig','analogifig','etika','wawasan','nilai','kepegawaian','keuangan','struktur'}
     assert expected.issubset(set(course_materials.MODULES))
-    assert official_sources.VALIDATION['validated_at']=='2026-10-08'
+    assert official_sources.VALIDATION['validated_at']=='2026-11-09'
     assert set(official_sources.TSKKWK_SOURCES)=={'etika','wawasan','nilai','kepegawaian','keuangan','struktur'}
+    assert set(official_sources.TSKKWK_OFFICIAL_CODES)=={'etika','wawasan','nilai','kepegawaian','keuangan'}
+    assert set(official_sources.TSKKWK_ENRICHMENT_CODES)=={'struktur'}
+    from upkp import final_core, engine, mastery
+    assert set(final_core.SUB_CODES)==set(official_sources.TSKKWK_OFFICIAL_CODES)
+    assert all(code!='struktur' for code,_ in engine.TRYOUT_TSKKWK)
+    assert len(mastery.SUBSTANSI_ORDER)==5 and 'substansi_struktur' not in mastery.SUBSTANSI_ORDER
     assert any('PMK 117/2025' in x['name'] for x in official_sources.TSKKWK_SOURCES['struktur'])
 
 def test_no_legacy_public_branding():
