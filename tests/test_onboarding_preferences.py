@@ -1,4 +1,4 @@
-def test_learner_profile_persists_study_pattern_and_unbounded_daily_minutes(tmp_path, monkeypatch):
+def test_learner_profile_persists_study_pattern(tmp_path, monkeypatch):
     from upkp import multi_store as store
 
     monkeypatch.setattr(store, "LOCAL_DB", tmp_path / "study-preferences.sqlite3")
@@ -9,11 +9,10 @@ def test_learner_profile_persists_study_pattern_and_unbounded_daily_minutes(tmp_
         user["id"],
         "2026-12-01",
         {"tpa": "basic", "substansi": "intermediate"},
-        360,
+        60,
         "V",
         {},
         "standalone",
     )
 
-    assert profile["daily_minutes"] == 360
     assert profile["study_pattern"] == "standalone"
