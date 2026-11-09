@@ -26,6 +26,12 @@ def test_substance_catalog_and_guided():
     assert s.status_code==200,s.text
     q=s.json()['questions']; assert q
     assert all('ans' not in x and 'exp' not in x for x in q)
+    assert all(x.get('bab')!='struktur' for x in q)
+    mock=client.post('/api/session/tryout?track=substansi')
+    assert mock.status_code==200,mock.text
+    mock_q=mock.json()['questions']
+    assert len(mock_q)==20
+    assert all(x.get('bab')!='struktur' for x in mock_q)
 
 def test_tpa_question_and_attempt():
     s=client.post('/api/session/chapter?code=operasi&n=5&level=1').json()
