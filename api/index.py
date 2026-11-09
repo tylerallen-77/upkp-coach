@@ -1,5 +1,7 @@
 from __future__ import annotations
 import os, re, time
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
 from urllib.parse import urlparse
 from fastapi import FastAPI, HTTPException, Request, Response, Depends
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,6 +17,7 @@ from upkp import multi_store as store
 from upkp import mastery
 from upkp import tpa_enrichment
 from upkp.exam_engine import structural_signature
+from upkp.skill_catalog import chapter as chapter_for_skill
 
 app=FastAPI(title='UPKP Coach Final API',version='1.7.0',docs_url=None if os.getenv('VERCEL')=='1' else '/docs',redoc_url=None)
 app.add_middleware(CORSMiddleware,allow_origins=[],allow_credentials=True,allow_methods=['*'],allow_headers=['*'])
@@ -45,6 +48,10 @@ class AuthIn(BaseModel):
     username:str=Field(min_length=3,max_length=24)
     password:str=Field(min_length=8,max_length=128)
     accept_terms:bool=False
+class OnboardingIn(BaseModel):
+    exam_date:str
+    self_assessment:dict[str,str]
+    daily_minutes:int=Field(default=60,ge=15,le=240)
 class AttemptIn(BaseModel):
     question_token:str; selected:int|None=None; elapsed_ms:int=Field(ge=0,le=300000)
     first_selection_ms:int|None=Field(default=None,ge=0,le=300000); answer_changes:int=Field(default=0,ge=0,le=50)
@@ -96,6 +103,7 @@ def register(body:AuthIn,response:Response,request:Request):
     if store.get_user_by_username(username):raise HTTPException(409,'Username sudah dipakai')
     try:u=store.create_user(username,ph.hash(body.password),'user')
     except Exception:raise HTTPException(409,'Username sudah dipakai')
+    store.create_learner_profile(u['id'])
     token=store.create_auth_session(u['id']);set_cookie(response,token)
     return {'user':u}
 
@@ -138,6 +146,56 @@ def prep_questions(uid,sid,qs):
         item=public_q(q);item['token']=token;out.append(item)
     return out
 
+
+def compact_course_plan(uid,profile):
+    if not profile or not profile.get('exam_date'):return None
+    today=datetime.now(ZoneInfo('Asia/Jakarta')).date()
+    exam=date.fromisoformat(profile['exam_date'])
+    days=(exam-today).days
+    if days<=0:return {'exam_date':profile['exam_date'],'days_remaining':0,'daily_minutes':profile.get('daily_minutes',60),'days':[]}
+    daily=max(15,int(profile.get('daily_minutes',60)))
+    priorities={}
+    for track in ('tpa','substansi'):
+        attempts=track_attempts(uid,track)
+        ranked=learning.profile_attempts(attempts)
+        codes=[]
+        for item in ranked:
+            code=chapter_for_skill(item.get('skill',''))
+            if code and code not in codes:codes.append(code)
+        for code in core.TRACK_CODES[track]:
+            if code not in codes:codes.append(code)
+        priorities[track]=codes
+    study_days=[]
+    for i in range(days):
+        if i < max(1,int(days*.60)):
+            phase='Tutup gap utama'
+            mode='chapter'
+        elif i < max(1,int(days*.85)):
+            phase='Latihan campuran & retensi'
+            mode='guided'
+        elif i == days-1:
+            phase='Final review'
+            mode='chapter'
+        else:
+            phase='Simulasi & evaluasi'
+            mode='guided'
+        tasks=[]
+        for track in ('tpa','substansi'):
+            codes=priorities[track]
+            code=codes[(i//2)%len(codes)]
+            chapter=curriculum.BAB_BY_KODE.get(code)
+            title=chapter.judul if chapter else code
+            if mode=='chapter':
+                label=('Recall akhir · ' if phase=='Final review' else 'Fokus · ')+title
+                reason='Prioritas ditentukan dari hasil diagnostic dan pola akurasi, kecepatan, serta kesalahan.'
+            else:
+                label='Mixed practice · '+TRACKS[track]
+                reason='Mengukur transfer kemampuan dan menjaga materi yang sudah dipelajari tetap aktif.'
+            tasks.append({'track':track,'chapter':code,'label':label,'mode':mode,'minutes':max(8,daily//2),'reason':reason})
+        study_days.append({'date':(today.replace() if i==0 else today).isoformat() if False else (today+__import__('datetime').timedelta(days=i)).isoformat(),
+                           'day':i+1,'phase':phase,'tasks':tasks})
+    return {'exam_date':profile['exam_date'],'days_remaining':days,'daily_minutes':daily,'days':study_days}
+
 def track_snapshot(uid,track):
     a=track_attempts(uid,track);m=learning.overall_metrics(a);p=learning.profile_attempts(a);rx=learning.daily_prescription(a,max_minutes=18)
     out={'track':track,'label':TRACKS[track],'metrics':m,'skills':p[:8],'prescription':rx,'review':learning.review_queue(a,6),'review_due':learning.spaced_review_queue(a,6),'teacher':learning.teacher_plan(a,track)}
@@ -150,12 +208,44 @@ def track_snapshot(uid,track):
 
 @app.get('/api/home')
 def home(u=Depends(current_user)):
+    profile=store.get_learner_profile(u['id'])
+    done=(profile or {}).get('diagnostic_done') or {}
+    onboarding={'required':profile is not None,'profile':profile,'diagnostic_done':done}
+    course_plan=compact_course_plan(u['id'],profile) if profile and profile.get('exam_date') and done.get('tpa') and done.get('substansi') else None
     return {
         'user':u,
         'tracks':[track_snapshot(u['id'],'tpa'),track_snapshot(u['id'],'substansi')],
         'sessions':store.recent_sessions(u['id'],6),
         'active_sessions':store.active_sessions(u['id'],5),
+        'onboarding':onboarding,
+        'course_plan':course_plan,
     }
+
+@app.post('/api/onboarding/profile')
+def save_onboarding_profile(body:OnboardingIn,u=Depends(current_user)):
+    if not store.get_learner_profile(u['id']):raise HTTPException(404,'Onboarding hanya berlaku untuk akun baru.')
+    try:exam=date.fromisoformat(body.exam_date)
+    except ValueError:raise HTTPException(422,'Tanggal tes tidak valid.')
+    today=datetime.now(ZoneInfo('Asia/Jakarta')).date()
+    if exam<=today:raise HTTPException(422,'Tanggal tes harus setelah hari ini.')
+    allowed={'new','basic','intermediate','strong'}
+    if set(body.self_assessment.keys())!={'tpa','substansi'} or any(v not in allowed for v in body.self_assessment.values()):
+        raise HTTPException(422,'Pilih estimasi kemampuan untuk TPA dan TSKKWK.')
+    saved=store.update_learner_profile(u['id'],exam.isoformat(),body.self_assessment,body.daily_minutes)
+    return {'ok':True,'profile':saved}
+
+@app.post('/api/session/diagnostic')
+def onboarding_diagnostic(track:str='tpa',u=Depends(current_user)):
+    throttle(u['id'],'session',30,3600)
+    if track not in TRACKS:raise HTTPException(404,'Unknown track')
+    profile=store.get_learner_profile(u['id'])
+    if not profile or not profile.get('exam_date'):raise HTTPException(409,'Isi tanggal tes dan estimasi kemampuan terlebih dahulu.')
+    if (profile.get('diagnostic_done') or {}).get(track):raise HTTPException(409,'Diagnostic track ini sudah selesai.')
+    rx,qs=core.build_prescription(track,[],max_minutes=20)
+    for q in qs:q['_exam_mode']=True
+    if not qs:raise HTTPException(503,'Soal diagnostic belum tersedia.')
+    s=store.new_learning_session(u['id'],track,'diagnostic',f'Diagnostic awal · {TRACKS[track]}',{'onboarding':True,'question_count':len(qs),'self_assessment':profile.get('self_assessment',{}).get(track)})
+    return {'session':s,'prescription':rx,'questions':prep_questions(u['id'],s['id'],qs),'mode':'diagnostic'}
 
 @app.get('/api/progress')
 def progress(track:str='tpa',u=Depends(current_user)):
@@ -299,6 +389,8 @@ def close(body:CloseIn,u=Depends(current_user)):
         pm={**pm,**verdict}
     pm=learning.enrich_postmortem(pm)
     store.close_learning_session(u['id'],body.session_id,pm)
+    if sess.get('kind')=='diagnostic' and not body.abandoned:
+        store.mark_diagnostic_done(u['id'],sess.get('track','tpa'))
     return {'ok':True,'postmortem':pm}
 
 @app.post('/api/report-question')
