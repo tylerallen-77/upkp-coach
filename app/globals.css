@@ -95,3 +95,45 @@
 
 .baselineSummary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:15px 0}.baselineSummary>div{display:grid;gap:4px;background:#f5f8fd;border:1px solid #e5ebf4;border-radius:11px;padding:11px 13px}.baselineSummary b{font-size:12px}.baselineSummary span{font-size:11px;color:var(--muted)}.baselineSummary strong{font-size:13px;color:#204f9f}
 @media(max-width:600px){.baselineSummary{grid-template-columns:1fr}}
+
+
+/* v2.0 theme controls + dark palette */
+.themeToggle,.themeInline{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:9px 12px;font-size:12px;font-weight:850;cursor:pointer}
+.themeToggle{position:fixed;top:16px;right:18px;z-index:120;box-shadow:var(--shadow)}
+.authThemeToggle{background:#18305c;border-color:#3a5680;color:#fff}
+.themeInline{display:block;width:100%;text-align:left;margin:8px 0;background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16);color:#e8eef8}
+.mobileHeaderActions{display:flex;align-items:center;gap:8px}.mobileTheme{width:42px;height:40px;text-align:center;padding:0;font-size:18px}
+.examTargetPreview{background:#eef4ff;border:1px solid #d9e5fb;border-left:4px solid var(--blue);border-radius:12px;padding:13px 15px;margin:0 0 18px}
+.examTargetPreview>span,.examTargetPreview small{display:block;color:#536783;font-size:11px}.examTargetPreview>div{display:flex;gap:20px;flex-wrap:wrap;margin:7px 0}.examTargetPreview b{font-size:16px;color:#204f9f}.examTargetPreview small{font-size:10px}
+.priorScoreFields{display:grid;gap:8px;margin-top:9px}.priorScoreFields .helper{margin:4px 0}
+.compactOnboarding{margin:18px auto}.compactOnboarding .onboardingIntro h1{font-size:26px}
+html[data-theme="dark"]{color-scheme:dark;--nav:#080f1d;--nav2:#172a46;--blue:#82a2ff;--bg:#0b1220;--card:#141f30;--ink:#e6edf7;--muted:#a2b0c4;--line:#2b3a50;--green:#53c99c;--red:#ff8793;--shadow:0 10px 30px rgba(0,0,0,.22)}
+html[data-theme="dark"] body{background:var(--bg);color:var(--ink)}
+html[data-theme="dark"] .sidebar,html[data-theme="dark"] .mobileDrawer{background:var(--nav)}
+html[data-theme="dark"] .trackCard,html[data-theme="dark"] .panel,html[data-theme="dark"] .guidedCard,html[data-theme="dark"] .tryCard,html[data-theme="dark"] .chapter,html[data-theme="dark"] .metric,html[data-theme="dark"] .authCard,html[data-theme="dark"] .onboardingCard,html[data-theme="dark"] .diagnosticCard,html[data-theme="dark"] .courseTile,html[data-theme="dark"] .masteryCard,html[data-theme="dark"] .option,html[data-theme="dark"] .sideCard,html[data-theme="dark"] .mapCanvas,html[data-theme="dark"] .mapDetailInner,html[data-theme="dark"] .lessonMain,html[data-theme="dark"] .readingSteps article,html[data-theme="dark"] .formulaGrid article,html[data-theme="dark"] .memoryGrid article,html[data-theme="dark"] .mapNode,html[data-theme="dark"] .conceptLeaf,html[data-theme="dark"] .memoryLeaf,html[data-theme="dark"] .courseTask{background:var(--card);color:var(--ink);border-color:var(--line)}
+html[data-theme="dark"] .authShell{background:#070d18}
+html[data-theme="dark"] .authCard input,html[data-theme="dark"] .onboardingCard input,html[data-theme="dark"] .onboardingCard select,html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] textarea{background:#0d1727;color:var(--ink);border-color:var(--line)}
+html[data-theme="dark"] .seg,html[data-theme="dark"] .trackTabs,html[data-theme="dark"] .materialModeTabs,html[data-theme="dark"] .diagnosticProgress span{background:#1b2a40;color:#c2cde0}
+html[data-theme="dark"] .seg button.active,html[data-theme="dark"] .trackTabs button.active{background:#263b5c;color:#fff}
+html[data-theme="dark"] .miniMetrics div,html[data-theme="dark"] .courseDay,html[data-theme="dark"] .baselineSummary>div,html[data-theme="dark"] .emptyState,html[data-theme="dark"] .masteryStats span,html[data-theme="dark"] .railCard,html[data-theme="dark"] .lessonObjectives,html[data-theme="dark"] .lessonObjectives p,html[data-theme="dark"] .readingSteps article,html[data-theme="dark"] .formulaHandbook,html[data-theme="dark"] .formulaGrid article,html[data-theme="dark"] .hintStep,html[data-theme="dark"] .hintCoach,html[data-theme="dark"] .teachObjectives,html[data-theme="dark"] .teacherFeedback,html[data-theme="dark"] .focusCard,html[data-theme="dark"] .mapBranchHead,html[data-theme="dark"] .mapTeacherNote,html[data-theme="dark"] .mapDetailInner,html[data-theme="dark"] .detailFormula{background:#18263a;color:var(--ink);border-color:#30435d}
+html[data-theme="dark"] .courseTask,html[data-theme="dark"] .mapNode,html[data-theme="dark"] .lessonConceptCard,html[data-theme="dark"] .memoryGrid article{background:#111c2d;color:var(--ink);border-color:#30435d}
+html[data-theme="dark"] .courseDay{background:#101b2b}
+html[data-theme="dark"] .onboardingIntro p,html[data-theme="dark"] .diagnosticMain p,html[data-theme="dark"] .coachCopy,html[data-theme="dark"] .material,html[data-theme="dark"] .courseTile p,html[data-theme="dark"] .lessonConceptCard p,html[data-theme="dark"] .lessonMain .richParagraph,html[data-theme="dark"] .lessonMain .richList li,html[data-theme="dark"] .mapTeacherNote,html[data-theme="dark"] .detailBullet p,html[data-theme="dark"] .miniReading li{color:#aab8cc}
+html[data-theme="dark"] .eyebrow{color:#9bb4e8}
+html[data-theme="dark"] .pill,html[data-theme="dark"] .tags span,html[data-theme="dark"] .formulaLeaves span,html[data-theme="dark"] .hintButton{background:#233858;color:#c8d8ff;border-color:#3b5278}
+html[data-theme="dark"] .examTargetPreview{background:#182a45;border-color:#38527a}
+html[data-theme="dark"] .examTargetPreview>span,html[data-theme="dark"] .examTargetPreview small{color:#b6c6df}
+html[data-theme="dark"] .examTargetPreview b{color:#c7d8ff}
+html[data-theme="dark"] .option.selected{background:#1a3154;border-color:#7397e8}
+html[data-theme="dark"] .option.correct{background:#12352c;border-color:#277c60}
+html[data-theme="dark"] .option.wrong{background:#3b2029;border-color:#9e4b59}
+html[data-theme="dark"] .figure,html[data-theme="dark"] .mapBranchHead.active,html[data-theme="dark"] .mapBranchHead:hover{background:#1c2d45;border-color:#526b91}
+html[data-theme="dark"] .tableWrap,html[data-theme="dark"] .richTable{background:var(--card);color:var(--ink)}
+html[data-theme="dark"] .richTable th,html[data-theme="dark"] .richTable td{border-color:var(--line)}
+html[data-theme="dark"] .btn.ghost,html[data-theme="dark"] .menuButton{background:#1b2a40;color:var(--ink);border-color:var(--line)}
+html[data-theme="dark"] .actionError{background:#3a2028;color:#ffd5da;border-color:#75404c}
+html[data-theme="dark"] .post{background:#163329;color:var(--ink);border-color:#285e4c}
+html[data-theme="dark"] .memoryBridge,html[data-theme="dark"] .recallCheck{background:#302a1b;color:#f3e5bd;border-color:#66542b}
+html[data-theme="dark"] .memoryGrid article{background:#282317;border-color:#5c4d2c}
+html[data-theme="dark"] .sessionBar{background:rgba(11,18,32,.96)}
+@media(max-width:950px){.themeToggle{top:10px;right:12px}.authThemeToggle{top:12px;right:12px}}
