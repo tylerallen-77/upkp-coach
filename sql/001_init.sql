@@ -84,5 +84,7 @@ create table if not exists learner_profiles (
   self_assessment text not null default '{}',
   daily_minutes integer not null default 60,
   diagnostic_done text not null default '{}',
+  exam_level text not null default 'V',
+  previous_scores text not null default '{}',
   updated_at double precision not null
 );
