@@ -189,7 +189,7 @@ def compact_course_plan(uid,profile):
         tasks=[]
         for track in ('tpa','substansi'):
             codes=priorities[track]
-            code=codes[(i//2)%len(codes)]
+            code=codes[i%len(codes)]
             chapter=curriculum.BAB_BY_KODE.get(code)
             title=chapter.judul if chapter else code
             if mode=='chapter':
@@ -235,6 +235,7 @@ def save_onboarding_profile(body:OnboardingIn,u=Depends(current_user)):
     except ValueError:raise HTTPException(422,'Tanggal tes tidak valid.')
     today=datetime.now(ZoneInfo('Asia/Jakarta')).date()
     if exam<=today:raise HTTPException(422,'Tanggal tes harus setelah hari ini.')
+    if (exam-today).days>365:raise HTTPException(422,'Tanggal tes maksimal satu tahun dari hari ini.')
     allowed={'new','basic','intermediate','strong'}
     if set(body.self_assessment.keys())!={'tpa','substansi'} or any(v not in allowed for v in body.self_assessment.values()):
         raise HTTPException(422,'Pilih estimasi kemampuan untuk TPA dan TSKKWK.')
