@@ -416,10 +416,10 @@ def attempt(body:AttemptIn,u=Depends(current_user)):
     if not body.skipped and body.selected is None:raise HTTPException(422,'Answer required')
     consume=(not body.skipped) or body.pass_number>=3
     key=f"{u['id']}:{body.question_token}:p{body.pass_number}:{'skip' if body.skipped else 'answer'}"
+    session=store.get_learning_session(u['id'],body.session_id)
+    if body.skipped and session and session.get('kind')=='diagnostic':raise HTTPException(422,'Diagnostic wajib dijawab; soal tidak dapat dilewati.')
     def build_attempt(q):
         if body.session_id!=q.get('_session_id'):raise HTTPException(403,'Token belongs to another session')
-        session=store.get_learning_session(u['id'],body.session_id)
-        if body.skipped and session and session.get('kind')=='diagnostic':raise HTTPException(422,'Diagnostic wajib dijawab; soal tidak dapat dilewati.')
         correct=(body.selected==q.get('ans')) and not body.skipped
         a=learning.make_attempt(q,selected=body.selected,correct=correct,elapsed_ms=body.elapsed_ms,confidence=body.confidence,first_selection_ms=body.first_selection_ms,answer_changes=body.answer_changes,skipped=body.skipped,pass_number=body.pass_number,session_id=body.session_id)
         a['track']=q.get('track','tpa');a['hint_level']=body.hint_level
