@@ -1,6 +1,6 @@
 from __future__ import annotations
 import os, re, time
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 from urllib.parse import urlparse
 from fastapi import FastAPI, HTTPException, Request, Response, Depends
@@ -192,7 +192,7 @@ def compact_course_plan(uid,profile):
                 label='Mixed practice · '+TRACKS[track]
                 reason='Mengukur transfer kemampuan dan menjaga materi yang sudah dipelajari tetap aktif.'
             tasks.append({'track':track,'chapter':code,'label':label,'mode':mode,'minutes':max(8,daily//2),'reason':reason})
-        study_days.append({'date':(today.replace() if i==0 else today).isoformat() if False else (today+__import__('datetime').timedelta(days=i)).isoformat(),
+        study_days.append({'date':(today+timedelta(days=i)).isoformat(),
                            'day':i+1,'phase':phase,'tasks':tasks})
     return {'exam_date':profile['exam_date'],'days_remaining':days,'daily_minutes':daily,'days':study_days}
 
