@@ -165,6 +165,13 @@ def compact_course_plan(uid,profile):
         for code in core.TRACK_CODES[track]:
             if code not in codes:codes.append(code)
         priorities[track]=codes
+    diagnostic_sessions=store.recent_sessions(uid,100)
+    diagnostic_ids={t:{x['id'] for x in diagnostic_sessions if x.get('kind')=='diagnostic' and x.get('track')==t} for t in ('tpa','substansi')}
+    baseline={}
+    for track in ('tpa','substansi'):
+        rows=[a for a in track_attempts(uid,track) if a.get('session_id') in diagnostic_ids[track]]
+        baseline[track]={'self_assessment':(profile.get('self_assessment') or {}).get(track,'basic'),
+                         'questions':len(rows),'accuracy':(sum(1 for a in rows if a.get('correct'))/len(rows)) if rows else None}
     study_days=[]
     for i in range(days):
         if i < max(1,int(days*.60)):
@@ -194,7 +201,7 @@ def compact_course_plan(uid,profile):
             tasks.append({'track':track,'chapter':code,'label':label,'mode':mode,'minutes':max(8,daily//2),'reason':reason})
         study_days.append({'date':(today+timedelta(days=i)).isoformat(),
                            'day':i+1,'phase':phase,'tasks':tasks})
-    return {'exam_date':profile['exam_date'],'days_remaining':days,'daily_minutes':daily,'days':study_days}
+    return {'exam_date':profile['exam_date'],'days_remaining':days,'daily_minutes':daily,'baseline':baseline,'days':study_days}
 
 def track_snapshot(uid,track):
     a=track_attempts(uid,track);m=learning.overall_metrics(a);p=learning.profile_attempts(a);rx=learning.daily_prescription(a,max_minutes=18)
