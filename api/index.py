@@ -131,6 +131,12 @@ def me(u=Depends(current_user)):return {'user':u}
 
 def track_attempts(uid,track):return store.attempts(uid,track)
 
+def official_track_attempts(uid,track):
+    rows=track_attempts(uid,track)
+    if track=="substansi":
+        rows=[a for a in rows if a.get("skill")!="substansi.struktur_kemenkeu" and a.get("bab")!="struktur"]
+    return rows
+
 def mastery_inputs(uid,track):
     diagnostic_ids=store.session_ids_by_kind(uid,'diagnostic')
     evidence=[a for a in track_attempts(uid,track) if a.get('session_id') not in diagnostic_ids]
@@ -165,7 +171,7 @@ def compact_course_plan(uid,profile):
     daily=max(15,int(profile.get('daily_minutes',60)))
     priorities={}
     for track in ('tpa','substansi'):
-        attempts=track_attempts(uid,track)
+        attempts=official_track_attempts(uid,track)
         ranked=learning.profile_attempts(attempts)
         codes=[]
         for item in ranked:
@@ -212,7 +218,7 @@ def compact_course_plan(uid,profile):
     return {'exam_date':profile['exam_date'],'exam_level':level,'targets':targets,'previous_scores':profile.get('previous_scores') or {},'psychotest':{'recommended':True,'coach_support':'Belum tersedia sebagai diagnostic atau mastery track terverifikasi.'},'days_remaining':days,'daily_minutes':daily,'baseline':baseline,'days':study_days}
 
 def track_snapshot(uid,track):
-    a=track_attempts(uid,track);m=learning.overall_metrics(a);p=learning.profile_attempts(a);rx=learning.daily_prescription(a,max_minutes=18)
+    a=official_track_attempts(uid,track);m=learning.overall_metrics(a);p=learning.profile_attempts(a);rx=learning.daily_prescription(a,max_minutes=18)
     out={'track':track,'label':TRACKS[track],'metrics':m,'skills':p[:8],'prescription':rx,'review':learning.review_queue(a,6),'review_due':learning.spaced_review_queue(a,6),'teacher':learning.teacher_plan(a,track)}
     evidence,sessions=mastery_inputs(uid,track)
     if track=='tpa':
@@ -287,7 +293,13 @@ def catalog(track:str='tpa',u=Depends(current_user)):
     chapters=[]
     for b in curriculum.BAB:
         if b.bagian!=bagian:continue
-        source_note='Konsep, strategi, dan pola latihan Tes Potensi' if track=='tpa' else 'Materi TSKKWK divalidasi terhadap sumber resmi/current; enam domain adalah struktur belajar internal.'
+        is_official_tskkwk = b.kode in official_sources.TSKKWK_OFFICIAL_CODES
+        coverage_status = 'coach_topic' if track=='tpa' else ('official_topic' if is_official_tskkwk else 'coach_enrichment')
+        coverage_label = ('Topik latihan Tes Potensi' if track=='tpa' else ('Materi portal UPKP 2026' if is_official_tskkwk else 'Pengayaan Coach'))
+        coverage_note = (official_sources.VALIDATION['tpa_scope'] if track=='tpa' else
+                         ('Topik ini disebut dalam daftar materi TSKKWK portal UPKP 2026.' if is_official_tskkwk else
+                          'Pengayaan internal UPKP Coach; tidak tercantum dalam lima topik TSKKWK yang ditampilkan portal UPKP 2026.'))
+        source_note = coverage_note
         extra=tpa_enrichment.ENRICHMENT.get(b.kode,'') if track=='tpa' else ''
         material=materi.MATERI.get(b.kode,'')
         if extra: material=(material+'\n\n'+extra).strip()
@@ -299,13 +311,16 @@ def catalog(track:str='tpa',u=Depends(current_user)):
         headings=[ln[4:].strip() for ln in material.splitlines() if ln.strip().startswith('### ')][:6]
         objectives=[f"Jelaskan dan terapkan {h.lower()}" for h in headings[:4]]
         checks=[f"Tanpa melihat catatan, bisakah kamu menjelaskan {h.lower()} dan memberi satu contoh?" for h in headings[:4]]
-        source_refs=tpa_enrichment.SOURCES if track=='tpa' else official_sources.TSKKWK_SOURCES.get(b.kode,[])
+        portal_ref={'name':'Portal Resmi UPKP 2026 — daftar materi ujian','url':official_sources.UPKP_2026_PAGE}
+        source_refs=[portal_ref]+(tpa_enrichment.SOURCES if track=='tpa' else official_sources.TSKKWK_SOURCES.get(b.kode,[]))
         chapters.append({'code':b.kode,'title':b.judul,'subtest':b.subtes,'source_type':b.sumber,'source_note':source_note,'material':material,
                          'source_refs':source_refs,
+                         'coverage_status':coverage_status,'coverage_label':coverage_label,'coverage_note':coverage_note,
                          'source_status':meta.get('status'),'source_status_label':meta.get('status_label'),
                          'verified_at':meta.get('verified'),'freshness_note':meta.get('note'),'page':b.halaman if track=='tpa' else '',
                          'learner':chapter_stats,'objectives':objectives,'self_checks':checks,
-                         'official_scope_note':official_sources.VALIDATION.get('tskkwk_scope') if track=='substansi' else '',
+                         'official_scope_note':official_sources.VALIDATION.get('tskkkwk_scope') if track=='substansi' else official_sources.VALIDATION.get('tpa_scope'),
+                         'portal_note':official_sources.VALIDATION.get('portal_note'),
                          'lesson_cards':lesson_cards.cards(b.kode),
                          'reading_lens':study_tools.reading_lens(b.kode),
                          'formulas':study_tools.formulas(b.kode),
