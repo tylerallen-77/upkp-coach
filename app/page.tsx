@@ -178,7 +178,7 @@ function LearningMap({track,catalog,onLesson,startChapter,busyKey}:any){
       <button className="mapBranchHead" onClick={()=>toggle(group)}><span className={'branchDot branch-'+group.toLowerCase()}/><b>{group}</b><small>{tpaGroup(group).length} bab</small><em>{expanded[group]?'−':'+'}</em></button>
       {expanded[group]&&<div className="mapChildren">{tpaGroup(group).map((c:any)=><div className="mapNodeWrap" key={c.code}><button className={'mapNode '+(active?.code===c.code?'active ':'')+'rec-'+(c.learner?.recommended||'unseen')} onClick={()=>setActive(c)}><div><b>{c.title}</b><small>{(c.formulas||[]).length?(c.formulas.length+' rumus · '):''}{(c.lesson_cards||[]).length} strategi/kartu</small></div><MapProgress learner={c.learner}/></button>{active?.code===c.code&&c.formulas?.length>0&&<div className="formulaLeaves">{c.formulas.slice(0,5).map((x:any,i:number)=><span key={i}>{x.title}</span>)}{c.formulas.length>5&&<span>{'+'+(c.formulas.length-5)+' lainnya'}</span>}</div>}</div>)}</div>}
     </div>):catalog.map((c:any)=><div className="mapBranch" key={c.code}>
-      <button className={'mapBranchHead tsk '+(active?.code===c.code?'active':'')} onClick={()=>{setActive(c);toggle(c.code)}}><span className="branchDot"/><div><b>{c.title}</b><small>{(c.mnemonics||[]).length} jembatan ingatan · {(c.lesson_cards||[]).length} konsep</small></div><MapProgress learner={c.learner}/><em>{expanded[c.code]?'−':'+'}</em></button>
+      <button className={'mapBranchHead tsk '+(active?.code===c.code?'active':'')} onClick={()=>{setActive(c);toggle(c.code)}}><span className="branchDot"/><div><b>{c.title}</b><small>{c.coverage_label||'Materi pembelajaran'} · {(c.mnemonics||[]).length} jembatan ingatan · {(c.lesson_cards||[]).length} konsep</small></div><MapProgress learner={c.learner}/><em>{expanded[c.code]?'−':'+'}</em></button>
       {expanded[c.code]&&<div className="mapChildren tskChildren">{(c.mnemonics||[]).map((m:any,i:number)=><button className="memoryLeaf" key={'m'+i} onClick={()=>setActive({...c,_focusMnemonic:m})}><small>{m.label}</small><b>{m.mnemonic}</b></button>)}{(c.lesson_cards||[]).map((x:any,i:number)=><button className="conceptLeaf" key={'c'+i} onClick={()=>setActive({...c,_focusCard:x})}><small>{x.kind}</small><b>{x.title}</b></button>)}</div>}
     </div>)}</div>
   </section>
@@ -188,7 +188,7 @@ function LearningMap({track,catalog,onLesson,startChapter,busyKey}:any){
 
 function MapDetail({track,node,onLesson,startChapter,busyKey}:any){
  const focusM=node._focusMnemonic,focusC=node._focusCard
- return <div className="mapDetailInner"><div className="mapDetailHead"><span className="pill">{node.subtest}</span><h2>{node.title}</h2><MapProgress learner={node.learner}/></div>
+ return <div className="mapDetailInner"><div className="mapDetailHead"><span className="pill">{node.subtest}</span><span className="pill">{node.coverage_label||'Materi pembelajaran'}</span><h2>{node.title}</h2><MapProgress learner={node.learner}/></div>
  {focusM&&<div className="focusMemory"><span className="eyebrow">JEMBATAN INGATAN</span><h3>{focusM.mnemonic}</h3><p>{focusM.meaning}</p><small>{focusM.note}</small></div>}
  {focusC&&<div className={'focusCard kind-'+focusC.kind}><span className="eyebrow">{focusC.kind}</span><h3>{focusC.title}</h3>{focusC.formula&&<div className="formulaLarge">{focusC.formula}</div>}<p>{focusC.body}</p></div>}
  {!focusM&&!focusC&&<><p className="mapTeacherNote">{node.learner?.teacher_note||'Belum ada evidence. Mulai dari peta, lalu masuk lesson untuk memahami konsepnya.'}</p>
