@@ -71,7 +71,7 @@ export default function QuestionRunner({bundle,onDone,onExit}:Props){
    <div className="sessionBar"><button className="sessionExit" onClick={exitSession} disabled={busy}>← Pause & keluar</button><span>Progress tersimpan per jawaban</span></div>
    <div className="runnerGrid">
     <section className="panel questionPanel">
-    <div className="questionTop"><div className="tags"><span>{current.bab}</span><span>{current.difficulty_label||('L'+current.lv)}</span>{isExam&&<span>Pass {pass}</span>}</div><b className="timer">{Math.floor(elapsed/60000).toString().padStart(2,'0')}:{Math.floor((elapsed%60000)/1000).toString().padStart(2,'0')}</b></div>
+    <div className="questionTop"><div className="tags"><span>{current.bab}</span><span>{current.difficulty_label||('L'+current.lv)}</span>{isDiagnostic&&<span>Diagnostic</span>}{isExam&&<span>Pass {pass}</span>}</div><b className="timer">{Math.floor(elapsed/60000).toString().padStart(2,'0')}:{Math.floor((elapsed%60000)/1000).toString().padStart(2,'0')}</b></div>
     <div className="eyebrow">SOAL {i+1}/{indices.length} · TARGET {current.waktu}s</div>
     <RichContent text={current.stem} svg={current.svg} className="stem"/>
     <div className="options">{current.opts.map((o,idx)=><button key={idx} className={'option '+(selected===idx?'selected ':'')+(feedback&&feedback.answer===idx?'correct ':'')+(feedback&&selected===idx&&!feedback.correct?'wrong ':'')} onClick={()=>pick(idx)}>
