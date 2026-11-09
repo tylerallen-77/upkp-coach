@@ -54,6 +54,7 @@ export default function QuestionRunner({bundle,onDone,onExit}:Props){
    finish()
  }
  async function submit(skip=false){
+   if(isDiagnostic&&skip)return
    if(feedback){advance();return} if(selected===null&&!skip)return
    setBusy(true)
    try{
@@ -79,7 +80,7 @@ export default function QuestionRunner({bundle,onDone,onExit}:Props){
     </button>)}</div>
     {!isExam&&!isDiagnostic&&!feedback&&(current.hints||[]).length>0&&<div className="hintCoach"><div className="hintCoachHead"><div><span className="eyebrow">BUTUH ARAHAN?</span><b>Hint bertahap — tanpa membocorkan jawaban.</b></div>{hintLevel<Math.min(3,(current.hints||[]).length)&&<button className="hintButton" onClick={()=>setHintLevel((x:number)=>Math.min(x+1,Math.min(3,(current.hints||[]).length)))}>Buka Hint {hintLevel+1}</button>}</div>{(current.hints||[]).slice(0,hintLevel).map((h:string,idx:number)=><div className="hintStep" key={idx}><span>{idx+1}</span><p>{h}</p></div>)}{hintLevel>0&&<small className="hintEvidence">Hint dipakai level {hintLevel}. Jawaban benar tetap tercatat, tapi bobot evidence mastery lebih rendah daripada jawaban mandiri.</small>}</div>}
     {feedback&&<div className={'feedback '+(feedback.correct?'ok':'no')}><strong>{feedback.correct?'Benar':'Belum tepat'}</strong><RichContent text={feedback.explanation}/>{feedback.shortcut&&<p><b>⚡ Jalan cepat:</b> {feedback.shortcut}</p>}{feedback.teacher_feedback&&<div className="teacherFeedback"><span className="eyebrow">COACH NOTE</span><b>{feedback.teacher_feedback.title}</b><p>{feedback.teacher_feedback.action}</p></div>}<button className="reportBtn" onClick={report} disabled={reported}>{reported?'✓ Laporan terkirim':'⚑ Laporkan soal ini'}</button></div>}
-    <div className="runnerActions">{!feedback&&<button className="btn ghost" onClick={()=>submit(true)} disabled={busy}>{isExam?'Parkir ke pass berikutnya':'Lewati'}</button>}<button className="btn primary" disabled={busy||(selected===null&&!feedback)} onClick={()=>feedback?advance():submit(false)}>{busy?'Menyimpan…':feedback?'Lanjut →':'Jawab →'}</button></div>
+    <div className="runnerActions">{!feedback&&!isDiagnostic&&<button className="btn ghost" onClick={()=>submit(true)} disabled={busy}>{isExam?'Parkir ke pass berikutnya':'Lewati'}</button>}<button className="btn primary" disabled={busy||(selected===null&&!feedback)} onClick={()=>feedback?advance():submit(false)}>{busy?'Menyimpan…':feedback?'Lanjut →':'Jawab →'}</button></div>
    </section>
    <aside className="runnerSide"><div className="sideCard"><h4>Confidence</h4><div className="confidence">{['yakin','50:50','tebak'].map(x=><button className={confidence===x?'active':''} onClick={()=>setConfidence(x)} key={x}>{x}</button>)}</div></div><div className="sideCard"><h4>Coach</h4><p>{isExam?'Feedback ditahan sampai sesi selesai. Gunakan strategi multi-pass.':isDiagnostic?'Jawab mandiri. Hint dan pembahasan ditahan agar baseline lebih objektif.':'Utamakan pola tercepat yang tetap dapat dipertanggungjawabkan.'}</p></div><div className="sideCard muted"><small>First selection</small><b>{first===null?'—':(first/1000).toFixed(1)+'s'}</b><small>Answer changes</small><b>{changes}</b></div></aside>
    </div>

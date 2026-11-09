@@ -7,15 +7,15 @@ def _substansi_attempt(skill, correct=True, level=3, day=0, session_id='s'):
         'session_id':session_id,'track':'substansi'
     }
 
-def test_substansi_mastery_has_six_domains_and_knowledge_gate():
+def test_substansi_mastery_has_five_official_domains_and_knowledge_gate():
     from upkp import mastery
+    # Struktur Kemenkeu is optional enrichment, not an official TSKKWK mastery domain.
     skills=[
         ('substansi_etika','substansi.etika'),
         ('substansi_wawasan','substansi.wawasan'),
         ('substansi_nilai','substansi.nilai_kemenkeu'),
         ('substansi_kepegawaian','substansi.kepegawaian'),
         ('substansi_keuangan','substansi.keuangan_negara'),
-        ('substansi_struktur','substansi.struktur_kemenkeu'),
     ]
     attempts=[]
     sessions=[]
@@ -24,8 +24,8 @@ def test_substansi_mastery_has_six_domains_and_knowledge_gate():
             attempts.append(_substansi_attempt(skill,True,3,0 if i<5 else 2))
         sessions.append({'track':'substansi','kind':'mastery','meta':{'section':section},'summary':{'mastery_passed':True}})
     status=mastery.substansi_badges(attempts,sessions)
-    assert status['total']==6
-    assert status['earned']==6
+    assert status['total']==5
+    assert status['earned']==5
     assert status['substansi_ready'] is True
 
 def test_reset_learning_history_keeps_account():
