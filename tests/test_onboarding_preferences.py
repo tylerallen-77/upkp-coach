@@ -1,6 +1,3 @@
-import time
-
-
 def test_learner_profile_persists_study_pattern_and_unbounded_daily_minutes(tmp_path, monkeypatch):
     from upkp import multi_store as store
 
