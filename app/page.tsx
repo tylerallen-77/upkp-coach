@@ -6,7 +6,7 @@ import RichContent from '../components/RichContent'
 
 type Track='tpa'|'substansi'
 const nav=[['home','Beranda'],['materials','Materi'],['learn','Belajar'],['tryout','Try Out'],['calculator','Kalkulator TPA'],['progress','Progress'],['account','Account']]
-const navGlyph:any={home:'⌂',materials:'▥',learn:'▤',tryout:'◎',progress:'◒',account:'◉'}
+const navGlyph:any={home:'⌂',materials:'▥',learn:'▤',tryout:'◎',calculator:'▦',progress:'◒',account:'◉'}
 
 export default function Page(){
  const [me,setMe]=useState<any>(null),[authMode,setAuthMode]=useState<'login'|'register'>('login'),[auth,setAuth]=useState({username:'',password:'',accept_terms:false}),[err,setErr]=useState('')
