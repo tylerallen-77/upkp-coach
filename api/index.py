@@ -215,7 +215,7 @@ def compact_course_plan(uid,profile):
             tasks.append({'track':track,'chapter':code,'label':label,'mode':mode,'minutes':max(8,daily//2),'reason':reason})
         study_days.append({'date':(today+timedelta(days=i)).isoformat(),
                            'day':i+1,'phase':phase,'tasks':tasks})
-    return {'exam_date':profile['exam_date'],'exam_level':level,'targets':targets,'previous_scores':profile.get('previous_scores') or {},'psychotest':{'recommended':True,'coach_support':'Belum tersedia sebagai diagnostic atau mastery track terverifikasi.'},'days_remaining':days,'daily_minutes':daily,'baseline':baseline,'days':study_days}
+    return {'exam_date':profile['exam_date'],'exam_level':level,'targets':targets,'previous_scores':profile.get('previous_scores') or {},'days_remaining':days,'daily_minutes':daily,'baseline':baseline,'days':study_days}
 
 def track_snapshot(uid,track):
     a=official_track_attempts(uid,track);m=learning.overall_metrics(a);p=learning.profile_attempts(a);rx=learning.daily_prescription(a,max_minutes=18)
@@ -254,7 +254,7 @@ def save_onboarding_profile(body:OnboardingIn,u=Depends(current_user)):
     allowed={'new','basic','intermediate','strong'}
     if set(body.self_assessment.keys())!={'tpa','substansi'} or any(v not in allowed for v in body.self_assessment.values()):
         raise HTTPException(422,'Pilih estimasi kemampuan untuk TPA dan TSKKWK.')
-    score_keys={'tpa','substansi','psychotest'}
+    score_keys={'tpa','substansi'}
     if set(body.previous_scores)-score_keys or any(not isinstance(v,str) or len(v.strip())>32 for v in body.previous_scores.values()):
         raise HTTPException(422,'Format nilai periode sebelumnya tidak valid.')
     previous_scores={k:v.strip() for k,v in body.previous_scores.items() if v.strip()}
@@ -319,7 +319,7 @@ def catalog(track:str='tpa',u=Depends(current_user)):
                          'source_status':meta.get('status'),'source_status_label':meta.get('status_label'),
                          'verified_at':meta.get('verified'),'freshness_note':meta.get('note'),'page':b.halaman if track=='tpa' else '',
                          'learner':chapter_stats,'objectives':objectives,'self_checks':checks,
-                         'official_scope_note':official_sources.VALIDATION.get('tskkkwk_scope') if track=='substansi' else official_sources.VALIDATION.get('tpa_scope'),
+                         'official_scope_note':official_sources.VALIDATION.get('tskkwk_scope') if track=='substansi' else official_sources.VALIDATION.get('tpa_scope'),
                          'portal_note':official_sources.VALIDATION.get('portal_note'),
                          'lesson_cards':lesson_cards.cards(b.kode),
                          'reading_lens':study_tools.reading_lens(b.kode),
