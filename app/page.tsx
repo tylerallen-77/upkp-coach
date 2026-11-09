@@ -5,7 +5,7 @@ import QuestionRunner from '../components/QuestionRunner'
 import RichContent from '../components/RichContent'
 
 type Track='tpa'|'substansi'
-const nav=[['home','Beranda'],['materials','Materi'],['learn','Belajar'],['tryout','Try Out'],['progress','Progress'],['account','Account']]
+const nav=[['home','Beranda'],['materials','Materi'],['learn','Belajar'],['tryout','Try Out'],['calculator','Kalkulator TPA'],['progress','Progress'],['account','Account']]
 const navGlyph:any={home:'⌂',materials:'▥',learn:'▤',tryout:'◎',progress:'◒',account:'◉'}
 
 export default function Page(){
@@ -68,6 +68,7 @@ export default function Page(){
  {view==='home'&&<Home data={home} busy={busy} busyKey={busyKey} start={startGuided} startDiagnostic={startDiagnostic} saveOnboarding={saveOnboarding} startChapter={startChapter} teachChapter={teachChapter} resume={resumeSession}/>}
  {view==='learn'&&<Learn track={track} setTrack={setTrack} catalog={catalog} bundle={bundle} pm={pm} startGuided={startGuided} startChapter={startChapter} teachChapter={teachChapter} teacher={progress?.snapshot?.teacher} prescription={progress?.snapshot?.prescription} onDone={sessionDone} onExit={sessionExited} busy={busy}/>}
  {view==='tryout'&&<TryOut track={track} setTrack={setTrack} bundle={bundle} pm={pm} start={startTryout} onDone={sessionDone} onExit={sessionExited} busy={busy}/>}
+ {view==='calculator'&&<TpaCalculator initialLevel={home?.onboarding?.profile?.exam_level||'V'}/>}
  {view==='materials'&&<Materials track={track} setTrack={setTrack} catalog={catalog} startChapter={startChapter} busyKey={busyKey} focus={materialFocus} teacher={progress?.snapshot?.teacher}/>} 
  {view==='progress'&&<Progress track={track} setTrack={setTrack} data={progress} bundle={bundle} pm={pm} startMastery={startMastery} onDone={sessionDone} onExit={sessionExited} busy={busy}/>}
  {view==='account'&&<Account me={me} profile={home?.onboarding?.profile} busy={busy} onSaveProfile={saveOnboarding} onReset={async()=>{clearBundle();if(typeof window!=='undefined'){Object.keys(localStorage).filter(k=>k.startsWith('upkp_runner_')||k.startsWith('upkp_paused_bundle_')).forEach(k=>localStorage.removeItem(k))}await loadHome();await loadProgress(track)}}/>}
@@ -240,6 +241,36 @@ function Progress({track,setTrack,data,bundle,pm,startMastery,onDone,onExit,busy
  <div className="metricGrid"><Metric label="Readiness" v={data.snapshot.metrics.readiness||0}/><Metric label="Akurasi last 50" v={pct(data.snapshot.metrics.accuracy)}/><Metric label="Median" v={sec(data.snapshot.metrics.median_ms)}/><Metric label="Mastered micro-skill" v={(data.snapshot.metrics.mastered||0)+' / '+(data.snapshot.metrics.skills||0)}/></div>
  <section className="panel"><h3>Skill map</h3><div className="skillTable"><div className="skillRow head"><span>Skill</span><span>Akurasi</span><span>Median</span><span>Status</span></div>{data.skills.map((s:any)=><div className="skillRow" key={s.skill}><span><b>{s.label}</b><small>{s.n} attempt · recommended {difficulty(s.recommended_level)}</small></span><span>{pct(s.accuracy)}</span><span>{sec(s.median_ms)}</span><span className={'state '+s.state.toLowerCase()}>{s.state}</span></div>)}</div></section></>}</>
 }
+function TpaCalculator({initialLevel='V'}:{initialLevel?:string}){
+ const [level,setLevel]=useState(['IV','V','VI'].includes(initialLevel)?initialLevel:'V')
+ const [scores,setScores]=useState({verbal:'',numerical:'',figural:''})
+ const values=[scores.verbal,scores.numerical,scores.figural]
+ const complete=values.every(v=>v.trim()!==''&&Number.isFinite(Number(v))&&Number(v)>=0&&Number(v)<=100)
+ const average=complete?(Number(scores.verbal)+Number(scores.numerical)+Number(scores.figural))/3:null
+ const finalScore=average===null?null:(average/100)*600+200
+ const target=level==='IV'?450:475
+ const requiredAverage=(target-200)/6
+ const gap=finalScore===null?null:Math.max(0,target-finalScore)
+ const fields:[keyof typeof scores,string][]=[['verbal','Verbal'],['numerical','Numerikal'],['figural','Figural']]
+ return <><div className="pageHead"><div><div className="eyebrow">TES POTENSI AKADEMIK</div><h1>Kalkulator konversi nilai TPA.</h1><p>Masukkan skor Verbal, Numerikal, dan Figural pada skala 0–100 untuk menghitung nilai akhir dengan rumus kalkulator BPPK Kemenkeu.</p></div></div>
+ <section className="panel tpaCalculator">
+  <div className="tpaCalcHead"><div><span className="pill">RUMUS KONVERSI BPPK</span><h2>Hitung nilai akhir TPA</h2><p>Ketiga komponen memiliki bobot rata-rata yang sama.</p></div><a href="https://bppk.kemenkeu.go.id/pages/converter/tpa/" target="_blank" rel="noreferrer">Buka converter BPPK ↗</a></div>
+  <div className="tpaCalcInputs"><label className="tpaLevelField">Target jenjang UPKP<select value={level} onChange={e=>setLevel(e.target.value)}><option value="IV">UPKP IV · target 450</option><option value="V">UPKP V · target 475</option><option value="VI">UPKP VI · target 475</option></select></label>
+   <div className="tpaScoreFields">{fields.map(([key,label])=><label key={key}>{label}<input type="number" min="0" max="100" step="0.01" inputMode="decimal" placeholder="0–100" value={scores[key]} onChange={e=>setScores(old=>({...old,[key]:e.target.value}))}/></label>)}</div>
+  </div>
+  {values.some(v=>v!=='' )&&!complete&&<p className="tpaCalcError">Isi ketiga skor dengan angka antara 0 sampai 100.</p>}
+  <div className="tpaFormula"><span>Rata-rata = (Verbal + Numerikal + Figural) ÷ 3</span><b>Nilai akhir = (Rata-rata ÷ 100 × 600) + 200</b></div>
+  <div className="tpaCalcResult">
+   <div className="tpaCalcMetric"><small>Nilai rata-rata</small><b>{average===null?'—':average.toFixed(2)}</b></div>
+   <div className="tpaCalcMetric primaryMetric"><small>Nilai akhir TPA</small><b>{finalScore===null?'—':finalScore.toFixed(2)}</b></div>
+   <div className="tpaCalcStatus">{finalScore===null?<><b>Menunggu skor</b><span>Masukkan ketiga komponen untuk melihat hasil konversi.</span></>:finalScore>=target?<><b className="pass">✓ Target UPKP {level} tercapai</b><span>Nilai akhir melewati ambang {target}.</span></>:<><b className="notPass">Belum mencapai target UPKP {level}</b><span>Kurang {gap!.toFixed(2)} poin dari ambang {target}.</span></>}</div>
+  </div>
+  <div className="tpaTargetHint"><b>Patokan target</b><span>Rata-rata minimal {requiredAverage.toFixed(2)} dari 100 untuk mencapai nilai TPA {target}.</span></div>
+  <div className="tpaCalcFoot"><button className="btn ghost" onClick={()=>setScores({verbal:'',numerical:'',figural:''})}>Reset skor</button><small>Skor latihan/diagnostic UPKP Coach tidak otomatis sama dengan skor subtes resmi.</small></div>
+ </section>
+ <p className="tpaCalcDisclaimer">Rumus konversi di atas mengikuti formula yang terlihat pada kalkulator BPPK. Fitur ini hanya mengonversi skor subtes 0–100; Coach belum mengestimasi skor subtes resmi dari jumlah jawaban benar.</p></>
+}
+
 function ReadinessRing({earned,total}:{earned:number,total:number}){const pct=Math.round(earned/Math.max(1,total)*100);return <div className="readinessRing" style={{'--ring':pct+'%'} as any}><div><b>{pct}%</b><small>ready</small></div></div>}
 function BadgeGlyph({section}:{section:string}){
  const common={viewBox:'0 0 48 48',fill:'none',stroke:'currentColor',strokeWidth:2.4,strokeLinecap:'round' as const,strokeLinejoin:'round' as const}
