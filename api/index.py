@@ -134,7 +134,7 @@ def track_attempts(uid,track):return store.attempts(uid,track)
 def mastery_inputs(uid,track):
     diagnostic_ids=store.session_ids_by_kind(uid,'diagnostic')
     evidence=[a for a in track_attempts(uid,track) if a.get('session_id') not in diagnostic_ids]
-    return evidence,store.recent_sessions(uid,100)
+    return evidence,store.mastery_sessions(uid)
 def public_q(q):
     item={k:v for k,v in q.items() if k not in ('ans','exp','trick','_exam_mode','_session_id')}
     lv=int(item.get('lv',1));item['difficulty_label']=DIFFICULTY.get(lv,'Standard')
