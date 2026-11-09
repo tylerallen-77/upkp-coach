@@ -141,3 +141,31 @@ html[data-theme="dark"] .sessionBar{background:rgba(11,18,32,.96)}
 
 .themeInline.mobileTheme{width:42px;height:40px;margin:0;padding:0;text-align:center;background:var(--card);color:var(--ink);border:1px solid var(--line);font-size:18px}
 html[data-theme="dark"] .themeInline.mobileTheme{background:#1b2a40;color:var(--ink);border-color:var(--line)}
+
+
+/* BPPK TPA score converter */
+.tpaCalculator{max-width:900px;padding:24px}
+.tpaCalcHead{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:22px}
+.tpaCalcHead h2{font-size:22px;margin:10px 0 5px}.tpaCalcHead p{margin:0;color:var(--muted);font-size:13px}
+.tpaCalcHead>a{font-size:12px;font-weight:850;color:var(--blue);white-space:nowrap}
+.tpaCalcInputs{display:grid;gap:17px}
+.tpaLevelField,.tpaScoreFields label{display:grid;gap:7px;font-size:12px;font-weight:850;color:var(--ink)}
+.tpaLevelField select,.tpaScoreFields input{width:100%;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);padding:12px 13px;font:inherit}
+.tpaLevelField select{max-width:320px}
+.tpaScoreFields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.tpaCalcError{color:var(--red);font-size:12px;font-weight:750;margin:12px 0 0}
+.tpaFormula{display:grid;gap:7px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px;margin:20px 0}
+.tpaFormula span,.tpaFormula b{font-size:12px}.tpaFormula b{color:var(--blue)}
+.tpaCalcResult{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tpaCalcMetric{display:grid;gap:7px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:15px}
+.tpaCalcMetric small{font-size:11px;color:var(--muted);font-weight:850;text-transform:uppercase;letter-spacing:.04em}
+.tpaCalcMetric b{font-size:25px;letter-spacing:-.03em}
+.tpaCalcMetric.primaryMetric{border-color:var(--blue);background:color-mix(in srgb,var(--blue) 8%,var(--card))}
+.tpaCalcMetric.primaryMetric b{font-size:32px;color:var(--blue)}
+.tpaCalcStatus{grid-column:1/-1;display:grid;gap:5px;border:1px solid var(--line);border-radius:12px;padding:14px}
+.tpaCalcStatus b{font-size:14px}.tpaCalcStatus span,.tpaTargetHint span{font-size:12px;color:var(--muted)}
+.tpaCalcStatus .pass{color:var(--green)}.tpaCalcStatus .notPass{color:var(--red)}
+.tpaTargetHint{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:13px;padding:12px 14px;background:var(--bg);border-radius:10px}
+.tpaTargetHint b{font-size:12px}.tpaCalcFoot{display:flex;align-items:center;gap:12px;margin-top:16px}.tpaCalcFoot small,.tpaCalcDisclaimer{font-size:11px;color:var(--muted);line-height:1.6}
+.tpaCalcDisclaimer{max-width:900px;margin:12px 0 0}
+@media(max-width:650px){.tpaCalculator{padding:17px}.tpaCalcHead{display:grid}.tpaScoreFields{grid-template-columns:1fr}.tpaCalcResult{grid-template-columns:1fr}.tpaTargetHint{align-items:flex-start;flex-direction:column}.tpaCalcFoot{align-items:flex-start;flex-direction:column}}
