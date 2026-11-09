@@ -76,3 +76,13 @@ create table if not exists population_item_stats (
   elapsed_sum_ms bigint not null default 0, answer_changes integer not null default 0,
   high_confidence_wrong integer not null default 0, updated_at double precision not null
 );
+
+
+create table if not exists learner_profiles (
+  user_id text primary key references users(id) on delete cascade,
+  exam_date text,
+  self_assessment text not null default '{}',
+  daily_minutes integer not null default 60,
+  diagnostic_done text not null default '{}',
+  updated_at double precision not null
+);
