@@ -52,6 +52,9 @@ def build_for_skill(skill:str,n:int,attempts:list[dict],level:int=0,seed=None,ta
 
 def build_prescription(track:str,attempts:list[dict],max_minutes:int=18,seed=None):
     filtered=[a for a in attempts if a.get("track", track)==track]
+    if track=="substansi":
+        # Structure Kemenkeu is retained in the library as enrichment, not official TSKKWK readiness.
+        filtered=[a for a in filtered if a.get("skill")!="substansi.struktur_kemenkeu" and a.get("bab")!="struktur"]
     rx=learning.daily_prescription(filtered,max_minutes=max_minutes); qs=[]
     for i,item in enumerate(rx["items"]):
         local=None if seed is None else seed+i
