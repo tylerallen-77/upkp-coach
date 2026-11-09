@@ -312,7 +312,11 @@ def catalog(track:str='tpa',u=Depends(current_user)):
         objectives=[f"Jelaskan dan terapkan {h.lower()}" for h in headings[:4]]
         checks=[f"Tanpa melihat catatan, bisakah kamu menjelaskan {h.lower()} dan memberi satu contoh?" for h in headings[:4]]
         portal_ref={'name':'Portal Resmi UPKP 2026 — daftar materi ujian','url':official_sources.UPKP_2026_PAGE}
-        source_refs=[portal_ref]+(tpa_enrichment.SOURCES if track=='tpa' else official_sources.TSKKWK_SOURCES.get(b.kode,[]))
+        juknis_ref={'name':'Petunjuk Teknis UPKP 2026','url':official_sources.UPKP_2026_JUKNIS_PAGE}
+        official_refs=[portal_ref,juknis_ref]
+        if track=='tpa':
+            official_refs.append({'name':'Konversi Nilai TPA — portal resmi UPKP 2026','url':official_sources.UPKP_2026_TPA_CONVERSION_PAGE})
+        source_refs=official_refs+(tpa_enrichment.SOURCES if track=='tpa' else official_sources.TSKKWK_SOURCES.get(b.kode,[]))
         chapters.append({'code':b.kode,'title':b.judul,'subtest':b.subtes,'source_type':b.sumber,'source_note':source_note,'material':material,
                          'source_refs':source_refs,
                          'coverage_status':coverage_status,'coverage_label':coverage_label,'coverage_note':coverage_note,
