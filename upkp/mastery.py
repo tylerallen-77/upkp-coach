@@ -4,7 +4,7 @@ import statistics, time
 from .skill_catalog import BADGE_SKILLS, SECTION_LABELS, label
 
 SECTION_ORDER=["verbal","numerical","figural"]
-SUBSTANSI_ORDER=["substansi_etika","substansi_wawasan","substansi_nilai","substansi_kepegawaian","substansi_keuangan","substansi_struktur"]
+SUBSTANSI_ORDER=["substansi_etika","substansi_wawasan","substansi_nilai","substansi_kepegawaian","substansi_keuangan"]
 
 def _median(xs): return statistics.median(xs) if xs else 0
 
