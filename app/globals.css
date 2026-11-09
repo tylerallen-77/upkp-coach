@@ -92,3 +92,6 @@
 
 .courseTaskActions{display:flex;gap:6px;flex:none}.courseTaskActions .btn{padding:8px 10px;font-size:11px}
 @media(max-width:650px){.courseTaskActions{display:grid;grid-template-columns:1fr 1fr;width:100%}}
+
+.baselineSummary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:15px 0}.baselineSummary>div{display:grid;gap:4px;background:#f5f8fd;border:1px solid #e5ebf4;border-radius:11px;padding:11px 13px}.baselineSummary b{font-size:12px}.baselineSummary span{font-size:11px;color:var(--muted)}.baselineSummary strong{font-size:13px;color:#204f9f}
+@media(max-width:600px){.baselineSummary{grid-template-columns:1fr}}
