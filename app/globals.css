@@ -169,3 +169,14 @@ html[data-theme="dark"] .themeInline.mobileTheme{background:#1b2a40;color:var(--
 .tpaTargetHint b{font-size:12px}.tpaCalcFoot{display:flex;align-items:center;gap:12px;margin-top:16px}.tpaCalcFoot small,.tpaCalcDisclaimer{font-size:11px;color:var(--muted);line-height:1.6}
 .tpaCalcDisclaimer{max-width:900px;margin:12px 0 0}
 @media(max-width:650px){.tpaCalculator{padding:17px}.tpaCalcHead{display:grid}.tpaScoreFields{grid-template-columns:1fr}.tpaCalcResult{grid-template-columns:1fr}.tpaTargetHint{align-items:flex-start;flex-direction:column}.tpaCalcFoot{align-items:flex-start;flex-direction:column}}
+
+
+/* v1.9 onboarding preferences + accessible diagnostic options */
+.onboardingField .helper{font-weight:500;margin:7px 0 0;line-height:1.55}
+.onboardingField input[type=number]{appearance:textfield}
+html[data-theme="dark"] .option{color:var(--ink);background:#141f30;border-color:#3b4d66}
+html[data-theme="dark"] .option>span{color:#e6edf7}
+html[data-theme="dark"] .option>b{background:#263851;color:#e6edf7}
+html[data-theme="dark"] .option:hover,html[data-theme="dark"] .option:focus-visible{border-color:#91adf4;background:#1a2d49;outline:2px solid rgba(130,162,255,.28);outline-offset:1px}
+html[data-theme="dark"] .option.selected{background:#203b62;color:#fff;border-color:#91adf4}
+html[data-theme="dark"] .option.selected>span,html[data-theme="dark"] .option.selected>b{color:#fff}
