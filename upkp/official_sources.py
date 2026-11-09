@@ -31,6 +31,8 @@ TSKKWK_SOURCES = {
   ],
 }
 UPKP_2026_PAGE = "https://sites.google.com/view/upkp2026/beranda"
+UPKP_2026_JUKNIS_PAGE = "https://sites.google.com/view/upkp2026/petunjuk-teknis"
+UPKP_2026_TPA_CONVERSION_PAGE = "https://sites.google.com/view/upkp2026/konversi-nilai-tpa"
 TPA_OFFICIAL_SUBTESTS = ("Verbal", "Numerikal", "Figural")
 # Topics explicitly listed in Section D of the UPKP 2026 portal page.
 TSKKWK_OFFICIAL_CODES = ("etika", "nilai", "kepegawaian", "keuangan", "wawasan")
