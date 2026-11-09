@@ -83,13 +83,17 @@ def _ensure_learner_profiles():
             previous_scores TEXT NOT NULL DEFAULT '{}',
             updated_at DOUBLE PRECISION NOT NULL
         )''')
-        for sql in (
-            "ALTER TABLE learner_profiles ADD COLUMN exam_level TEXT NOT NULL DEFAULT 'V'",
-            "ALTER TABLE learner_profiles ADD COLUMN previous_scores TEXT NOT NULL DEFAULT '{}'",
-        ):
-            try: execute(c,sql)
-            except Exception: pass
-        if _is_pg(): c.commit()
+        if _is_pg():
+            execute(c,"ALTER TABLE learner_profiles ADD COLUMN IF NOT EXISTS exam_level TEXT NOT NULL DEFAULT 'V'")
+            execute(c,"ALTER TABLE learner_profiles ADD COLUMN IF NOT EXISTS previous_scores TEXT NOT NULL DEFAULT '{}'")
+            c.commit()
+        else:
+            for sql in (
+                "ALTER TABLE learner_profiles ADD COLUMN exam_level TEXT NOT NULL DEFAULT 'V'",
+                "ALTER TABLE learner_profiles ADD COLUMN previous_scores TEXT NOT NULL DEFAULT '{}'",
+            ):
+                try: execute(c,sql)
+                except Exception: pass
 
 def create_learner_profile(uid):
     _ensure_learner_profiles()
