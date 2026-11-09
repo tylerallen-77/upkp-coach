@@ -53,7 +53,8 @@ class OnboardingIn(BaseModel):
     exam_level:str='V'
     self_assessment:dict[str,str]
     previous_scores:dict[str,str]=Field(default_factory=dict)
-    daily_minutes:int=Field(default=60,ge=15,le=240)
+    study_pattern:str='mixed'
+    daily_minutes:int=Field(default=60,ge=15)
 class AttemptIn(BaseModel):
     question_token:str; selected:int|None=None; elapsed_ms:int=Field(ge=0,le=300000)
     first_selection_ms:int|None=Field(default=None,ge=0,le=300000); answer_changes:int=Field(default=0,ge=0,le=50)
@@ -166,9 +167,11 @@ def compact_course_plan(uid,profile):
     exam=date.fromisoformat(profile['exam_date'])
     days=(exam-today).days
     level=str(profile.get('exam_level') or 'V')
-    targets={'tpa':475 if level in ('V','VI') else 450,'substansi':70}
-    if days<=0:return {'exam_date':profile['exam_date'],'exam_level':level,'targets':targets,'previous_scores':profile.get('previous_scores') or {},'days_remaining':0,'daily_minutes':profile.get('daily_minutes',60),'days':[]}
+    pattern=profile.get('study_pattern') or 'mixed'
+    if pattern not in {'mixed','standalone'}:pattern='mixed'
     daily=max(15,int(profile.get('daily_minutes',60)))
+    targets={'tpa':475 if level in ('V','VI') else 450,'substansi':70}
+    if days<=0:return {'exam_date':profile['exam_date'],'exam_level':level,'targets':targets,'previous_scores':profile.get('previous_scores') or {},'days_remaining':0,'daily_minutes':daily,'study_pattern':pattern,'days':[]}
     priorities={}
     for track in ('tpa','substansi'):
         attempts=official_track_attempts(uid,track)
@@ -188,34 +191,39 @@ def compact_course_plan(uid,profile):
                          'questions':len(rows),'accuracy':(sum(1 for a in rows if a.get('correct'))/len(rows)) if rows else None}
     study_days=[]
     for i in range(days):
-        if i < max(1,int(days*.60)):
-            phase='Tutup gap utama'
-            mode='chapter'
-        elif i < max(1,int(days*.85)):
-            phase='Latihan campuran & retensi'
-            mode='guided'
-        elif i == days-1:
-            phase='Final review'
-            mode='chapter'
-        else:
-            phase='Simulasi & evaluasi'
-            mode='guided'
-        tasks=[]
-        for track in ('tpa','substansi'):
-            codes=priorities[track]
-            code=codes[i%len(codes)]
-            chapter=curriculum.BAB_BY_KODE.get(code)
-            title=chapter.judul if chapter else code
-            if mode=='chapter':
-                label=('Recall akhir · ' if phase=='Final review' else 'Fokus · ')+title
-                reason='Prioritas ditentukan dari hasil diagnostic dan pola akurasi, kecepatan, serta kesalahan.'
+        if pattern=='standalone':
+            tpa_end=max(1,int(days*.60))
+            substansi_end=max(tpa_end+1,int(days*.82))
+            if i<tpa_end:
+                phase='Fokus Tes Potensi';active_tracks=('tpa',);mode='chapter'
+            elif i<substansi_end:
+                phase='Fokus TSKKWK';active_tracks=('substansi',);mode='chapter'
             else:
-                label='Mixed practice · '+TRACKS[track]
-                reason='Mengukur transfer kemampuan dan menjaga materi yang sudah dipelajari tetap aktif.'
-            tasks.append({'track':track,'chapter':code,'label':label,'mode':mode,'minutes':max(8,daily//2),'reason':reason})
-        study_days.append({'date':(today+timedelta(days=i)).isoformat(),
-                           'day':i+1,'phase':phase,'tasks':tasks})
-    return {'exam_date':profile['exam_date'],'exam_level':level,'targets':targets,'previous_scores':profile.get('previous_scores') or {},'days_remaining':days,'daily_minutes':daily,'baseline':baseline,'days':study_days}
+                phase='Simulasi campuran & Try Out';active_tracks=('tpa','substansi');mode='tryout'
+        else:
+            if i < max(1,int(days*.60)):
+                phase='Tutup gap utama';mode='chapter'
+            elif i < max(1,int(days*.85)):
+                phase='Latihan campuran & retensi';mode='guided'
+            elif i == days-1:
+                phase='Final review';mode='guided'
+            else:
+                phase='Simulasi & evaluasi';mode='guided'
+            active_tracks=('tpa','substansi')
+        tasks=[]
+        allocation=max(8,daily//len(active_tracks))
+        for track in active_tracks:
+            codes=priorities[track];code=codes[i%len(codes)]
+            chapter=curriculum.BAB_BY_KODE.get(code);title=chapter.judul if chapter else code
+            if mode=='tryout':
+                label=('Final mixed Try Out · ' if i==days-1 else 'Try Out campuran · ')+TRACKS[track]
+            elif mode=='chapter':
+                label=('Fokus · ' if pattern=='standalone' else '')+title
+            else:label='Mixed practice · '+TRACKS[track]
+            reason='Simulasi akhir kedua track untuk menguji kesiapan dalam format ujian.' if mode=='tryout' else ('Prioritas ditentukan dari hasil diagnostic dan pola akurasi, kecepatan, serta kesalahan.' if mode=='chapter' else 'Mengukur transfer kemampuan dan menjaga materi yang sudah dipelajari tetap aktif.')
+            tasks.append({'track':track,'chapter':code,'label':label,'mode':mode,'minutes':allocation,'reason':reason})
+        study_days.append({'date':(today+timedelta(days=i)).isoformat(),'day':i+1,'phase':phase,'tasks':tasks})
+    return {'exam_date':profile['exam_date'],'exam_level':level,'targets':targets,'previous_scores':profile.get('previous_scores') or {},'days_remaining':days,'daily_minutes':daily,'study_pattern':pattern,'baseline':baseline,'days':study_days}
 
 def track_snapshot(uid,track):
     a=official_track_attempts(uid,track);m=learning.overall_metrics(a);p=learning.profile_attempts(a);rx=learning.daily_prescription(a,max_minutes=18)
@@ -251,6 +259,7 @@ def save_onboarding_profile(body:OnboardingIn,u=Depends(current_user)):
     if exam<=today:raise HTTPException(422,'Tanggal tes harus setelah hari ini.')
     if (exam-today).days>365:raise HTTPException(422,'Tanggal tes maksimal satu tahun dari hari ini.')
     if body.exam_level not in {'IV','V','VI'}:raise HTTPException(422,'Pilih jenjang UPKP IV, V, atau VI.')
+    if body.study_pattern not in {'mixed','standalone'}:raise HTTPException(422,'Pilih pola belajar Mixed atau Standalone.')
     allowed={'new','basic','intermediate','strong'}
     if set(body.self_assessment.keys())!={'tpa','substansi'} or any(v not in allowed for v in body.self_assessment.values()):
         raise HTTPException(422,'Pilih estimasi kemampuan untuk TPA dan TSKKWK.')
@@ -258,7 +267,7 @@ def save_onboarding_profile(body:OnboardingIn,u=Depends(current_user)):
     if set(body.previous_scores)-score_keys or any(not isinstance(v,str) or len(v.strip())>32 for v in body.previous_scores.values()):
         raise HTTPException(422,'Format nilai periode sebelumnya tidak valid.')
     previous_scores={k:v.strip() for k,v in body.previous_scores.items() if v.strip()}
-    saved=store.update_learner_profile(u['id'],exam.isoformat(),body.self_assessment,body.daily_minutes,body.exam_level,previous_scores)
+    saved=store.update_learner_profile(u['id'],exam.isoformat(),body.self_assessment,body.daily_minutes,body.exam_level,previous_scores,body.study_pattern)
     return {'ok':True,'profile':saved}
 
 @app.post('/api/session/diagnostic')
@@ -409,6 +418,8 @@ def attempt(body:AttemptIn,u=Depends(current_user)):
     key=f"{u['id']}:{body.question_token}:p{body.pass_number}:{'skip' if body.skipped else 'answer'}"
     def build_attempt(q):
         if body.session_id!=q.get('_session_id'):raise HTTPException(403,'Token belongs to another session')
+        session=store.get_learning_session(u['id'],body.session_id)
+        if body.skipped and session and session.get('kind')=='diagnostic':raise HTTPException(422,'Diagnostic wajib dijawab; soal tidak dapat dilewati.')
         correct=(body.selected==q.get('ans')) and not body.skipped
         a=learning.make_attempt(q,selected=body.selected,correct=correct,elapsed_ms=body.elapsed_ms,confidence=body.confidence,first_selection_ms=body.first_selection_ms,answer_changes=body.answer_changes,skipped=body.skipped,pass_number=body.pass_number,session_id=body.session_id)
         a['track']=q.get('track','tpa');a['hint_level']=body.hint_level
@@ -424,6 +435,9 @@ def close(body:CloseIn,u=Depends(current_user)):
     rows=store.attempts(u['id']);pm=learning.session_postmortem(rows,body.session_id)
     sess=store.get_learning_session(u['id'],body.session_id)
     if not sess: raise HTTPException(404,'Session not found')
+    if sess.get('kind')=='diagnostic' and not body.abandoned:
+        unanswered=store.session_question_rows(u['id'],body.session_id,unused_only=True)
+        if unanswered:raise HTTPException(409,f'Masih ada {len(unanswered)} soal diagnostic yang belum dijawab.')
     pm['abandoned']=bool(body.abandoned)
     if body.abandoned:
         pm['recommendation']='Sesi dihentikan. Jawaban yang sudah dikirim tetap tersimpan dan ikut memperbarui profil belajar.'
