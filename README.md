@@ -6,6 +6,7 @@ Core product: adaptive UPKP learning with multi-user accounts, four TPA Mastery 
 
 Start here:
 - `docs/PUBLIC_RELEASE_GATE.md`
+- `docs/UPKP_2026_SCOPE_ALIGNMENT.md`
 - `docs/DEPLOY_PUBLIC_VERCEL_SUPABASE.md`
 - `docs/RELEASE_STATUS_v1.3.md`
 - `SECURITY.md`
