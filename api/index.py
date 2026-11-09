@@ -174,11 +174,10 @@ def compact_course_plan(uid,profile):
         for code in core.TRACK_CODES[track]:
             if code not in codes:codes.append(code)
         priorities[track]=codes
-    diagnostic_sessions=store.recent_sessions(uid,100)
-    diagnostic_ids={t:{x['id'] for x in diagnostic_sessions if x.get('kind')=='diagnostic' and x.get('track')==t} for t in ('tpa','substansi')}
+    diagnostic_ids=store.session_ids_by_kind(uid,'diagnostic')
     baseline={}
     for track in ('tpa','substansi'):
-        rows=[a for a in track_attempts(uid,track) if a.get('session_id') in diagnostic_ids[track]]
+        rows=[a for a in track_attempts(uid,track) if a.get('session_id') in diagnostic_ids]
         baseline[track]={'self_assessment':(profile.get('self_assessment') or {}).get(track,'basic'),
                          'questions':len(rows),'accuracy':(sum(1 for a in rows if a.get('correct'))/len(rows)) if rows else None}
     study_days=[]
