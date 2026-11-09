@@ -70,6 +70,48 @@ def create_user(username,password_hash,role='user'):
             raise
     return {'id':uid,'username':username.lower(),'role':role}
 
+
+def _ensure_learner_profiles():
+    with connect() as c:
+        execute(c,'''CREATE TABLE IF NOT EXISTS learner_profiles(
+            user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+            exam_date TEXT,
+            self_assessment TEXT NOT NULL DEFAULT '{}',
+            daily_minutes INTEGER NOT NULL DEFAULT 60,
+            diagnostic_done TEXT NOT NULL DEFAULT '{}',
+            updated_at DOUBLE PRECISION NOT NULL
+        )''')
+        if _is_pg(): c.commit()
+
+def create_learner_profile(uid):
+    _ensure_learner_profiles()
+    with connect() as c:
+        execute(c,"INSERT INTO learner_profiles(user_id,exam_date,self_assessment,daily_minutes,diagnostic_done,updated_at) VALUES(?,NULL,'{}',60,'{}',?) ON CONFLICT(user_id) DO NOTHING",(uid,time.time()))
+        if _is_pg(): c.commit()
+
+def get_learner_profile(uid):
+    _ensure_learner_profiles()
+    with connect() as c:
+        r=fetchone(c,'SELECT exam_date,self_assessment,daily_minutes,diagnostic_done,updated_at FROM learner_profiles WHERE user_id=?',(uid,))
+    if not r:return None
+    return {'exam_date':r[0],'self_assessment':_decode(r[1],{}),'daily_minutes':int(r[2] or 60),'diagnostic_done':_decode(r[3],{}),'updated_at':r[4]}
+
+def update_learner_profile(uid,exam_date,self_assessment,daily_minutes):
+    _ensure_learner_profiles()
+    with connect() as c:
+        execute(c,'UPDATE learner_profiles SET exam_date=?,self_assessment=?,daily_minutes=?,updated_at=? WHERE user_id=?',(exam_date,_json(self_assessment),int(daily_minutes),time.time(),uid))
+        if _is_pg(): c.commit()
+    return get_learner_profile(uid)
+
+def mark_diagnostic_done(uid,track):
+    _ensure_learner_profiles()
+    with connect() as c:
+        r=fetchone(c,'SELECT diagnostic_done FROM learner_profiles WHERE user_id=?',(uid,))
+        if not r:return
+        done=_decode(r[0],{});done[track]=True
+        execute(c,'UPDATE learner_profiles SET diagnostic_done=?,updated_at=? WHERE user_id=?',(_json(done),time.time(),uid))
+        if _is_pg(): c.commit()
+
 def get_user_by_username(username):
     init_schema()
     with connect() as c:
