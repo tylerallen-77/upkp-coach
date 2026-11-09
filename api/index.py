@@ -277,13 +277,13 @@ def onboarding_diagnostic(track:str='tpa',u=Depends(current_user)):
 @app.get('/api/progress')
 def progress(track:str='tpa',u=Depends(current_user)):
     if track not in TRACKS:raise HTTPException(404,'Unknown track')
-    a=track_attempts(u['id'],track)
+    a=official_track_attempts(u['id'],track)
     return {'snapshot':track_snapshot(u['id'],track),'skills':learning.profile_attempts(a),'sessions':[s for s in store.recent_sessions(u['id'],30) if s['track']==track]}
 
 @app.get('/api/coach')
 def coach(track:str='tpa',u=Depends(current_user)):
     if track not in TRACKS:raise HTTPException(404,'Unknown track')
-    a=track_attempts(u['id'],track)
+    a=official_track_attempts(u['id'],track)
     return {'track':track,'teacher':learning.teacher_plan(a,track),'prescription':learning.daily_prescription(a,max_minutes=18)}
 
 
