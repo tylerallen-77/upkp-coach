@@ -195,6 +195,12 @@ def session_ids_by_kind(uid,kind):
         rows=fetchall(c,'SELECT id FROM learning_sessions WHERE user_id=? AND kind=?',(uid,kind))
     return {r[0] for r in rows}
 
+def mastery_sessions(uid):
+    with connect() as c:
+        rows=fetchall(c,"SELECT id,track,kind,title,started,ended,meta,summary FROM learning_sessions WHERE user_id=? AND kind='mastery' AND ended IS NOT NULL ORDER BY started",(uid,))
+    return [{'id':r[0],'track':r[1],'kind':r[2],'title':r[3],'started':r[4],'ended':r[5],
+             'meta':_decode(r[6],{}),'summary':_decode(r[7],{})} for r in rows]
+
 def recent_sessions(uid,limit=8):
     with connect() as c:
         rows=fetchall(c,'SELECT id,track,kind,title,started,ended,meta,summary FROM learning_sessions WHERE user_id=? AND ended IS NOT NULL ORDER BY started DESC LIMIT ?',(uid,limit))
